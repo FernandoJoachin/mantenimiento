@@ -15,8 +15,9 @@ public class LineCounterApp {
         }
 
         List<String> lines = new ArrayList<>();
-        for (String line : lines) {
-           //Code...
+        for (String fileName : fileNames) {
+           lines = fileHandler.readLines(fileName);
+           //code...
         }
     }
 }
