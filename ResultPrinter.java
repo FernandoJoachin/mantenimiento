@@ -1,38 +1,36 @@
 /**
- * La clase ResultPrinter se encarga de formatear e imprimir una tabla con los resultados
- * del conteo de líneas de código de un programa.
+ * The ResultPrinter class is responsible for formatting and printing a table 
+ * with the results of a program's line count.
  * 
- * <p>Imprime en consola una tabla con el nombre del programa, la cantidad de líneas 
- * lógicas y físicas de código.</p>
+ * <p>It prints a table in the console displaying the program name, the number 
+ * of logical lines, and the number of physical lines of code.</p>
  * 
- * @author JosePucMoo
- * @version 1.0
  */
 public class ResultPrinter {
 
     /**
-     * Cabecera de la tabla con los títulos de cada columna.
+     * Table header with column titles.
      */
     private static final String HEADER = "+------------+--------------+--------------+\n"
                                        + "| Programa   | LOC Lógicas  | LOC Físicas  |\n"
                                        + "+------------+--------------+--------------+\n";
 
     /**
-     * Pie de la tabla que marca el final del formato.
+     * Table footer marking the end of the format.
      */
     private static final String FOOTER = "+------------+--------------+--------------+\n";
 
     /**
-     * Formato de cada fila de la tabla, con alineación adecuada para los valores.
+     * Format for each row of the table, ensuring proper alignment of values.
      */
     private static final String ROW_FORMAT = "| %-10s | %-12d | %-12d |\n";
 
     /**
-     * Imprime en la consola una tabla con los resultados del conteo de líneas de código.
+     * Prints a table in the console with the results of the line count.
      * 
-     * @param programName Nombre del programa analizado.
-     * @param physicalLOC Número de líneas físicas de código (LOC físicas).
-     * @param logicalLOC Número de líneas lógicas de código (LOC lógicas).
+     * @param programName Name of the analyzed program.
+     * @param physicalLOC Number of physical lines of code (Physical LOC).
+     * @param logicalLOC Number of logical lines of code (Logical LOC).
      */
     public static void printResults(String programName, int physicalLOC, int logicalLOC) {
         String tableText = buildTable(programName, physicalLOC, logicalLOC);
@@ -40,12 +38,12 @@ public class ResultPrinter {
     }   
 
     /**
-     * Construye la tabla formateada con los resultados del conteo de líneas de código.
+     * Builds a formatted table with the results of the line count.
      * 
-     * @param programName Nombre del programa analizado.
-     * @param physicalLOC Número de líneas físicas de código (LOC físicas).
-     * @param logicalLOC Número de líneas lógicas de código (LOC lógicas).
-     * @return Una cadena de texto representando la tabla con los datos formateados.
+     * @param programName Name of the analyzed program.
+     * @param physicalLOC Number of physical lines of code (Physical LOC).
+     * @param logicalLOC Number of logical lines of code (Logical LOC).
+     * @return A formatted string representing the table with the data.
      */
     private static String buildTable(String programName, int physicalLOC, int logicalLOC) {
         StringBuilder resultText = new StringBuilder();
