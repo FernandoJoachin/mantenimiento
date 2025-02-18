@@ -13,7 +13,7 @@ abstract class LineCounter {
         
         String joinedLines = String.join("\n", lines);
 
-        joinedLines = joinedLines.replaceAll("(?s)/\*.*?\*/", "");  // Removes block comments
+        joinedLines = joinedLines.replaceAll("(?s)/\\*.*?\\*/", "");  // Removes block comments
         
         joinedLines = joinedLines.replaceAll("//.*(?=\n|$)", "");     // Removes line comments
 
