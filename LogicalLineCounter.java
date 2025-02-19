@@ -2,13 +2,22 @@ import java.util.List;
 
 public class LogicalLineCounter extends LineCounter {
     @Override
-    int count(List<String> lines) {
+    public int count(List<String> lines) {
         int numLines = 0;
 
         for (String line : lines) {
             if(isValidLine(line)){
                 if(isLogicalLine(line)){
-                    numLines++;
+                    if(isForStructure(line)){
+                        numLines+=3;
+                    }
+                    else if(isStatement(line)){
+                        int numStatements = countStatements(line);
+                        numLines+=numStatements;
+                    }
+                    else{
+                        numLines++;
+                    }
                 }
             }
         }
@@ -19,7 +28,7 @@ public class LogicalLineCounter extends LineCounter {
     private boolean isLogicalLine(String line) {
         line = line.trim();
         
-        if (isEmptyOrBracket(line) || isSingleLineComment(line) || isBlockComment(line)) {
+        if (isEmptyOrBracket(line) || isTryStatement(line) || isClassOrInterfaceStatement(line) || isMethodStatement(line)) {
             return false;
         }
         
@@ -34,16 +43,20 @@ public class LogicalLineCounter extends LineCounter {
         return line.isEmpty() || line.equals("{") || line.equals("}");
     }
     
-    private boolean isSingleLineComment(String line) {
-        return line.startsWith("//");
+    private boolean isClassOrInterfaceStatement(String line) {
+        return line.matches("(class|interface)");
     }
-    
-    private boolean isBlockComment(String line) {
-        return line.startsWith("/*") || line.endsWith("*/");
+
+    private boolean isMethodStatement(String line) {
+        return line.matches("(public|private)+[a-zA-Z+ _<>]+\\(+.*\\)+ *\\{");
     }
-    
+
     private boolean isStatement(String line) {
         return line.contains(";");
+    }
+    
+    private boolean isTryStatement(String line) {
+        return line.contains("try");
     }
     
     private boolean isControlStructure(String line) {
@@ -58,4 +71,26 @@ public class LogicalLineCounter extends LineCounter {
         return line.contains("break");
     }
 
+    private boolean isForStructure(String line) {
+        return line.contains("for");
+    }
+
+    private int countStatements(String line){
+        int counter = 0;
+        int length = line.length();
+          for (int i = 0; i < length; i++) 
+        {
+            if(line.charAt(i) == ';'){
+                if (i+1 < length){
+                    if(line.charAt(i-1) != '\'' && line.charAt(i+1) != '\''){
+                        counter++;
+                    }
+                }
+                else{
+                    counter++;
+                }
+            }
+        }
+          return counter;
+    }
 }
