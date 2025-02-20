@@ -4,7 +4,7 @@ import java.util.regex.*;
 /**
  * Clase que maneja operaciones de lectura de archivos y listado de nombres de archivos en un directorio.
  */
-class FileHandler {
+class FileManager {
     private List<String> fileNames;
     private String directory;
 
@@ -13,7 +13,7 @@ class FileHandler {
      *
      * @param directory Directorio donde se encuentran los archivos.
      */
-    public FileHandler(String directory) {
+    public FileManager(String directory) {
         this.directory = directory;
         this.fileNames = new ArrayList<>();
     }

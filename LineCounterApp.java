@@ -7,7 +7,7 @@ public class LineCounterApp {
         System.out.println("Iniciando App...");
 
         String directoryPath = "files";
-        FileHandler fileHandler = new FileHandler(directoryPath);
+        FileManager fileHandler = new FileManager(directoryPath);
         List<String> fileNames = fileHandler.getFileNames();
         if (fileNames.isEmpty()) {
             System.out.println("No hay archivos en el directorio.");
