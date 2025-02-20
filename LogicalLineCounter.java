@@ -11,10 +11,6 @@ public class LogicalLineCounter extends LineCounter {
                     if(isForStructure(line)){
                         numLines+=3;
                     }
-                    else if(isStatement(line)){
-                        int numStatements = countStatements(line);
-                        numLines+=numStatements;
-                    }
                     else{
                         numLines++;
                     }
@@ -28,7 +24,8 @@ public class LogicalLineCounter extends LineCounter {
     private boolean isLogicalLine(String line) {
         line = line.trim();
         
-        if (isEmptyOrBracket(line) || isTryStatement(line) || isClassOrInterfaceStatement(line) || isMethodStatement(line)) {
+        if (isEmptyOrBracket(line) || isTryStatement(line) || isClassOrInterfaceStatement(line) 
+            || isMethodStatement(line) || isImportStatement(line)) {
             return false;
         }
         
@@ -75,22 +72,7 @@ public class LogicalLineCounter extends LineCounter {
         return line.contains("for");
     }
 
-    private int countStatements(String line){
-        int counter = 0;
-        int length = line.length();
-          for (int i = 0; i < length; i++) 
-        {
-            if(line.charAt(i) == ';'){
-                if (i+1 < length){
-                    if(line.charAt(i-1) != '\'' && line.charAt(i+1) != '\''){
-                        counter++;
-                    }
-                }
-                else{
-                    counter++;
-                }
-            }
-        }
-          return counter;
+    private boolean isImportStatement(String line) {
+        return line.contains("import");
     }
 }
