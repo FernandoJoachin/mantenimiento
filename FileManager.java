@@ -1,17 +1,18 @@
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
+
 /**
- * Clase que maneja operaciones de lectura de archivos y listado de nombres de archivos en un directorio.
+ * Class that handles file reading operations and listing file names in a directory.
  */
 class FileManager {
     private List<String> fileNames;
     private String directory;
 
     /**
-     * Constructor de la clase FileHandler.
+     * Constructor for the FileManager class.
      *
-     * @param directory Directorio donde se encuentran los archivos.
+     * @param directory Directory where the files are located.
      */
     public FileManager(String directory) {
         this.directory = directory;
@@ -19,18 +20,18 @@ class FileManager {
     }
 
     /**
-     * Lee todas las líneas de un archivo especificado.
+     * Reads all lines from a specified file.
      *
-     * @param fileName Nombre del archivo a leer.
-     * @return Una lista con las líneas del archivo. Si el archivo no existe, retorna una lista vacía.
-     * @throws IOException Si ocurre un error de lectura del archivo.
+     * @param fileName Name of the file to read.
+     * @return A list containing the file's lines. If the file does not exist, returns an empty list.
+     * @throws IOException If an error occurs while reading the file.
      */
     public List<String> readLines(String fileName) throws IOException {
         File file = new File(this.directory, fileName);
         List<String> lines = new ArrayList<>();
         
         if (!file.exists() || !file.isFile()) {
-            System.out.println("El archivo no existe: " + fileName);
+            System.out.println("The file does not exist: " + fileName);
             return lines;
         }
 
@@ -44,14 +45,14 @@ class FileManager {
     }
 
     /**
-     * Obtiene una lista de los nombres de los archivos en el directorio.
+     * Retrieves a list of file names in the directory.
      *
-     * @return Una lista con los nombres de los archivos en el directorio. Si el directorio no es válido, retorna una lista vacía.
+     * @return A list of file names in the directory. If the directory is invalid, returns an empty list.
      */
     public List<String> getFileNames() {
         File folder = new File(directory);
         if (!folder.exists() || !folder.isDirectory()) {
-            System.out.println("El directorio no existe o no es válido.");
+            System.out.println("The directory does not exist or is invalid.");
             return Collections.emptyList();
         }
 
