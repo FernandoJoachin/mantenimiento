@@ -9,7 +9,7 @@ public class LogicalLineCounter extends LineCounter {
      * @return int
      */
     @Override
-    public int count(List<String> lines) {
+    int count(List<String> lines) {
         int numLines = 0;
 
         List<String> cleanLines = removeComments(lines);
@@ -27,7 +27,6 @@ public class LogicalLineCounter extends LineCounter {
         return numLines;
     }
     
-    
     /**
      * Verifies if it's a logical line
      * 
@@ -38,17 +37,18 @@ public class LogicalLineCounter extends LineCounter {
         line = line.trim();
         
         if (isEmptyOrBracket(line) || isTryStatement(line) || isClassOrInterfaceStatement(line) 
-            || isMethodStatement(line) || isImportStatement(line)) {
+            || isMethodStatement(line) || isImportStatement(line) || isPackageStatement(line)) {
             return false;
         }
         
-        if (isStatement(line) || isControlStructure(line) || isSwitchCase(line) || isBreakStatement(line)) {
+        if (isForStatement(line) || isSwitchCase(line) || isControlStructureWithCondition(line)
+            || isControlStructureWithoutCondition(line) || isWhileStatement(line) || isBreakStatement(line)
+            || isStatement(line)) {
             return true;
         }
         
         return false;
     }
-    
     
     /**
      * Verifies if it is an empty or only bracket line
@@ -57,10 +57,9 @@ public class LogicalLineCounter extends LineCounter {
      * @return boolean
      */
     private boolean isEmptyOrBracket(String line) {
-        return line.isEmpty() || line.equals("{") || line.equals("}");
+        return line.trim().isEmpty() || line.trim().equals("{") || line.trim().equals("}");
     }
-    
-    
+
     /** 
      * Verifies if it's a class or interface statement
      * 
@@ -68,10 +67,9 @@ public class LogicalLineCounter extends LineCounter {
      * @return boolean
      */
     private boolean isClassOrInterfaceStatement(String line) {
-        return line.matches("(class|interface)");
+        return line.trim().matches("^(public|private|protected|)+ *(class|interface)+.*\\{");
     }
 
-    
     /** 
      * Verifies if it's a method initialization statement
      * 
@@ -79,10 +77,9 @@ public class LogicalLineCounter extends LineCounter {
      * @return boolean
      */
     private boolean isMethodStatement(String line) {
-        return line.matches("(public|private)+[a-zA-Z+ _<>]+\\(+.*\\)+ *\\{");
+        return line.trim().matches("^(public|private|abstract|protected)+[a-zA-Z+ _<>]+\\(+.*");
     }
 
-    
     /** 
      * Verifies if it's a general statement
      * 
@@ -90,9 +87,8 @@ public class LogicalLineCounter extends LineCounter {
      * @return boolean
      */
     private boolean isStatement(String line) {
-        return line.contains(";");
+        return line.matches(".*;$");
     }
-    
     
     /** 
      * Verifies if it's a try statement
@@ -101,20 +97,39 @@ public class LogicalLineCounter extends LineCounter {
      * @return boolean
      */
     private boolean isTryStatement(String line) {
-        return line.contains("try");
+        return line.trim().matches("^try+ *{$");
     }
     
-    
     /** 
-     * Verifies if it's part of a control structure
+     * Verifies if it's part of a control structure that specyfies a contition
      * 
      * @param line
      * @return boolean
      */
-    private boolean isControlStructure(String line) {
-        return line.matches("\\b(if|else|switch|for|while|do|catch|finally)\\b.*");
+    private boolean isControlStructureWithCondition(String line) {
+        return line.trim().matches("^(if|switch|catch)+ *\\(+.*");
     }
-    
+
+    /** 
+     * Verifies if it's part of a control structure that doesn't hace a specyfied condition
+     * 
+     * @param line
+     * @return boolean
+     */
+    private boolean isControlStructureWithoutCondition(String line) {
+        return line.trim().matches("^(else|do|finally)+ *\\{");
+    }
+
+    /** 
+     * Verifies if it's a while statement
+     * 
+     * @param line
+     * @return boolean
+     */
+    private boolean isWhileStatement(String line) {
+        return (line.trim().matches("^while+ *\\(+.*")
+            || line.trim().matches("^\\}+ *while+ *\\(+.*"));
+    }
     
     /** 
      * Verifies if it's part of a switch structure
@@ -123,9 +138,8 @@ public class LogicalLineCounter extends LineCounter {
      * @return boolean
      */
     private boolean isSwitchCase(String line) {
-        return line.matches("\\b(case|default)\\b.*:");
+        return line.trim().matches("^\\b(case|default)\\b.*:");
     }
-    
     
     /** 
      * Verifies if it's a brake statement
@@ -134,9 +148,8 @@ public class LogicalLineCounter extends LineCounter {
      * @return boolean
      */
     private boolean isBreakStatement(String line) {
-        return line.contains("break");
+        return line.trim().matches("^break+ *;");
     }
-
     
     /** 
      * Verifies if it's a for initialization statement
@@ -145,9 +158,8 @@ public class LogicalLineCounter extends LineCounter {
      * @return boolean
      */
     private boolean isForStatement(String line) {
-        return line.contains("for");
+        return line.trim().matches("^for+ *\\(+.*\\)+ *\\{");
     }
-
     
     /** 
      * Verifies if it's an import statement
@@ -155,6 +167,15 @@ public class LogicalLineCounter extends LineCounter {
      * @return boolean
      */
     private boolean isImportStatement(String line) {
-        return line.contains("import");
+        return line.trim().matches("^import+.*;");
+    }
+
+    /** 
+     * Verifies if it's a package statement
+     * @param line
+     * @return boolean
+     */
+    private boolean isPackageStatement(String line) {
+        return line.trim().matches("^package+.*;");
     }
 }
