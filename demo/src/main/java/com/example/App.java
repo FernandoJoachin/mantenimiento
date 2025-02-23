@@ -8,7 +8,7 @@ public class App {
     public static void main(String[] args) throws IOException {
         System.out.println("Iniciando App...");
 
-        String directoryPath = "src/main/java/com/files";
+        String directoryPath = "demo/src/main/java/com/example/files";
         FileManager fileHandler = new FileManager(directoryPath);
         List<String> fileNames = fileHandler.getFileNames();
         if (fileNames.isEmpty()) {
@@ -33,7 +33,7 @@ public class App {
            
            physicalLOC = physicalLineCounter.count(lines);
            logicalLOC = logicalLineCounter.count(lines);
-           ResultPrinter.printResults(directoryPath, physicalLOC, logicalLOC);
+           ResultPrinter.printResults(fileName, physicalLOC, logicalLOC);
         }
     }
 }
