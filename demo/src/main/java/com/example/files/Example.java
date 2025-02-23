@@ -1,4 +1,4 @@
-package files;
+package com.example.files;
 
 public class Example {
     // Single-line comment

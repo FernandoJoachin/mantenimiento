@@ -1,5 +1,11 @@
+package com.example;
+
 import java.util.List;
 
+/**
+ * This class provides methods to validate the format of a Java source file.
+ * It checks various formatting rules such as line length, brace style, and multiple executable statements.
+ */
 public class FileFormatValidator {
     private static final int MAX_LINE_LENGTH = 120;
 
@@ -16,32 +22,34 @@ public class FileFormatValidator {
      */
     public static boolean validateFile(String fileName, List<String> lines) {
         if (!isValidFileType(fileName)) {
-            System.out.println("❌ Error: Tipo de archivo no válido -> " + fileName);
+            System.out.println("Error: Invalid file type -> " + fileName);
             return false;
         }
 
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i).trim();
 
-            if(line.isEmpty()) {
+            if (line.isEmpty()) {
                 continue;
             }
 
             if (!isValidLineLength(line)) {
-                System.out.println("⚠️ Advertencia: Línea " + (i + 1) + " del archivo " + fileName + " supera los 120 caracteres.");
+                System.out.println("Warning: Line " + (i + 1) + " in file " + fileName 
+                    + " exceeds 120 characters.");
                 return false;
             }
 
             if (!isValidBracesStyle(line)) {
-                System.out.println("❌ Error: Línea " + (i + 1) + " del archivo " + fileName + " tiene estilo de corchetes incorrecto.");
+                System.out.println("Error: Line " + (i + 1) + " in file " + fileName 
+                    + " has incorrect brace style.");
                 return false;
             }
 
             if (!isValidMultipleStatements(line)) {
-                System.out.println("❌ Error: Línea " + (i + 1) + " del archivo " + fileName + " contiene múltiples sentencias ejecutables.");
+                System.out.println("Error: Line " + (i + 1) + " in file " + fileName 
+                    + " contains multiple executable statements.");
                 return false;
             }
-
         }
 
         return true;
@@ -60,7 +68,7 @@ public class FileFormatValidator {
     /**
      * Checks if a given line does not exceed the maximum allowed length.
      *
-     * @param line       The line of code to check.
+     * @param line The line of code to check.
      * @return {@code true} if the line length is within the allowed limit, {@code false} otherwise.
      */
     private static boolean isValidLineLength(String line) {
@@ -72,15 +80,17 @@ public class FileFormatValidator {
      * The `for` loop structure is allowed since it may contain multiple `;`
      * without being considered separate statements.
      *
-     * @param line       The line of code to evaluate.
+     * @param line The line of code to evaluate.
      * @return {@code true} if the line does not contain multiple statements, {@code false} if it does.
      */
     private static boolean isValidMultipleStatements(String line) {
-        boolean isValidForLoopStructure = line.matches("\\s*for\\s*\\(.*;.*;.*\\)\\s*\\{?\\s*");
-        
+        boolean isValidForLoopStructure = line.matches(
+            "\\s*for\\s*\\(.*;.*;.*\\)\\s*\\{?\\s*");
+
         if (isValidForLoopStructure) {
             return true;
         }
+
         String stringWithoutQuotes = line.replaceAll("\"[^\"]*\"", "");
         long semicolonCount = stringWithoutQuotes.chars().filter(c -> c == ';').count();
 
@@ -88,19 +98,23 @@ public class FileFormatValidator {
     }
 
     /**
-    * Verifies if the line of code has a valid style for opening braces.
-    * This means that if the line ends with an opening brace `{`, it must be preceded by a alid declaration of a class, method, or a control structure.
-    * @param line The current line of code being evaluated.
-    * @return {@code true} if the line is valid or does not end with an opening brace, 
-    *         {@code false} if it ends with an opening brace but the previous line is not a valid declaration.
-    */
+     * Verifies if the line of code has a valid style for opening braces.
+     * This means that if the line ends with an opening brace `{`, it must be preceded by a valid
+     * declaration of a class, method, or a control structure.
+     *
+     * @param line The current line of code being evaluated.
+     * @return {@code true} if the line is valid or does not end with an opening brace,
+     *         {@code false} if it ends with an opening brace but the previous line is not a valid declaration.
+     */
     private static boolean isValidBracesStyle(String line) {
         boolean endsWithOpeningBrace = line.endsWith("{");
-        boolean endsWithOpeningAmdClosingBrace = line.endsWith("{}");
-        boolean isControlStructureWithSemicolon = line.trim().matches("\\s*(for|while|do|switch|if)\\s*\\(.*\\)\\s*;\\s*");
-        boolean isValidDeclarationOrMethod = line.trim().matches(".*\\s*(public|private|protected|class|interface|enum|if|else|for|while|switch|do)\\s+.*\\{.*|.*\\)\\s*\\{.*");
+        boolean endsWithOpeningAndClosingBrace = line.endsWith("{}");
+        boolean isControlStructureWithSemicolon = line.trim().matches(
+            "\\s*(for|while|do|switch|if)\\s*\\(.*\\)\\s*;\\s*");
+        boolean isValidDeclarationOrMethod = line.trim().matches(
+            ".*\\s*(public|private|protected|class|interface|enum|if|else|for|while|switch|do)\\s+.*\\{.*|.*\\)\\s*\\{.*");
 
-        if(endsWithOpeningAmdClosingBrace || isControlStructureWithSemicolon){ 
+        if (endsWithOpeningAndClosingBrace || isControlStructureWithSemicolon) {
             return false;
         }
 
@@ -108,13 +122,10 @@ public class FileFormatValidator {
             return true;
         }
 
-        if(!isValidDeclarationOrMethod) {
+        if (!isValidDeclarationOrMethod) {
             return false;
         }
 
         return true;
     }
-   
 }
-
-

@@ -1,3 +1,4 @@
+package com.example;
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
@@ -23,7 +24,8 @@ class FileManager {
      * Reads all lines from a specified file.
      *
      * @param fileName Name of the file to read.
-     * @return A list containing the file's lines. If the file does not exist, returns an empty list.
+     * @return A list containing the file's lines. If the file does not exist, 
+     * returns an empty list.
      * @throws IOException If an error occurs while reading the file.
      */
     public List<String> readLines(String fileName) throws IOException {
@@ -47,7 +49,8 @@ class FileManager {
     /**
      * Retrieves a list of file names in the directory.
      *
-     * @return A list of file names in the directory. If the directory is invalid, returns an empty list.
+     * @return A list of file names in the directory. If the directory is invalid, 
+     * returns an empty list.
      */
     public List<String> getFileNames() {
         File folder = new File(directory);
