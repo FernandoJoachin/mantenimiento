@@ -1,3 +1,4 @@
+package com.example;
 /**
  * The ResultPrinter class is responsible for formatting and printing a table 
  * with the results of a program's line count.
