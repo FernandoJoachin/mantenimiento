@@ -20,7 +20,7 @@ public class FileFormatValidator {
      * @param lines    The content of the file, represented as a list of lines.
      * @return {@code true} if the file follows the formatting rules, {@code false} otherwise.
      */
-    public static boolean validateFile(String fileName, List<String> lines) {
+    public static boolean isValidFileFormat(String fileName, List<String> lines) {
         if (!isValidFileType(fileName)) {
             System.out.println("Error: Invalid file type -> " + fileName);
             return false;
