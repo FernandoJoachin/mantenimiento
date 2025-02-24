@@ -19,7 +19,7 @@ public class LogicalLineCounterTest {
     }
 
     @Test
-    public void isEmpty() {
+    public void verifyEmptyLine() {
         List<String> lines = new ArrayList<>();
         lines.add("");
         lines.add("for (");
@@ -30,7 +30,7 @@ public class LogicalLineCounterTest {
     }
 
     @Test
-    public void isBracket() {
+    public void verifyBracketLine() {
         List<String> lines = new ArrayList<>();
         lines.add("for(int i=0; i<5; i++){");
         lines.add("{");
@@ -41,7 +41,7 @@ public class LogicalLineCounterTest {
     }
 
     @Test
-    public void isClassOrInterfaceStatement() {
+    public void verifyClassOrInterfaceStatement() {
         List<String> lines = new ArrayList<>();
         lines.add("class Prueba{");
         lines.add("interface Prueba");
@@ -52,7 +52,7 @@ public class LogicalLineCounterTest {
     }
 
     @Test
-    public void isMethodStatement() {
+    public void verifyMethodStatement() {
         List<String> lines = new ArrayList<>();
         lines.add("public void metodo (){");
         lines.add("abstract int prueba();");
@@ -74,7 +74,7 @@ public class LogicalLineCounterTest {
     }
 
     @Test
-    public void isTryStatement() {
+    public void verifyTryStatement() {
         List<String> lines = new ArrayList<>();
         lines.add("try {");
         lines.add("for (");
@@ -93,7 +93,7 @@ public class LogicalLineCounterTest {
     }
 
     @Test
-    public void isWhileStatement() {
+    public void verifyWhileStatement() {
         List<String> lines = new ArrayList<>();
         lines.add("while (i<5){");
         lines.add("while (");
@@ -123,7 +123,7 @@ public class LogicalLineCounterTest {
     }
 
     @Test
-    public void isImportStatement() {
+    public void verifyImportStatement() {
         List<String> lines = new ArrayList<>();
         lines.add("import libreria.carpeta;");
         lines.add("String i = “import”;");
@@ -134,7 +134,7 @@ public class LogicalLineCounterTest {
     }
 
     @Test
-    public void isPackageStatement() {
+    public void verifyPackageStatement() {
         List<String> lines = new ArrayList<>();
         lines.add("package carpeta.carpetita;");
         lines.add("String i = “package”;");
