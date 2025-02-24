@@ -10,23 +10,6 @@ package com.example;
 public class ResultPrinter {
 
     /**
-     * Table header with column titles.
-     */
-    private static final String HEADER = "+------------+--------------+--------------+\n"
-                                       + "| Programa   | LOC Lógicas  | LOC Físicas  |\n"
-                                       + "+------------+--------------+--------------+\n";
-
-    /**
-     * Table footer marking the end of the format.
-     */
-    private static final String FOOTER = "+------------+--------------+--------------+\n";
-
-    /**
-     * Format for each row of the table, ensuring proper alignment of values.
-     */
-    private static final String ROW_FORMAT = "| %-10s | %-12d | %-12d |\n";
-
-    /**
      * Prints a table in the console with the results of the line count.
      * 
      * @param programName Name of the analyzed program.
@@ -47,10 +30,64 @@ public class ResultPrinter {
      * @return A formatted string representing the table with the data.
      */
     private static String buildTable(String programName, int physicalLOC, int logicalLOC) {
-        StringBuilder resultText = new StringBuilder();
-        resultText.append(HEADER);
-        resultText.append(String.format(ROW_FORMAT, programName, logicalLOC, physicalLOC));
-        resultText.append(FOOTER);
-        return resultText.toString();
+        String titleProgram = "Programa";
+        String titleLogicalLOC = "LOC Lógicas";
+        String titlePhysicalLOC = "LOC Físicas";
+
+        int maxProgramLength = getMaxColumnWidth(titleProgram, programName);
+        int maxLogicalLength = getMaxColumnWidth(titleLogicalLOC, String.valueOf(logicalLOC));
+        int maxPhysicalLength = getMaxColumnWidth(titlePhysicalLOC, String.valueOf(physicalLOC));
+
+        String headerFormat = createHeader(maxProgramLength, maxLogicalLength, maxPhysicalLength);
+        String separator = createSeparator(maxProgramLength, maxLogicalLength, maxPhysicalLength);
+
+        StringBuilder table = new StringBuilder();
+        table.append(separator);
+        table.append(String.format(headerFormat, titleProgram, titleLogicalLOC, titlePhysicalLOC));
+        table.append(separator);
+        table.append(String.format(headerFormat, programName, logicalLOC, physicalLOC));
+        table.append(separator);
+
+        return table.toString();
     }
+
+    /**
+     * Calculates the maximum column width based on the length of the title and the corresponding value.
+     *
+     * @param title The title of the column.
+     * @param value The value to be displayed in the column.
+     * @return The maximum width required for the column.
+     */
+    private static int getMaxColumnWidth(String title, String value) {
+        return Math.max(title.length(), value.length());
+    }
+
+    /**
+     * Creates the header row of the table, formatting the column titles
+     * with the appropriate column widths.
+     *
+     * @param maxProgramLength   The maximum width of the column for the program name.
+     * @param maxLogicalLength   The maximum width of the column for the Logical LOC.
+     * @param maxPhysicalLength  The maximum width of the column for the Physical LOC.
+     * @return A string representing the formatted header row of the table.
+     */
+    private static String createHeader(int maxProgramLength, int maxLogicalLength, int maxPhysicalLength) {
+        return "| %-" + maxProgramLength + "s | %-" + maxLogicalLength + "s | %-" + maxPhysicalLength + "s |\n";
+    }
+
+    /**
+     * Creates the separator line for the table, adjusting the length of each
+     * section based on the column widths.
+     *
+     * @param maxProgramLength   The maximum width of the column for the program name.
+     * @param maxLogicalLength   The maximum width of the column for the Logical LOC.
+     * @param maxPhysicalLength  The maximum width of the column for the Physical LOC.
+     * @return A string representing the separator line of the table.
+     */
+    private static String createSeparator(int maxProgramLength, int maxLogicalLength, int maxPhysicalLength) {
+        return "+" + "-".repeat(maxProgramLength + 2) + "+"
+            + "-".repeat(maxLogicalLength + 2) + "+"
+            + "-".repeat(maxPhysicalLength + 2) + "+\n";
+    }
+
 }
