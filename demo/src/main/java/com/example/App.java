@@ -26,7 +26,7 @@ public class App {
 
         for (String fileName : fileNames) {
            lines = fileHandler.readLines(fileName);
-           isValidFormatFile = FileFormatValidator.validateFile(fileName, lines);
+           isValidFormatFile = FileFormatValidator.isValidFileFormat(fileName, lines);
            if(!isValidFormatFile){
             continue;
            }
