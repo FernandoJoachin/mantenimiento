@@ -50,6 +50,18 @@ public class FileFormatValidator {
                     + " contains multiple executable statements.");
                 return false;
             }
+
+            if (!isValidImportStatement(line)) {
+                System.out.println("Error: Line " + (i + 1) + " in file " + fileName 
+                    + " contains a wildcard import.");
+                return false;
+            }
+
+            if (!isValidAnnotationFormat(line, i > 0 ? lines.get(i - 1).trim() : "")) {
+                System.out.println("Error: Line " + (i + 1) + " in file " + fileName 
+                    + " has incorrect annotation formatting.");
+                return false;
+            }
         }
 
         return true;
@@ -109,8 +121,13 @@ public class FileFormatValidator {
     private static boolean isValidBracesStyle(String line) {
         boolean endsWithOpeningBrace = line.endsWith("{");
         boolean endsWithOpeningAndClosingBrace = line.endsWith("{}");
+        // Checks if the line is a control structure (for, while, do, switch, if) followed by a semicolon `;`
+        // This prevents misinterpretation of single-line statements.
         boolean isControlStructureWithSemicolon = line.trim().matches(
             "\\s*(for|while|do|switch|if)\\s*\\(.*\\)\\s*;\\s*");
+        // Checks if the line contains a valid declaration or method signature followed by `{`
+        // This includes class, interface, enum, access modifiers (public, private, protected),
+        // and control structures (if, else, for, while, switch, do).
         boolean isValidDeclarationOrMethod = line.trim().matches(
             ".*\\s*(public|private|protected|class|interface|enum|if|else|for|while|switch|do)\\s+.*\\{.*|.*\\)\\s*\\{.*");
 
@@ -126,6 +143,42 @@ public class FileFormatValidator {
             return false;
         }
 
+        return true;
+    }
+
+    /**
+     * Checks if a line contains a wildcard import (e.g., `import java.util.*;`).
+     *
+     * @param line The line of code to evaluate.
+     * @return {@code true} if the line does not contain a wildcard import, 
+     * {@code false} otherwise.
+     */
+    private static boolean isValidImportStatement(String line) {
+        if (line.startsWith("import")) {
+            return !line.contains(".*;");
+        }
+        return true;
+    }
+
+    /**
+     * Checks if an annotation is correctly formatted.
+     * The annotation must be on a separate line before the method, class, or field declaration.
+     *
+     * @param currentLine The current line being evaluated.
+     * @param previousLine The previous line in the file.
+     * @return {@code true} if the annotation is correctly formatted, {@code false} otherwise.
+     */
+    private static boolean isValidAnnotationFormat(String currentLine, String previousLine) {
+        if (currentLine.startsWith("@")) {
+            if (!previousLine.isEmpty()) {
+                return false;
+            }
+
+            // Check if the annotation is on the same line as a declaration (public, private, etc.)
+            if (currentLine.matches(".*\\s+(public|private|protected|class|interface|enum|void|int|String|boolean).*")) {
+                return false;
+            }
+        }
         return true;
     }
 }

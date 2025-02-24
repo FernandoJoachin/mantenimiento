@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class FileFormatValidatorTest {
     @Test
-    public void testIsValidFileType() {
+    public void testIsValidFileType_Correct() {
         List<String> dummyLines = Arrays.asList(
             "public class Test {",
             "    public static void main(String[] args) {",
@@ -16,15 +16,31 @@ public class FileFormatValidatorTest {
             "    }",
             "}"
         );
-        assertTrue("The file with .java extension must be valid.",
-            FileFormatValidator.isValidFileFormat("ValidFile.java", dummyLines));
 
-        assertFalse("The file with extension .txt must be invalid.",
-            FileFormatValidator.isValidFileFormat("InvalidFile.txt", dummyLines));
+        assertTrue(
+            "The file with .java extension must be valid.",
+            FileFormatValidator.isValidFileFormat("ValidFile.java", dummyLines)
+        );
     }
 
     @Test
-    public void testIsValidLineLength() {
+    public void testIsValidFileType_Incorrect() {
+        List<String> dummyLines = Arrays.asList(
+            "public class Test {",
+            "    public static void main(String[] args) {",
+            "        System.out.println(\"Hello, World!\");",
+            "    }",
+            "}"
+        );
+
+        assertFalse(
+            "The file with extension .txt must be invalid.",
+            FileFormatValidator.isValidFileFormat("InvalidFile.txt", dummyLines)
+        );
+    }
+
+    @Test
+    public void testIsValidLineLength_Correct() {
         List<String> shortLineFile = Arrays.asList(
             "public class Test {",
             "    public static void main(String[] args) {",
@@ -33,6 +49,14 @@ public class FileFormatValidatorTest {
             "}"
         );
 
+        assertTrue(
+            "The file with lines with less than 120 characters must be valid.",
+            FileFormatValidator.isValidFileFormat("ValidFile.java", shortLineFile)
+        );
+    }
+
+    @Test
+    public void testIsValidLineLength_Incorrect() {
         List<String> longLineFile = Arrays.asList(
             "public class Test {",
             "    public static void main(String[] args) {",
@@ -42,15 +66,14 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertTrue("The file with lines with less than 120 characters must be valid.",
-            FileFormatValidator.isValidFileFormat("ValidFile.java", shortLineFile));
-
-        assertFalse("The file with lines with more than 120 characters must be invalid.",
-            FileFormatValidator.isValidFileFormat("InvalidFile.java", longLineFile));
+        assertFalse(
+            "The file with lines with more than 120 characters must be invalid.",
+            FileFormatValidator.isValidFileFormat("InvalidFile.java", longLineFile)
+        );
     }
 
     @Test
-    public void testIsValidMultipleStatements() {
+    public void testIsValidMultipleStatements_Correct() {
         List<String> singleStatementFile = Arrays.asList(
             "public class Test {",
             "    public static void main(String[] args) {",
@@ -62,6 +85,14 @@ public class FileFormatValidatorTest {
             "}"
         );
 
+        assertTrue(
+            "The file with lines with only one executable statement must be valid.",
+            FileFormatValidator.isValidFileFormat("ValidFile.java", singleStatementFile)
+        );
+    }
+
+    @Test
+    public void testIsValidMultipleStatements_Incorrect() {
         List<String> multipleStatementsFile = Arrays.asList(
             "public class Test {",
             "    public static void main(String[] args) {",
@@ -73,16 +104,14 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-
-        assertTrue("The file with lines with only one executable statement must be valid.",
-            FileFormatValidator.isValidFileFormat("ValidFile.java", singleStatementFile));
-
-        assertFalse("File with lines with multiple executable statements must be invalid.",
-            FileFormatValidator.isValidFileFormat("InvalidFile.java", multipleStatementsFile));
+        assertFalse(
+            "File with lines with multiple executable statements must be invalid.",
+            FileFormatValidator.isValidFileFormat("InvalidFile.java", multipleStatementsFile)
+        );
     }
-
+    
     @Test
-    public void testIsValidBracesStyle() {
+    public void testIsValidBracesStyle_Correct() {
         List<String> validBraceFile = Arrays.asList(
             "public class Test {",
             "    public static void main(String[] args) {",
@@ -90,7 +119,15 @@ public class FileFormatValidatorTest {
             "    }",
             "}"
         );
-        
+
+        assertTrue(
+            "File for lines with K&R style braces must be valid.",
+            FileFormatValidator.isValidFileFormat("ValidFile.java", validBraceFile)
+        );
+    }
+
+    @Test
+    public void testIsValidBracesStyle_Incorrect() {
         List<String> invalidBraceFile = Arrays.asList(
             "public class Test {",
             "    public static void main(String[] args)",
@@ -100,10 +137,72 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertTrue("File for lines with K&R style braces must be valid.",
-            FileFormatValidator.isValidFileFormat("ValidFile.java", validBraceFile));
+        assertFalse(
+            "File for lines with Allman style braces must be invalid.",
+            FileFormatValidator.isValidFileFormat("InvalidFile.java", invalidBraceFile)
+        );
+    }
 
-        assertFalse("File for lines with Allman style braces must be invalid.",
-            FileFormatValidator.isValidFileFormat("InvalidFile.java", invalidBraceFile));
+    @Test
+    public void testIsValidImportStatement_Correct() {
+        List<String> explicitImportFile = Arrays.asList(
+            "import java.util.List;",
+            "public class Test {",
+            "    public static void main(String[] args) {",
+            "        System.out.println(\"Hello, World!\");",
+            "    }",
+            "}"
+        );
+
+        assertTrue(
+            "File with explicit import must be valid.",
+            FileFormatValidator.isValidFileFormat("ValidFile.java", explicitImportFile)
+        );
+    }
+
+    @Test
+    public void testIsValidImportStatement_Incorrect() {
+        List<String> wildcardImportFile = Arrays.asList(
+            "import java.util.*;",
+            "public class Test {",
+            "    public static void main(String[] args) {",
+            "        System.out.println(\"Hello, World!\");",
+            "    }",
+            "}"
+        );
+
+        assertFalse(
+            "File with wildcard import must be invalid.",
+            FileFormatValidator.isValidFileFormat("InvalidFile.java", wildcardImportFile)
+        );
+    }
+
+    @Test
+    public void testIsValidAnnotationFormat_Correct() {
+        List<String> correctAnnotationFile = Arrays.asList(
+            "@Override",
+            "public void method() {",
+            "    System.out.println(\"Hello, World!\");",
+            "}"
+        );
+
+        assertTrue(
+            "File with annotation on a separate line must be valid.",
+            FileFormatValidator.isValidFileFormat("ValidFile.java", correctAnnotationFile)
+        );
+    }
+
+    @Test
+    public void testIsValidAnnotationFormat_Incorrect() {
+        List<String> annotationWithDeclarationFile = Arrays.asList(
+            "@Override public void method() {",
+            "    System.out.println(\"Hello, World!\");",
+            "}"
+        );
+
+        assertFalse(
+            "File with annotation on the same line as a declaration must be invalid.",
+            FileFormatValidator.isValidFileFormat("InvalidFile.java", annotationWithDeclarationFile)
+        );
     }
 }
