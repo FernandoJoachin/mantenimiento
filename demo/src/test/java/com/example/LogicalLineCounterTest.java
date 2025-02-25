@@ -15,6 +15,7 @@ public class LogicalLineCounterTest {
         List<String> lines = new ArrayList<>();
         // Las siguientes líneas deben o no ser contadas según la lógica:
         // No se cuentan: package, import, declaración de clase.
+        lines.add("@Override");
         lines.add("package com.example;");
         lines.add("import java.util.List;");
         lines.add("public class Test {");
