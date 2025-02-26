@@ -81,32 +81,32 @@ public class FileManagerTest {
     }
 
     @Test
-    public void testGetJavaFileNames() throws IOException {
+    public void testGetJavaFilePaths() throws IOException {
         File tempFile1 = tempFolder.newFile("File1.java");
         File tempFile2 = tempFolder.newFile("File2.java");
 
-        List<String> fileNames = fileManager.getFileNames();
+        List<String> filePaths = fileManager.getAllFilePaths();
 
         assertEquals(
             "There should be 2 Java files in the directory.", 
             2, 
-            fileNames.size()
-            );
+            filePaths.size()
+        );
         assertTrue(
             "The File1.java file should be listed.", 
-            fileNames.contains("File1.java")
+            filePaths.contains(tempFile1.getAbsolutePath()) 
         );
         assertTrue(
             "The File2.java file should be listed.", 
-            fileNames.contains("File2.java")
+            filePaths.contains(tempFile2.getAbsolutePath())
         );
     }
 
     @Test
-    public void testGetFileNamesWithInvalidDirectory() {
+    public void testGetAllFilePathsWithInvalidDirectory() {
         fileManager = new FileManager("/invalid/directory");
 
-        List<String> fileNames = fileManager.getFileNames();
+        List<String> fileNames = fileManager.getAllFilePaths();
 
         assertTrue(
             "The list should be empty for an invalid directory.", 

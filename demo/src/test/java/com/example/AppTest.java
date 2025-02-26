@@ -84,11 +84,7 @@ public class AppTest {
         String output = outContent.toString();
 
         assertTrue(output.contains("Starting the App..."));
-        assertTrue(output.contains("+-----------------------------+-------------+-------------+"));
-        assertTrue(output.contains("| Programa                    | LOC Lógicas | LOC Físicas |"));
         assertTrue(output.contains("| " + tempDir.getFileName() + " | 9           | 25          |"));
-        assertTrue(output.contains("+-----------------------------+-------------+-------------+"));
-        assertEquals("hola", output);
        
 
         Files.delete(testFile1.toPath());

@@ -15,8 +15,8 @@ public class App {
         
         String directoryPath = args[0];
         FileManager fileManager = new FileManager(directoryPath);
-        List<String> fileNames = fileManager.getFileNames();
-        if (fileNames.isEmpty()) {
+        List<String> filePaths = fileManager.getAllFilePaths();
+        if (filePaths.isEmpty()) {
             return;
         }
 
@@ -28,9 +28,9 @@ public class App {
         LogicalLineCounter logicalLineCounter = new LogicalLineCounter();
         int totalLogicalLines = 0;
 
-        for (String fileName : fileNames) {
-           lines = fileManager.readLines(fileName);
-           isValidFormatFile = FileFormatValidator.isValidFileFormat(fileName, lines);
+        for (String filePath : filePaths) {
+           lines = fileManager.readLines(filePath);
+           isValidFormatFile = FileFormatValidator.isValidFileFormat(filePath, lines);
            if(!isValidFormatFile){
             continue;
            }
