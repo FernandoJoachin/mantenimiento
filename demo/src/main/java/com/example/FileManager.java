@@ -64,6 +64,11 @@ class FileManager {
         return this.fileNames;
     }
 
+    /**
+     * Recursively lists all files in the specified folder and its subdirectories.
+     *
+     * @param folder The folder to search for files.
+     */
     private void listFilesRecursively(File folder) {
         File[] allFiles = folder.listFiles();
         if (allFiles != null) {
