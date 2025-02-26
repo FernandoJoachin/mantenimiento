@@ -6,13 +6,17 @@ import java.util.List;
 
 public class App {
     public static void main(String[] args) throws IOException {
-        System.out.println("Iniciando App...");
+        System.out.println("Starting the App...");
 
-        String directoryPath = "demo/src/main/java/com/example/files";
-        FileManager fileHandler = new FileManager(directoryPath);
-        List<String> fileNames = fileHandler.getFileNames();
+        if(args.length == 0){
+            System.out.println("Error: The directory cannot be null");
+            return;
+        }
+        
+        String directoryPath = args[0];
+        FileManager fileManager = new FileManager(directoryPath);
+        List<String> fileNames = fileManager.getFileNames();
         if (fileNames.isEmpty()) {
-            System.out.println("No hay archivos en el directorio.");
             return;
         }
 
@@ -20,20 +24,21 @@ public class App {
         boolean isValidFormatFile = true;
 
         PhysicalLineCounter physicalLineCounter = new PhysicalLineCounter();
-        int physicalLOC = 0;
+        int totalPhysicalLines = 0;
         LogicalLineCounter logicalLineCounter = new LogicalLineCounter();
-        int logicalLOC = 0;
+        int totalLogicalLines = 0;
 
         for (String fileName : fileNames) {
-           lines = fileHandler.readLines(fileName);
+           lines = fileManager.readLines(fileName);
            isValidFormatFile = FileFormatValidator.isValidFileFormat(fileName, lines);
            if(!isValidFormatFile){
             continue;
            }
            
-           physicalLOC = physicalLineCounter.count(lines);
-           logicalLOC = logicalLineCounter.count(lines);
-           ResultPrinter.printResults(fileName, physicalLOC, logicalLOC);
+           totalPhysicalLines += physicalLineCounter.count(lines);
+           totalLogicalLines += logicalLineCounter.count(lines);
         }
+        String directoryName = fileManager.getDirectoryName();
+        ResultPrinter.printResults(directoryName, totalPhysicalLines, totalLogicalLines);
     }
 }

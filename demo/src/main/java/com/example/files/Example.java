@@ -14,7 +14,7 @@ public class Example {
     }
 
     
-    @Deprecated public void methodOne() {
+    public void methodOne() {
         int x = 10;
         int y = 20;
         System.out.println(x + y);

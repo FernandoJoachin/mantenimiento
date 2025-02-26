@@ -1,7 +1,8 @@
 package com.example;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
-import java.util.regex.*;
 
 /**
  * Class that handles file reading operations and listing file names in a directory.
@@ -68,5 +69,15 @@ class FileManager {
             }
         }
         return this.fileNames;
+    }
+
+    /**
+     * Retrieves the name of the directory.
+     *
+     * @return The name of the directory.
+     */
+    public String getDirectoryName() {        
+        Path path = Paths.get(this.directory);
+        return path.getFileName().toString();
     }
 }
