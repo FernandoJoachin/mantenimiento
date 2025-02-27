@@ -31,21 +31,21 @@ public class ResultPrinter {
      */
     private static String buildTable(String programName, int physicalLOC, int logicalLOC) {
         String titleProgram = "Programa";
-        String titleLogicalLOC = "LOC Lógicas";
         String titlePhysicalLOC = "LOC Físicas";
+        String titleLogicalLOC = "LOC Lógicas";
 
         int maxProgramLength = getMaxColumnWidth(titleProgram, programName);
-        int maxLogicalLength = getMaxColumnWidth(titleLogicalLOC, String.valueOf(logicalLOC));
         int maxPhysicalLength = getMaxColumnWidth(titlePhysicalLOC, String.valueOf(physicalLOC));
+        int maxLogicalLength = getMaxColumnWidth(titleLogicalLOC, String.valueOf(logicalLOC));
 
-        String headerFormat = createHeader(maxProgramLength, maxLogicalLength, maxPhysicalLength);
-        String separator = createSeparator(maxProgramLength, maxLogicalLength, maxPhysicalLength);
+        String headerFormat = createHeader(maxProgramLength, maxPhysicalLength, maxLogicalLength);
+        String separator = createSeparator(maxProgramLength, maxPhysicalLength, maxLogicalLength);
 
         StringBuilder table = new StringBuilder();
         table.append(separator);
-        table.append(String.format(headerFormat, titleProgram, titleLogicalLOC, titlePhysicalLOC));
+        table.append(String.format(headerFormat, titleProgram, titlePhysicalLOC, titleLogicalLOC));
         table.append(separator);
-        table.append(String.format(headerFormat, programName, logicalLOC, physicalLOC));
+        table.append(String.format(headerFormat, programName, physicalLOC, logicalLOC));
         table.append(separator);
 
         return table.toString();
@@ -67,12 +67,12 @@ public class ResultPrinter {
      * with the appropriate column widths.
      *
      * @param maxProgramLength   The maximum width of the column for the program name.
-     * @param maxLogicalLength   The maximum width of the column for the Logical LOC.
      * @param maxPhysicalLength  The maximum width of the column for the Physical LOC.
+     * @param maxLogicalLength   The maximum width of the column for the Logical LOC.
      * @return A string representing the formatted header row of the table.
      */
-    private static String createHeader(int maxProgramLength, int maxLogicalLength, int maxPhysicalLength) {
-        return "| %-" + maxProgramLength + "s | %-" + maxLogicalLength + "s | %-" + maxPhysicalLength + "s |\n";
+    private static String createHeader(int maxProgramLength, int maxPhysicalLength, int maxLogicalLength) {
+        return "| %-" + maxProgramLength + "s | %-" + maxPhysicalLength + "s | %-" + maxLogicalLength + "s |\n";
     }
 
     /**
@@ -80,14 +80,14 @@ public class ResultPrinter {
      * section based on the column widths.
      *
      * @param maxProgramLength   The maximum width of the column for the program name.
-     * @param maxLogicalLength   The maximum width of the column for the Logical LOC.
      * @param maxPhysicalLength  The maximum width of the column for the Physical LOC.
+     * @param maxLogicalLength   The maximum width of the column for the Logical LOC.
      * @return A string representing the separator line of the table.
      */
-    private static String createSeparator(int maxProgramLength, int maxLogicalLength, int maxPhysicalLength) {
+    private static String createSeparator(int maxProgramLength, int maxPhysicalLength, int maxLogicalLength) {
         return "+" + "-".repeat(maxProgramLength + 2) + "+"
-            + "-".repeat(maxLogicalLength + 2) + "+"
-            + "-".repeat(maxPhysicalLength + 2) + "+\n";
+            + "-".repeat(maxPhysicalLength + 2) + "+"
+            + "-".repeat(maxLogicalLength + 2) + "+\n";
     }
 
 }

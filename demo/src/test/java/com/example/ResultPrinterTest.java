@@ -1,17 +1,9 @@
 package com.example;
 
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Test suite for the ResultPrinter class, responsible for verifying the
- * correct formatting and output of the line count table.
- * <p>
- * This class tests the table generation functionality with different inputs,
- * including normal, long, and short values for program name and line counts.
- * The tests ensure that the program displays the output correctly formatted.
- * </p>
- */
+import org.junit.jupiter.api.Test;
+
 public class ResultPrinterTest {
 
     /**
@@ -31,9 +23,9 @@ public class ResultPrinterTest {
 
         String expectedOutput = 
                 "+-----------+-------------+-------------+\n" +
-                "| Programa  | LOC Lógicas | LOC Físicas |\n" +
+                "| Programa  | LOC Físicas | LOC Lógicas |\n" +
                 "+-----------+-------------+-------------+\n" +
-                "| Programa1 | 100         | 120         |\n" +
+                "| Programa1 | 120         | 100         |\n" +
                 "+-----------+-------------+-------------+\n";
 
         String actualOutput = invokeBuildTable(programName, physicalLOC, logicalLOC);
@@ -55,7 +47,7 @@ public class ResultPrinterTest {
 
         String expectedOutput = 
                 "+---------------------------------+-------------+-------------+\n" +
-                "| Programa                        | LOC Lógicas | LOC Físicas |\n" +
+                "| Programa                        | LOC Físicas | LOC Lógicas |\n" +
                 "+---------------------------------+-------------+-------------+\n" +
                 "| NombreDeProgramaExtraSuperLargo | " + physicalLOC + "  | " + logicalLOC + "  |\n" +
                 "+---------------------------------+-------------+-------------+\n";
@@ -80,7 +72,7 @@ public class ResultPrinterTest {
 
         String expectedOutput = 
                 "+----------+-------------+-------------+\n" +
-                "| Programa | LOC Lógicas | LOC Físicas |\n" +
+                "| Programa | LOC Físicas | LOC Lógicas |\n" +
                 "+----------+-------------+-------------+\n" +
                 "| A        | 1           | 1           |\n" +
                 "+----------+-------------+-------------+\n";

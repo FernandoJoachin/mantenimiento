@@ -2,6 +2,8 @@ package com.example;
 
 import java.util.List;
 
+import com.example.exceptions.FileFormatException;
+
 /**
  * This class provides methods to validate the format of a Java source file.
  * It checks various formatting rules such as line length, brace style, and multiple executable statements.
@@ -16,13 +18,13 @@ public class FileFormatValidator {
      * - No multiple executable statements in a single line.
      * - Correct usage of brace style.
      *
-     * @param filePath The full path of the file to validate.
+     * @param fileName The name of the file to validate.
      * @param lines    The content of the file, represented as a list of lines.
      * @return {@code true} if the file follows the formatting rules, {@code false} otherwise.
+     * @throws FileFormatException If a formatting error is detected.
      */
-    public static boolean isValidFileFormat(String filePath, List<String> lines) {
-        if (!isValidFileType(filePath)) {
-            System.out.println("Error: Invalid file type -> " + filePath);
+    public static boolean isValidFileFormat(String fileName, List<String> lines) throws FileFormatException {
+        if (!isValidFileType(fileName)) {
             return false;
         }
 
@@ -34,33 +36,28 @@ public class FileFormatValidator {
             }
 
             if (!isValidLineLength(line)) {
-                System.out.println("Warning: Line " + (i + 1) + " in file " + filePath 
-                    + " exceeds 120 characters.");
-                return false;
+                throw new FileFormatException("Warning: Line " + (i + 1) + " in file " + fileName
+                        + " exceeds 120 characters.");
             }
 
             if (!isValidBracesStyle(line)) {
-                System.out.println("Error: Line " + (i + 1) + " in file " + filePath 
-                    + " has incorrect brace style.");
-                return false;
+                throw new FileFormatException("Error: Line " + (i + 1) + " in file " + fileName
+                        + " has incorrect brace style.");
             }
 
             if (!isValidMultipleStatements(line)) {
-                System.out.println("Error: Line " + (i + 1) + " in file " + filePath 
-                    + " contains multiple executable statements.");
-                return false;
+                throw new FileFormatException("Error: Line " + (i + 1) + " in file " + fileName
+                        + " contains multiple executable statements.");
             }
 
             if (!isValidImportStatement(line)) {
-                System.out.println("Error: Line " + (i + 1) + " in file " + filePath 
-                    + " contains a wildcard import.");
-                return false;
+                throw new FileFormatException("Error: Line " + (i + 1) + " in file " + fileName
+                        + " contains a wildcard import.");
             }
 
             if (!isValidAnnotationFormat(line, i > 0 ? lines.get(i - 1).trim() : "")) {
-                System.out.println("Error: Line " + (i + 1) + " in file " + filePath 
-                    + " has incorrect annotation formatting.");
-                return false;
+                throw new FileFormatException("Error: Line " + (i + 1) + " in file " + fileName
+                        + " has incorrect annotation formatting.");
             }
         }
 
@@ -70,11 +67,11 @@ public class FileFormatValidator {
     /**
      * Checks if the provided file has a valid Java file extension.
      *
-     * @param filePath The full path of the file to check.
+     * @param fileName The name of the file to check.
      * @return {@code true} if the file is a Java file, {@code false} otherwise.
      */
-    private static boolean isValidFileType(String filePath) {
-        return filePath.endsWith(".java");
+    private static boolean isValidFileType(String fileName) {
+        return fileName.endsWith(".java");
     }
 
     /**
@@ -96,10 +93,8 @@ public class FileFormatValidator {
      * @return {@code true} if the line does not contain multiple statements, {@code false} if it does.
      */
     private static boolean isValidMultipleStatements(String line) {
-        boolean isValidForLoopStructure = line.matches(
-            "\\s*for\\s*\\(.*;.*;.*\\)\\s*\\{?\\s*");
 
-        if (isValidForLoopStructure) {
+        if (isValidForLoopStructure(line)) {
             return true;
         }
 
@@ -119,32 +114,80 @@ public class FileFormatValidator {
      *         {@code false} if it ends with an opening brace but the previous line is not a valid declaration.
      */
     private static boolean isValidBracesStyle(String line) {
-        boolean endsWithOpeningBrace = line.endsWith("{");
-        boolean endsWithOpeningAndClosingBrace = line.endsWith("{}");
-        // Checks if the line is a control structure (for, while, do, switch, if) followed by a semicolon `;`
-        // This prevents misinterpretation of single-line statements.
-        boolean isControlStructureWithSemicolon = line.trim().matches(
-            "\\s*(for|while|do|switch|if)\\s*\\(.*\\)\\s*;\\s*");
-        // Checks if the line contains a valid declaration or method signature followed by `{`
-        // This includes class, interface, enum, access modifiers (public, private, protected),
-        // and control structures (if, else, for, while, switch, do).
-        boolean isValidDeclarationOrMethod = line.trim().matches(
-            ".*\\s*(public|private|protected|class|interface|enum|if|else|for|while|switch|do)\\s+.*\\{.*|.*\\)\\s*\\{.*");
-
-        if (endsWithOpeningAndClosingBrace || isControlStructureWithSemicolon) {
+        
+        if (endsWithOpeningAndClosingBrace(line) || isControlStructureWithSemicolon(line)) {
             return false;
         }
 
-        if (!endsWithOpeningBrace) {
+        if (!endsWithOpeningBrace(line)) {
             return true;
         }
 
-        if (!isValidDeclarationOrMethod) {
-            return false;
-        }
-
-        return true;
+        return isValidDeclarationOrMethod(line);
     }
+
+    /**
+     * Checks if a given line ends with an opening brace "{".
+     *
+     * @param line the line to check
+     * @return true if the line ends with "{", false otherwise
+     */
+    private static boolean endsWithOpeningBrace(String line) { 
+        return line.endsWith("{");
+    }
+
+    /**
+     * Checks if a given line ends with an opening and closing brace "{}".
+     *
+     * @param line the line to check
+     * @return true if the line ends with "{}", false otherwise
+     */
+    private static boolean endsWithOpeningAndClosingBrace(String line) {
+        return line.endsWith("{}");
+    }
+
+    /**
+     * Determines if a given line represents a control structure followed by a semicolon.
+     * The supported control structures are: for, while, do, switch, if.
+     * Example:
+     * while( condition );
+     *
+     * @param line the line to check
+     * @return true if the line matches a control structure with a semicolon, false otherwise
+     */
+    private static boolean isControlStructureWithSemicolon(String line) {
+        return line.trim().matches(
+            "\\s*(for|while|do|switch|if)\\s*\\(.*\\)\\s*;\\s*"
+        );
+    }
+
+    /**
+     * Validates whether a given line represents a valid declaration or method signature.
+     * This includes access modifiers (public, private, protected), class, interface,
+     * enum declarations, control structures, and method definitions.
+     *
+     * @param line the line to check
+     * @return true if the line is a valid declaration or method signature, false otherwise
+     */
+    private static boolean isValidDeclarationOrMethod(String line) {
+        return line.trim().matches(
+            ".*\\s*(public|private|protected|class|interface|enum|if|else|for|while|switch|do)\\s+.*\\{.*|.*\\)\\s*\\{.*"
+        );
+    }
+
+    /**
+     * Checks if a given line represents a valid 'for' loop structure.
+     * The expected format is: for(initialization; condition; update) { (optional opening brace)
+     *
+     * @param line the line to check
+     * @return true if the line matches a 'for' loop structure, false otherwise
+     */
+    private static boolean isValidForLoopStructure(String line) {
+        return line.matches(
+            "\\s*for\\s*\\(.*;.*;.*\\)\\s*\\{?\\s*"
+        );
+    }
+
 
     /**
      * Checks if a line contains a wildcard import (e.g., `import java.util.*;`).

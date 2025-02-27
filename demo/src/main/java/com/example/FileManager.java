@@ -54,15 +54,30 @@ class FileManager {
      *         an empty list is returned.
      */
     public List<String> getAllFilePaths() {
-        File folder = new File(directory);
-        if (!folder.exists() || !folder.isDirectory()) {
-            System.out.println("The directory does not exist or is invalid.");
+        File folder = new File(this.directory);
+        if (!isValidDirectory()) {
             return Collections.emptyList();
         }
 
         listFilesRecursively(folder);
         return this.fileNames;
     }
+
+    /**
+     * Checks if the specified directory is valid.
+     * A directory is considered valid if it exists and is indeed a directory.
+     *
+     * @return {@code true} if the directory exists and is a valid directory; 
+     *         {@code false} otherwise.
+     */
+    public boolean isValidDirectory() {
+        File folder = new File(this.directory);
+        if (!folder.exists() || !folder.isDirectory()) {
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * Recursively lists all files in the specified folder and its subdirectories.
