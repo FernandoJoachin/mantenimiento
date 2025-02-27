@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.exceptions.FileFormatException;
+
 public class App {
     public static void main(String[] args) throws IOException {
         System.out.println("Starting the App...");
@@ -21,7 +23,6 @@ public class App {
         }
 
         List<String> lines = new ArrayList<>();
-        boolean isValidFormatFile = true;
 
         PhysicalLineCounter physicalLineCounter = new PhysicalLineCounter();
         int totalPhysicalLines = 0;
@@ -29,14 +30,14 @@ public class App {
         int totalLogicalLines = 0;
 
         for (String filePath : filePaths) {
-           lines = fileManager.readLines(filePath);
-           isValidFormatFile = FileFormatValidator.isValidFileFormat(filePath, lines);
-           if(!isValidFormatFile){
-            continue;
-           }
-           
-           totalPhysicalLines += physicalLineCounter.count(lines);
-           totalLogicalLines += logicalLineCounter.count(lines);
+            try {
+                lines = fileManager.readLines(filePath);
+                FileFormatValidator.isValidFileFormat(filePath, lines);
+                totalPhysicalLines += physicalLineCounter.count(lines);
+                totalLogicalLines += logicalLineCounter.count(lines);
+            } catch (FileFormatException e) {
+                System.out.println(e.getMessage());
+            }
         }
         String directoryName = fileManager.getDirectoryName();
         ResultPrinter.printResults(directoryName, totalPhysicalLines, totalLogicalLines);

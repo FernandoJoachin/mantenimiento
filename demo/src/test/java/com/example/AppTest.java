@@ -1,7 +1,7 @@
 package com.example;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -10,29 +10,28 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class AppTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
 
-    @Before
+    @BeforeEach
     public void setUpStreams() {
         System.setOut(new PrintStream(outContent));
     }
 
-    @After
+    @AfterEach
     public void restoreStreams() {
         System.setOut(originalOut);
     }
 
     @Test
-    public void testAppIntegration() throws IOException {
-        Path tempDir = Files.createTempDirectory("testDir");
-
+    public void testAppIntegration(@TempDir Path tempDir) throws IOException {
         File testFile1 = new File(tempDir.toFile(), "Example.java");
         String javaCode1 = 
             "package com.example.files;\n" +
@@ -85,10 +84,6 @@ public class AppTest {
 
         assertTrue(output.contains("Starting the App..."));
         assertTrue(output.contains("| " + tempDir.getFileName() + " | 9           | 25          |"));
-       
-
-        Files.delete(testFile1.toPath());
-        Files.delete(testFile2.toPath());
-        Files.delete(tempDir);
     }
+    
 }

@@ -1,33 +1,32 @@
 package com.example;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class FileManagerTest {
 
-    public TemporaryFolder tempFolder = new TemporaryFolder();
-
     private FileManager fileManager;
 
-    @Before
-    public void setUp() throws IOException {
-        tempFolder.create();
-        fileManager = new FileManager(tempFolder.getRoot().getAbsolutePath());
+    @BeforeEach
+    public void setUp(@TempDir Path tempDir) throws IOException {
+        fileManager = new FileManager(tempDir.toString());
     }
 
     @Test
-    public void testReadLinesWithValidJavaFile() throws IOException {
-        File tempFile = tempFolder.newFile("TestFile.java");
+    public void testReadLinesWithValidJavaFile(@TempDir Path tempDir) throws IOException {
+        // Crear archivo temporal con código Java
+        File tempFile = tempDir.resolve("TestFile.java").toFile();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
             writer.write("public class TestFile {");
             writer.newLine();
@@ -42,65 +41,38 @@ public class FileManagerTest {
 
         List<String> lines = fileManager.readLines(tempFile.getAbsolutePath());
 
-        assertEquals("The Java file should have 5 lines.", 5, lines.size());
-        assertEquals(
-            "The first line does not match.", 
-            "public class TestFile {", 
-            lines.get(0)
-        );
-        assertEquals(
-            "The second line does not match.", 
-            "    public static void main(String[] args) {", 
-            lines.get(1)
-        );
-        assertEquals(
-            "The third line does not match.", 
-            "        System.out.println(\"Hello, World!\");", 
-            lines.get(2)
-        );
-        assertEquals(
-            "The fourth line does not match.", 
-            "    }", 
-            lines.get(3)
-        );
-        assertEquals(
-            "The fifth line does not match.", 
-            "}", 
-            lines.get(4)
-        );
+        assertEquals(5, lines.size(), "The Java file should have 5 lines.");
+        assertEquals("public class TestFile {", lines.get(0), "The first line does not match.");
+        assertEquals("    public static void main(String[] args) {", lines.get(1), "The second line does not match.");
+        assertEquals("        System.out.println(\"Hello, World!\");", lines.get(2), "The third line does not match.");
+        assertEquals("    }", lines.get(3), "The fourth line does not match.");
+        assertEquals("}", lines.get(4), "The fifth line does not match.");
     }
 
     @Test
-    public void testReadLinesWithNonExistentJavaFile() throws IOException {
+    public void testReadLinesWithNonExistentJavaFile(@TempDir Path tempDir) throws IOException {
         List<String> lines = fileManager.readLines("NonExistentFile.java");
 
-        assertTrue(
-            "The list should be empty for a Java file that does not exist.", 
-            lines.isEmpty()
-        );
+        assertTrue(lines.isEmpty(), "The list should be empty for a Java file that does not exist.");
     }
 
     @Test
-    public void testGetJavaFilePaths() throws IOException {
-        File tempFile1 = tempFolder.newFile("File1.java");
-        File tempFile2 = tempFolder.newFile("File2.java");
-
+    public void testGetJavaFilePaths(@TempDir Path tempDir) throws IOException {
+        FileManager fileManager = new FileManager(tempDir.toString());
+    
+        File tempFile1 = tempDir.resolve("File1.java").toFile();
+        File tempFile2 = tempDir.resolve("File2.java").toFile();
+    
+        tempFile1.createNewFile();
+        tempFile2.createNewFile();
+    
         List<String> filePaths = fileManager.getAllFilePaths();
-
-        assertEquals(
-            "There should be 2 Java files in the directory.", 
-            2, 
-            filePaths.size()
-        );
-        assertTrue(
-            "The File1.java file should be listed.", 
-            filePaths.contains(tempFile1.getAbsolutePath()) 
-        );
-        assertTrue(
-            "The File2.java file should be listed.", 
-            filePaths.contains(tempFile2.getAbsolutePath())
-        );
+    
+        assertEquals(2, filePaths.size(), "There should be 2 Java files in the directory.");
+        assertTrue(filePaths.contains(tempFile1.getAbsolutePath()), "The File1.java file should be listed.");
+        assertTrue(filePaths.contains(tempFile2.getAbsolutePath()), "The File2.java file should be listed.");
     }
+    
 
     @Test
     public void testGetAllFilePathsWithInvalidDirectory() {
@@ -108,18 +80,13 @@ public class FileManagerTest {
 
         List<String> fileNames = fileManager.getAllFilePaths();
 
-        assertTrue(
-            "The list should be empty for an invalid directory.", 
-            fileNames.isEmpty()
-        );
+        assertTrue(fileNames.isEmpty(), "The list should be empty for an invalid directory.");
     }
 
     @Test
-    public void testgetDirectoryName() {
-        assertEquals(
-            "The directory name must be correct.", 
-            tempFolder.getRoot().getName(), 
-            fileManager.getDirectoryName()
-        );
+    public void testGetDirectoryName(@TempDir Path tempDir) {
+        FileManager fileManager = new FileManager(tempDir.toString());
+        
+        assertEquals(tempDir.getFileName().toString(), fileManager.getDirectoryName(), "The directory name must be correct.");
     }
 }

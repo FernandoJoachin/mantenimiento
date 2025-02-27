@@ -1,10 +1,14 @@
 package com.example;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
+
+import com.example.exceptions.FileFormatException;
 
 public class FileFormatValidatorTest {
     @Test
@@ -17,9 +21,9 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertTrue(
-            "The file with .java extension must be valid.",
-            FileFormatValidator.isValidFileFormat("ValidFile.java", dummyLines)
+        assertDoesNotThrow(() -> 
+            FileFormatValidator.isValidFileFormat("ValidFile.java", dummyLines),
+            "The file with .java extension must be valid."
         );
     }
 
@@ -33,9 +37,9 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertFalse(
-            "The file with extension .txt must be invalid.",
-            FileFormatValidator.isValidFileFormat("InvalidFile.txt", dummyLines)
+        assertDoesNotThrow(() -> 
+            FileFormatValidator.isValidFileFormat("ValidFile.java", dummyLines),
+            "The file with .java extension must be valid."
         );
     }
 
@@ -49,9 +53,9 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertTrue(
-            "The file with lines with less than 120 characters must be valid.",
-            FileFormatValidator.isValidFileFormat("ValidFile.java", shortLineFile)
+        assertDoesNotThrow(() ->
+            FileFormatValidator.isValidFileFormat("ValidFile.java", shortLineFile),
+            "The file with lines with less than 120 characters must be valid."
         );
     }
 
@@ -66,10 +70,11 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertFalse(
-            "The file with lines with more than 120 characters must be invalid.",
-            FileFormatValidator.isValidFileFormat("InvalidFile.java", longLineFile)
+        assertThrows(FileFormatException.class, () ->
+            FileFormatValidator.isValidFileFormat("InvalidFile.java", longLineFile),
+            "The file with lines with more than 120 characters must be invalid."
         );
+
     }
 
     @Test
@@ -85,9 +90,9 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertTrue(
-            "The file with lines with only one executable statement must be valid.",
-            FileFormatValidator.isValidFileFormat("ValidFile.java", singleStatementFile)
+        assertDoesNotThrow(() ->
+            FileFormatValidator.isValidFileFormat("ValidFile.java", singleStatementFile),
+            "The file with lines with only one executable statement must be valid."
         );
     }
 
@@ -104,10 +109,11 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertFalse(
-            "File with lines with multiple executable statements must be invalid.",
-            FileFormatValidator.isValidFileFormat("InvalidFile.java", multipleStatementsFile)
+        assertThrows(FileFormatException.class, () ->
+            FileFormatValidator.isValidFileFormat("InvalidFile.java", multipleStatementsFile),
+            "File with lines with multiple executable statements must be invalid."
         );
+
     }
     
     @Test
@@ -120,9 +126,9 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertTrue(
-            "File for lines with K&R style braces must be valid.",
-            FileFormatValidator.isValidFileFormat("ValidFile.java", validBraceFile)
+        assertDoesNotThrow(() ->
+            FileFormatValidator.isValidFileFormat("ValidFile.java", validBraceFile),
+            "File for lines with K&R style braces must be valid."
         );
     }
 
@@ -137,9 +143,9 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertFalse(
-            "File for lines with Allman style braces must be invalid.",
-            FileFormatValidator.isValidFileFormat("InvalidFile.java", invalidBraceFile)
+        assertThrows(FileFormatException.class, () ->
+            FileFormatValidator.isValidFileFormat("InvalidFile.java", invalidBraceFile),
+            "File for lines with Allman style braces must be invalid."
         );
     }
 
@@ -154,9 +160,9 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertTrue(
-            "File with explicit import must be valid.",
-            FileFormatValidator.isValidFileFormat("ValidFile.java", explicitImportFile)
+        assertDoesNotThrow(() ->
+            FileFormatValidator.isValidFileFormat("ValidFile.java", explicitImportFile),
+            "File with explicit import must be valid."
         );
     }
 
@@ -171,9 +177,9 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertFalse(
-            "File with wildcard import must be invalid.",
-            FileFormatValidator.isValidFileFormat("InvalidFile.java", wildcardImportFile)
+        assertThrows(FileFormatException.class, () ->
+            FileFormatValidator.isValidFileFormat("InvalidFile.java", wildcardImportFile),
+            "File with wildcard import must be invalid."
         );
     }
 
@@ -186,9 +192,9 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertTrue(
-            "File with annotation on a separate line must be valid.",
-            FileFormatValidator.isValidFileFormat("ValidFile.java", correctAnnotationFile)
+        assertDoesNotThrow(() ->
+            FileFormatValidator.isValidFileFormat("ValidFile.java", correctAnnotationFile),
+            "File with annotation on a separate line must be valid."
         );
     }
 
@@ -200,9 +206,9 @@ public class FileFormatValidatorTest {
             "}"
         );
 
-        assertFalse(
-            "File with annotation on the same line as a declaration must be invalid.",
-            FileFormatValidator.isValidFileFormat("InvalidFile.java", annotationWithDeclarationFile)
+        assertThrows(FileFormatException.class, () ->
+            FileFormatValidator.isValidFileFormat("InvalidFile.java", annotationWithDeclarationFile),
+            "File with annotation on the same line as a declaration must be invalid."
         );
     }
 }

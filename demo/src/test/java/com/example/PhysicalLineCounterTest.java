@@ -1,11 +1,11 @@
 package com.example;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PhysicalLineCounterTest {
     
@@ -19,7 +19,11 @@ public class PhysicalLineCounterTest {
         );
         int expected = 3;
         int actual = counter.count(lines);
-        assertEquals("Expected count for only code lines should be 3", expected, actual);
+        assertEquals(
+            expected, 
+            actual, 
+            "Expected count for only code lines should be 3"
+        );
     }
 
     @Test
@@ -33,7 +37,11 @@ public class PhysicalLineCounterTest {
         );
         int expected = 0;
         int actual = counter.count(lines);
-        assertEquals("Expected count for file with only comments and empty lines should be 0", expected, actual);
+        assertEquals(
+            expected,
+            actual,
+            "Expected count for file with only comments and empty lines should be 0"
+        );
     }
 
     @Test
@@ -49,6 +57,10 @@ public class PhysicalLineCounterTest {
         );
         int expected = 2;
         int actual = counter.count(lines);
-        assertEquals("Expected count for mixed input should be 2 (only counting effective code lines)", expected, actual);
+        assertEquals(
+            expected,
+            actual,
+            "Expected count for mixed input should be 2 (only counting effective code lines)"
+        );
     }
 }
