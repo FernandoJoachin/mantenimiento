@@ -9,50 +9,53 @@ import com.example.exceptions.FileFormatException;
 
 public class App {
     public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);        
-        FileManager fileManager = null;
-        String directoryPath = "";
+        Scanner scanner = new Scanner(System.in);
         boolean tryAgain = true;
-        while(tryAgain) {
+
+        while (tryAgain) {
             System.out.print("Please enter the directory path: ");
-            directoryPath = scanner.nextLine().trim();
+            String directoryPath = scanner.nextLine().trim();
             if (directoryPath.isEmpty()) {
                 continue;
             }
 
-            fileManager = new FileManager(directoryPath);
-            if (!fileManager.isValidDirectory()) {
-                System.out.println("Error: The directory does not exist.");
-                continue;
-            }
-
-            List<String> filePaths = fileManager.getAllFilePaths();
-            List<String> lines = new ArrayList<>();
-
-            PhysicalLineCounter physicalLineCounter = new PhysicalLineCounter();
-            LogicalLineCounter logicalLineCounter = new LogicalLineCounter();
-            int totalPhysicalLines = 0;
-            int totalLogicalLines = 0;
-
-            for (String filePath : filePaths) {
-                try {
-                    lines = fileManager.readLines(filePath);
-                    FileFormatValidator.isValidFileFormat(filePath, lines);
-                    totalPhysicalLines += physicalLineCounter.count(lines);
-                    totalLogicalLines += logicalLineCounter.count(lines);
-                } catch (FileFormatException e) {
-                    System.out.println(e.getMessage());
-                    return;
-                }
-            }
-            String directoryName = fileManager.getDirectoryName();
-            ResultPrinter.printResults(directoryName, totalLogicalLines,totalPhysicalLines);
+            processDirectory(directoryPath);
 
             System.out.print("Do you want to try analyzing another project? (y/another entry for no): ");
             String userResponse = scanner.nextLine().trim().toLowerCase();
             tryAgain = userResponse.equals("y");
-
         }
+
         scanner.close();
+    }
+
+    public static void processDirectory(String directoryPath) throws IOException {
+        FileManager fileManager = new FileManager(directoryPath);
+        if (!fileManager.isValidDirectory()) {
+            System.out.println("Error: The directory does not exist.");
+            return;
+        }
+
+        List<String> filePaths = fileManager.getAllFilePaths();
+        List<String> lines = new ArrayList<>();
+        PhysicalLineCounter physicalLineCounter = new PhysicalLineCounter();
+        LogicalLineCounter logicalLineCounter = new LogicalLineCounter();
+        int totalPhysicalLines = 0;
+        int totalLogicalLines = 0;
+
+        for (String filePath : filePaths) {
+            try {
+                lines = fileManager.readLines(filePath);
+                FileFormatValidator.isValidFileFormat(filePath, lines);
+                totalPhysicalLines += physicalLineCounter.count(lines);
+                totalLogicalLines += logicalLineCounter.count(lines);
+            } catch (FileFormatException e) {
+                System.out.println(e.getMessage());
+                return;
+            }
+        }
+
+        String directoryName = fileManager.getDirectoryName();
+        ResultPrinter.printResults(directoryName, totalLogicalLines, totalPhysicalLines);
     }
 }
