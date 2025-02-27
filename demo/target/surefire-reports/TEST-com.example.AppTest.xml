@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="MX"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/temurin-19.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter10327257809572612316.jar /Users/josepuc/Desktop/mantenimiento/demo/target/surefire 2025-02-27T02-04-22_607-jvmRun1 surefire479828198927535209tmp surefire_08424505195875315745tmp"/>
+    <property name="sun.java.command" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter2131642977821233151.jar /Users/josepuc/Desktop/mantenimiento/demo/target/surefire 2025-02-27T02-12-02_183-jvmRun1 surefire5936724015266625627tmp surefire_0634174455488866994tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/josepuc/Desktop/mantenimiento/demo/target/test-classes:/Users/josepuc/Desktop/mantenimiento/demo/target/classes:/Users/josepuc/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.8.0/junit-jupiter-api-5.8.0.jar:/Users/josepuc/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/josepuc/.m2/repository/org/junit/platform/junit-platform-commons/1.8.0/junit-platform-commons-1.8.0.jar:/Users/josepuc/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:"/>
@@ -29,7 +29,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter10327257809572612316.jar"/>
+    <property name="surefire.real.class.path" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter2131642977821233151.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="19.0.2+7"/>
