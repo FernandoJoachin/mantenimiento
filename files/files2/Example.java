@@ -1,4 +1,4 @@
-package com.example.files.files2;
+package files.files2;
 
 
 public class Example {
