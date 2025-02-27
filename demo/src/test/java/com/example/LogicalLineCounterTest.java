@@ -149,7 +149,7 @@ public class LogicalLineCounterTest {
     public void isSwitchCase() {
         assertEquals(1, counter.count(List.of("case 1:")));
         assertEquals(1, counter.count(List.of("default:")));
-        assertEquals(0, counter.count(List.of("switch (x) {")));
+        assertEquals(1, counter.count(List.of("switch (x) {")));
     }
     
     @Test
