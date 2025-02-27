@@ -43,9 +43,9 @@ public class ResultPrinter {
 
         StringBuilder table = new StringBuilder();
         table.append(separator);
-        table.append(String.format(headerFormat, titleProgram, titleLogicalLOC, titlePhysicalLOC));
+        table.append(String.format(headerFormat, titleProgram, titlePhysicalLOC, titleLogicalLOC));
         table.append(separator);
-        table.append(String.format(headerFormat, programName, logicalLOC, physicalLOC));
+        table.append(String.format(headerFormat, programName, physicalLOC, logicalLOC));
         table.append(separator);
 
         return table.toString();

@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="MX"/>
     <property name="sun.boot.library.path" value="/Users/josepuc/.sdkman/candidates/java/19-open/lib"/>
-    <property name="sun.java.command" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter2146267654339510422.jar /Users/josepuc/Desktop/mantenimiento/demo/target/surefire 2025-02-27T10-35-16_306-jvmRun1 surefire6138643149898444795tmp surefire_010660923845663750504tmp"/>
+    <property name="sun.java.command" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter2327892162223703830.jar /Users/josepuc/Desktop/mantenimiento/demo/target/surefire 2025-02-27T13-00-42_995-jvmRun1 surefire14917241153023036374tmp surefire_01609644618273268699tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/josepuc/Desktop/mantenimiento/demo/target/test-classes:/Users/josepuc/Desktop/mantenimiento/demo/target/classes:/Users/josepuc/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.8.0/junit-jupiter-api-5.8.0.jar:/Users/josepuc/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/josepuc/.m2/repository/org/junit/platform/junit-platform-commons/1.8.0/junit-platform-commons-1.8.0.jar:/Users/josepuc/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:"/>
@@ -29,7 +29,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter2146267654339510422.jar"/>
+    <property name="surefire.real.class.path" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter2327892162223703830.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="19+36-2238"/>
@@ -58,6 +58,6 @@
     <property name="java.class.version" value="63.0"/>
   </properties>
   <testcase name="com.example.ResultPrinterTest.testPrintResults_NormalCase" classname="com.example.ResultPrinterTest" time="0.002"/>
-  <testcase name="com.example.ResultPrinterTest.testPrintResults_LongProgramNameAndLargeNumbers" classname="com.example.ResultPrinterTest" time="0.001"/>
-  <testcase name="com.example.ResultPrinterTest.testPrintResults_ShortProgramNameAndSmallNumbers" classname="com.example.ResultPrinterTest" time="0.001"/>
+  <testcase name="com.example.ResultPrinterTest.testPrintResults_LongProgramNameAndLargeNumbers" classname="com.example.ResultPrinterTest" time="0.002"/>
+  <testcase name="com.example.ResultPrinterTest.testPrintResults_ShortProgramNameAndSmallNumbers" classname="com.example.ResultPrinterTest" time="0"/>
 </testsuite>
