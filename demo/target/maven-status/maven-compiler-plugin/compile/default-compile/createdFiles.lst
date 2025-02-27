@@ -1,11 +1,8 @@
-com/example/files/Example2.class
-com/example/files/files2/Example3.class
 com/example/App.class
 com/example/LineCounter.class
 com/example/FileManager.class
 com/example/ResultPrinter.class
 com/example/exceptions/FileFormatException.class
-com/example/files/files2/Example.class
 com/example/FileFormatValidator.class
 com/example/LogicalLineCounter.class
 com/example/PhysicalLineCounter.class

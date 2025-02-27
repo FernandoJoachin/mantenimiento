@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.example.FileFormatValidatorTest" time="0.005" tests="12" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.example.LogicalLineCounterTest" time="0" tests="0" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="19"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -58,16 +58,4 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="63.0"/>
   </properties>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidFileType_Correct" classname="com.example.FileFormatValidatorTest" time="0"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidFileType_Incorrect" classname="com.example.FileFormatValidatorTest" time="0"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidLineLength_Correct" classname="com.example.FileFormatValidatorTest" time="0"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidLineLength_Incorrect" classname="com.example.FileFormatValidatorTest" time="0"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidMultipleStatements_Correct" classname="com.example.FileFormatValidatorTest" time="0"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidMultipleStatements_Incorrect" classname="com.example.FileFormatValidatorTest" time="0"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidBracesStyle_Correct" classname="com.example.FileFormatValidatorTest" time="0.001"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidBracesStyle_Incorrect" classname="com.example.FileFormatValidatorTest" time="0"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidImportStatement_Correct" classname="com.example.FileFormatValidatorTest" time="0.002"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidImportStatement_Incorrect" classname="com.example.FileFormatValidatorTest" time="0"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidAnnotationFormat_Correct" classname="com.example.FileFormatValidatorTest" time="0.001"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidAnnotationFormat_Incorrect" classname="com.example.FileFormatValidatorTest" time="0"/>
 </testsuite>
