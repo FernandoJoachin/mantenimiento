@@ -40,7 +40,7 @@ public class FileManagerTest {
             writer.write("}");
         }
 
-        List<String> lines = fileManager.readLines("TestFile.java");
+        List<String> lines = fileManager.readLines(tempFile.getAbsolutePath());
 
         assertEquals("The Java file should have 5 lines.", 5, lines.size());
         assertEquals(
