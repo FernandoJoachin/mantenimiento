@@ -72,7 +72,7 @@ class AppTest {
 
         String output = outputStream.toString();
         System.out.println(output);
-        assertTrue(output.contains("| " + tempDir.getFileName() + " | 9           | 25          |"));
+        assertTrue(output.contains("| " + tempDir.getFileName() + " | 25          | 9           |"));
 
         Files.delete(file1);
         Files.delete(file2);
