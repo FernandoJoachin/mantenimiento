@@ -40,50 +40,86 @@ public class FileManagerTest {
             writer.write("}");
         }
 
-        List<String> lines = fileManager.readLines("TestFile.java");
+        List<String> lines = fileManager.readLines(tempFile.getAbsolutePath());
 
         assertEquals("The Java file should have 5 lines.", 5, lines.size());
-        assertEquals("The first line does not match.", 
-            "public class TestFile {", lines.get(0));
-        assertEquals("The second line does not match.", 
-            "    public static void main(String[] args) {", lines.get(1));
-        assertEquals("The third line does not match.", 
-            "        System.out.println(\"Hello, World!\");", lines.get(2));
-        assertEquals("The fourth line does not match.", 
-            "    }", lines.get(3));
-        assertEquals("The fifth line does not match.", 
-            "}", lines.get(4));
+        assertEquals(
+            "The first line does not match.", 
+            "public class TestFile {", 
+            lines.get(0)
+        );
+        assertEquals(
+            "The second line does not match.", 
+            "    public static void main(String[] args) {", 
+            lines.get(1)
+        );
+        assertEquals(
+            "The third line does not match.", 
+            "        System.out.println(\"Hello, World!\");", 
+            lines.get(2)
+        );
+        assertEquals(
+            "The fourth line does not match.", 
+            "    }", 
+            lines.get(3)
+        );
+        assertEquals(
+            "The fifth line does not match.", 
+            "}", 
+            lines.get(4)
+        );
     }
 
     @Test
     public void testReadLinesWithNonExistentJavaFile() throws IOException {
         List<String> lines = fileManager.readLines("NonExistentFile.java");
 
-        assertTrue("The list should be empty for a Java file that does not exist.", 
-            lines.isEmpty());
+        assertTrue(
+            "The list should be empty for a Java file that does not exist.", 
+            lines.isEmpty()
+        );
     }
 
     @Test
-    public void testGetJavaFileNames() throws IOException {
+    public void testGetJavaFilePaths() throws IOException {
         File tempFile1 = tempFolder.newFile("File1.java");
         File tempFile2 = tempFolder.newFile("File2.java");
 
-        List<String> fileNames = fileManager.getFileNames();
+        List<String> filePaths = fileManager.getAllFilePaths();
 
-        assertEquals("There should be 2 Java files in the directory.", 
-            2, fileNames.size());
-        assertTrue("The File1.java file should be listed.", 
-            fileNames.contains("File1.java"));
-        assertTrue("The File2.java file should be listed.", 
-            fileNames.contains("File2.java"));
+        assertEquals(
+            "There should be 2 Java files in the directory.", 
+            2, 
+            filePaths.size()
+        );
+        assertTrue(
+            "The File1.java file should be listed.", 
+            filePaths.contains(tempFile1.getAbsolutePath()) 
+        );
+        assertTrue(
+            "The File2.java file should be listed.", 
+            filePaths.contains(tempFile2.getAbsolutePath())
+        );
     }
 
     @Test
-    public void testGetFileNamesWithInvalidDirectory() {
+    public void testGetAllFilePathsWithInvalidDirectory() {
         fileManager = new FileManager("/invalid/directory");
 
-        List<String> fileNames = fileManager.getFileNames();
+        List<String> fileNames = fileManager.getAllFilePaths();
 
-        assertTrue("The list should be empty for an invalid directory.", fileNames.isEmpty());
+        assertTrue(
+            "The list should be empty for an invalid directory.", 
+            fileNames.isEmpty()
+        );
+    }
+
+    @Test
+    public void testgetDirectoryName() {
+        assertEquals(
+            "The directory name must be correct.", 
+            tempFolder.getRoot().getName(), 
+            fileManager.getDirectoryName()
+        );
     }
 }

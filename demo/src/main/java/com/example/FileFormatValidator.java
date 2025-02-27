@@ -16,13 +16,13 @@ public class FileFormatValidator {
      * - No multiple executable statements in a single line.
      * - Correct usage of brace style.
      *
-     * @param fileName The name of the file to validate.
+     * @param filePath The full path of the file to validate.
      * @param lines    The content of the file, represented as a list of lines.
      * @return {@code true} if the file follows the formatting rules, {@code false} otherwise.
      */
-    public static boolean isValidFileFormat(String fileName, List<String> lines) {
-        if (!isValidFileType(fileName)) {
-            System.out.println("Error: Invalid file type -> " + fileName);
+    public static boolean isValidFileFormat(String filePath, List<String> lines) {
+        if (!isValidFileType(filePath)) {
+            System.out.println("Error: Invalid file type -> " + filePath);
             return false;
         }
 
@@ -34,31 +34,31 @@ public class FileFormatValidator {
             }
 
             if (!isValidLineLength(line)) {
-                System.out.println("Warning: Line " + (i + 1) + " in file " + fileName 
+                System.out.println("Warning: Line " + (i + 1) + " in file " + filePath 
                     + " exceeds 120 characters.");
                 return false;
             }
 
             if (!isValidBracesStyle(line)) {
-                System.out.println("Error: Line " + (i + 1) + " in file " + fileName 
+                System.out.println("Error: Line " + (i + 1) + " in file " + filePath 
                     + " has incorrect brace style.");
                 return false;
             }
 
             if (!isValidMultipleStatements(line)) {
-                System.out.println("Error: Line " + (i + 1) + " in file " + fileName 
+                System.out.println("Error: Line " + (i + 1) + " in file " + filePath 
                     + " contains multiple executable statements.");
                 return false;
             }
 
             if (!isValidImportStatement(line)) {
-                System.out.println("Error: Line " + (i + 1) + " in file " + fileName 
+                System.out.println("Error: Line " + (i + 1) + " in file " + filePath 
                     + " contains a wildcard import.");
                 return false;
             }
 
             if (!isValidAnnotationFormat(line, i > 0 ? lines.get(i - 1).trim() : "")) {
-                System.out.println("Error: Line " + (i + 1) + " in file " + fileName 
+                System.out.println("Error: Line " + (i + 1) + " in file " + filePath 
                     + " has incorrect annotation formatting.");
                 return false;
             }
@@ -70,11 +70,11 @@ public class FileFormatValidator {
     /**
      * Checks if the provided file has a valid Java file extension.
      *
-     * @param fileName The name of the file to check.
+     * @param filePath The full path of the file to check.
      * @return {@code true} if the file is a Java file, {@code false} otherwise.
      */
-    private static boolean isValidFileType(String fileName) {
-        return fileName.endsWith(".java");
+    private static boolean isValidFileType(String filePath) {
+        return filePath.endsWith(".java");
     }
 
     /**

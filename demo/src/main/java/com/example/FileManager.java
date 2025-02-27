@@ -1,7 +1,8 @@
 package com.example;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
-import java.util.regex.*;
 
 /**
  * Class that handles file reading operations and listing file names in a directory.
@@ -23,17 +24,17 @@ class FileManager {
     /**
      * Reads all lines from a specified file.
      *
-     * @param fileName Name of the file to read.
+     *  @param filePath The full path of the file to read.
      * @return A list containing the file's lines. If the file does not exist, 
      * returns an empty list.
      * @throws IOException If an error occurs while reading the file.
      */
-    public List<String> readLines(String fileName) throws IOException {
-        File file = new File(this.directory, fileName);
+    public List<String> readLines(String filePath) throws IOException {
+        File file = new File(filePath);
         List<String> lines = new ArrayList<>();
         
         if (!file.exists() || !file.isFile()) {
-            System.out.println("The file does not exist: " + fileName);
+            System.out.println("The file does not exist: " + file.getName());
             return lines;
         }
 
@@ -47,26 +48,47 @@ class FileManager {
     }
 
     /**
-     * Retrieves a list of file names in the directory.
+     * Retrieves a list of all file paths in the directory and its subdirectories.
      *
-     * @return A list of file names in the directory. If the directory is invalid, 
-     * returns an empty list.
+     * @return A list of file paths. If the directory is invalid or does not exist,
+     *         an empty list is returned.
      */
-    public List<String> getFileNames() {
+    public List<String> getAllFilePaths() {
         File folder = new File(directory);
         if (!folder.exists() || !folder.isDirectory()) {
             System.out.println("The directory does not exist or is invalid.");
             return Collections.emptyList();
         }
 
+        listFilesRecursively(folder);
+        return this.fileNames;
+    }
+
+    /**
+     * Recursively lists all files in the specified folder and its subdirectories.
+     *
+     * @param folder The folder to search for files.
+     */
+    private void listFilesRecursively(File folder) {
         File[] allFiles = folder.listFiles();
         if (allFiles != null) {
             for (File file : allFiles) {
                 if (file.isFile()) {
-                    this.fileNames.add(file.getName());
+                    this.fileNames.add(file.getAbsolutePath());
+                } else if (file.isDirectory()) {
+                    listFilesRecursively(file);
                 }
             }
         }
-        return this.fileNames;
+    }
+
+    /**
+     * Retrieves the name of the directory.
+     *
+     * @return The name of the directory.
+     */
+    public String getDirectoryName() {        
+        Path path = Paths.get(this.directory);
+        return path.getFileName().toString();
     }
 }
