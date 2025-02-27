@@ -12,8 +12,8 @@ public class App {
         Scanner scanner = new Scanner(System.in);        
         FileManager fileManager = null;
         String directoryPath = "";
-
-        while (directoryPath.isEmpty() || !fileManager.isValidDirectory()) {
+        boolean tryAgain = true;
+        while(tryAgain) {
             System.out.print("Please enter the directory path: ");
             directoryPath = scanner.nextLine().trim();
             if (directoryPath.isEmpty()) {
@@ -21,33 +21,38 @@ public class App {
             }
 
             fileManager = new FileManager(directoryPath);
-            if (fileManager.isValidDirectory()) {
-                break;
+            if (!fileManager.isValidDirectory()) {
+                System.out.println("Error: The directory does not exist.");
+                continue;
             }
-            System.out.println("Error: The directory does not exist.");
+
+            List<String> filePaths = fileManager.getAllFilePaths();
+            List<String> lines = new ArrayList<>();
+
+            PhysicalLineCounter physicalLineCounter = new PhysicalLineCounter();
+            LogicalLineCounter logicalLineCounter = new LogicalLineCounter();
+            int totalPhysicalLines = 0;
+            int totalLogicalLines = 0;
+
+            for (String filePath : filePaths) {
+                try {
+                    lines = fileManager.readLines(filePath);
+                    FileFormatValidator.isValidFileFormat(filePath, lines);
+                    totalPhysicalLines += physicalLineCounter.count(lines);
+                    totalLogicalLines += logicalLineCounter.count(lines);
+                } catch (FileFormatException e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
+            }
+            String directoryName = fileManager.getDirectoryName();
+            ResultPrinter.printResults(directoryName, totalLogicalLines,totalPhysicalLines);
+
+            System.out.print("Do you want to try analyzing another project? (y/another entry for no): ");
+            String userResponse = scanner.nextLine().trim().toLowerCase();
+            tryAgain = userResponse.equals("y");
+
         }
         scanner.close();
-
-        List<String> filePaths = fileManager.getAllFilePaths();
-        List<String> lines = new ArrayList<>();
-
-        PhysicalLineCounter physicalLineCounter = new PhysicalLineCounter();
-        LogicalLineCounter logicalLineCounter = new LogicalLineCounter();
-        int totalPhysicalLines = 0;
-        int totalLogicalLines = 0;
-
-        for (String filePath : filePaths) {
-            try {
-                lines = fileManager.readLines(filePath);
-                FileFormatValidator.isValidFileFormat(filePath, lines);
-                totalPhysicalLines += physicalLineCounter.count(lines);
-                totalLogicalLines += logicalLineCounter.count(lines);
-            } catch (FileFormatException e) {
-                System.out.println(e.getMessage());
-                return;
-            }
-        }
-        String directoryName = fileManager.getDirectoryName();
-        ResultPrinter.printResults(directoryName, totalPhysicalLines, totalLogicalLines);
     }
 }

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.example.ResultPrinterTest" time="0.008" tests="3" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.example.ResultPrinterTest" time="0.012" tests="3" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="19"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.class.path" value="/Users/josepuc/Desktop/mantenimiento/demo/target/test-classes:/Users/josepuc/Desktop/mantenimiento/demo/target/classes:/Users/josepuc/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.8.0/junit-jupiter-api-5.8.0.jar:/Users/josepuc/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/josepuc/.m2/repository/org/junit/platform/junit-platform-commons/1.8.0/junit-platform-commons-1.8.0.jar:/Users/josepuc/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:"/>
-    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
     <property name="os.name" value="Mac OS X"/>
     <property name="java.vm.specification.version" value="19"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="MX"/>
-    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/temurin-19.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter2131642977821233151.jar /Users/josepuc/Desktop/mantenimiento/demo/target/surefire 2025-02-27T02-12-02_183-jvmRun1 surefire5936724015266625627tmp surefire_0634174455488866994tmp"/>
+    <property name="sun.boot.library.path" value="/Users/josepuc/.sdkman/candidates/java/19-open/lib"/>
+    <property name="sun.java.command" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter4034400874391818866.jar /Users/josepuc/Desktop/mantenimiento/demo/target/surefire 2025-02-27T02-36-23_494-jvmRun1 surefire13468894492192774536tmp surefire_013325519861620219943tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/josepuc/Desktop/mantenimiento/demo/target/test-classes:/Users/josepuc/Desktop/mantenimiento/demo/target/classes:/Users/josepuc/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.8.0/junit-jupiter-api-5.8.0.jar:/Users/josepuc/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/josepuc/.m2/repository/org/junit/platform/junit-platform-commons/1.8.0/junit-platform-commons-1.8.0.jar:/Users/josepuc/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:"/>
@@ -20,8 +20,8 @@
     <property name="user.home" value="/Users/josepuc"/>
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
-    <property name="java.version.date" value="2023-01-17"/>
-    <property name="java.home" value="/Library/Java/JavaVirtualMachines/temurin-19.jdk/Contents/Home"/>
+    <property name="java.version.date" value="2022-09-20"/>
+    <property name="java.home" value="/Users/josepuc/.sdkman/candidates/java/19-open"/>
     <property name="file.separator" value="/"/>
     <property name="basedir" value="/Users/josepuc/Desktop/mantenimiento/demo"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
@@ -29,10 +29,10 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter2131642977821233151.jar"/>
+    <property name="surefire.real.class.path" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter4034400874391818866.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
-    <property name="java.runtime.version" value="19.0.2+7"/>
+    <property name="java.runtime.version" value="19+36-2238"/>
     <property name="user.name" value="josepuc"/>
     <property name="stdout.encoding" value="UTF-8"/>
     <property name="path.separator" value=":"/>
@@ -40,25 +40,24 @@
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
-    <property name="java.vendor.version" value="Temurin-19.0.2+7"/>
     <property name="localRepository" value="/Users/josepuc/.m2/repository"/>
-    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
     <property name="java.io.tmpdir" value="/var/folders/rz/lx924twd4m9chf4fhv4rl21c0000gn/T/"/>
-    <property name="java.version" value="19.0.2"/>
+    <property name="java.version" value="19"/>
     <property name="user.dir" value="/Users/josepuc/Desktop/mantenimiento/demo"/>
     <property name="os.arch" value="aarch64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="native.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/Users/josepuc/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
-    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
     <property name="stderr.encoding" value="UTF-8"/>
-    <property name="java.vendor" value="Eclipse Adoptium"/>
-    <property name="java.vm.version" value="19.0.2+7"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="19+36-2238"/>
     <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="63.0"/>
   </properties>
-  <testcase name="com.example.ResultPrinterTest.testPrintResults_LongProgramNameAndLargeNumbers" classname="com.example.ResultPrinterTest" time="0.008"/>
+  <testcase name="com.example.ResultPrinterTest.testPrintResults_NormalCase" classname="com.example.ResultPrinterTest" time="0.01"/>
+  <testcase name="com.example.ResultPrinterTest.testPrintResults_LongProgramNameAndLargeNumbers" classname="com.example.ResultPrinterTest" time="0.002"/>
   <testcase name="com.example.ResultPrinterTest.testPrintResults_ShortProgramNameAndSmallNumbers" classname="com.example.ResultPrinterTest" time="0"/>
-  <testcase name="com.example.ResultPrinterTest.testPrintResults_NormalCase" classname="com.example.ResultPrinterTest" time="0"/>
 </testsuite>
