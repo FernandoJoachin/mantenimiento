@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.example.FileFormatValidatorTest" time="0.021" tests="12" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.example.FileFormatValidatorTest" time="0.019" tests="12" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="19"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="MX"/>
     <property name="sun.boot.library.path" value="/Users/josepuc/.sdkman/candidates/java/19-open/lib"/>
-    <property name="sun.java.command" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter2327892162223703830.jar /Users/josepuc/Desktop/mantenimiento/demo/target/surefire 2025-02-27T13-00-42_995-jvmRun1 surefire14917241153023036374tmp surefire_01609644618273268699tmp"/>
+    <property name="sun.java.command" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter9200822192110137517.jar /Users/josepuc/Desktop/mantenimiento/demo/target/surefire 2025-02-27T13-17-13_803-jvmRun1 surefire5833031724684294066tmp surefire_05558050598140583581tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/josepuc/Desktop/mantenimiento/demo/target/test-classes:/Users/josepuc/Desktop/mantenimiento/demo/target/classes:/Users/josepuc/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.8.0/junit-jupiter-api-5.8.0.jar:/Users/josepuc/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/josepuc/.m2/repository/org/junit/platform/junit-platform-commons/1.8.0/junit-platform-commons-1.8.0.jar:/Users/josepuc/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:"/>
@@ -29,7 +29,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter2327892162223703830.jar"/>
+    <property name="surefire.real.class.path" value="/Users/josepuc/Desktop/mantenimiento/demo/target/surefire/surefirebooter9200822192110137517.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="19+36-2238"/>
@@ -57,16 +57,16 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="63.0"/>
   </properties>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidFileType_Correct" classname="com.example.FileFormatValidatorTest" time="0.001"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidFileType_Incorrect" classname="com.example.FileFormatValidatorTest" time="0.001"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidLineLength_Correct" classname="com.example.FileFormatValidatorTest" time="0"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidLineLength_Incorrect" classname="com.example.FileFormatValidatorTest" time="0.01"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidMultipleStatements_Correct" classname="com.example.FileFormatValidatorTest" time="0.002"/>
+  <testcase name="com.example.FileFormatValidatorTest.testIsValidFileType_Correct" classname="com.example.FileFormatValidatorTest" time="0.002"/>
+  <testcase name="com.example.FileFormatValidatorTest.testIsValidFileType_Incorrect" classname="com.example.FileFormatValidatorTest" time="0"/>
+  <testcase name="com.example.FileFormatValidatorTest.testIsValidLineLength_Correct" classname="com.example.FileFormatValidatorTest" time="0.001"/>
+  <testcase name="com.example.FileFormatValidatorTest.testIsValidLineLength_Incorrect" classname="com.example.FileFormatValidatorTest" time="0.008"/>
+  <testcase name="com.example.FileFormatValidatorTest.testIsValidMultipleStatements_Correct" classname="com.example.FileFormatValidatorTest" time="0.001"/>
   <testcase name="com.example.FileFormatValidatorTest.testIsValidMultipleStatements_Incorrect" classname="com.example.FileFormatValidatorTest" time="0.001"/>
   <testcase name="com.example.FileFormatValidatorTest.testIsValidBracesStyle_Correct" classname="com.example.FileFormatValidatorTest" time="0"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidBracesStyle_Incorrect" classname="com.example.FileFormatValidatorTest" time="0.001"/>
+  <testcase name="com.example.FileFormatValidatorTest.testIsValidBracesStyle_Incorrect" classname="com.example.FileFormatValidatorTest" time="0.002"/>
   <testcase name="com.example.FileFormatValidatorTest.testIsValidImportStatement_Correct" classname="com.example.FileFormatValidatorTest" time="0.001"/>
   <testcase name="com.example.FileFormatValidatorTest.testIsValidImportStatement_Incorrect" classname="com.example.FileFormatValidatorTest" time="0"/>
-  <testcase name="com.example.FileFormatValidatorTest.testIsValidAnnotationFormat_Correct" classname="com.example.FileFormatValidatorTest" time="0.001"/>
+  <testcase name="com.example.FileFormatValidatorTest.testIsValidAnnotationFormat_Correct" classname="com.example.FileFormatValidatorTest" time="0"/>
   <testcase name="com.example.FileFormatValidatorTest.testIsValidAnnotationFormat_Incorrect" classname="com.example.FileFormatValidatorTest" time="0.001"/>
 </testsuite>
