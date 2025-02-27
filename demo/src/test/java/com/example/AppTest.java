@@ -81,8 +81,6 @@ public class AppTest {
         App.main(args);
 
         String output = outContent.toString();
-
-        assertTrue(output.contains("Starting the App..."));
         assertTrue(output.contains("| " + tempDir.getFileName() + " | 9           | 25          |"));
     }
     

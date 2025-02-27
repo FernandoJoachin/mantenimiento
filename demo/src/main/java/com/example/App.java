@@ -3,30 +3,37 @@ package com.example;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.example.exceptions.FileFormatException;
 
 public class App {
     public static void main(String[] args) throws IOException {
-        System.out.println("Starting the App...");
+        Scanner scanner = new Scanner(System.in);        
+        FileManager fileManager = null;
+        String directoryPath = "";
 
-        if(args.length == 0){
-            System.out.println("Error: The directory cannot be null");
-            return;
+        while (directoryPath.isEmpty() || !fileManager.isValidDirectory()) {
+            System.out.print("Please enter the directory path: ");
+            directoryPath = scanner.nextLine().trim();
+            if (directoryPath.isEmpty()) {
+                continue;
+            }
+
+            fileManager = new FileManager(directoryPath);
+            if (fileManager.isValidDirectory()) {
+                break;
+            }
+            System.out.println("Error: The directory does not exist.");
         }
-        
-        String directoryPath = args[0];
-        FileManager fileManager = new FileManager(directoryPath);
+        scanner.close();
+
         List<String> filePaths = fileManager.getAllFilePaths();
-        if (filePaths.isEmpty()) {
-            return;
-        }
-
         List<String> lines = new ArrayList<>();
 
         PhysicalLineCounter physicalLineCounter = new PhysicalLineCounter();
-        int totalPhysicalLines = 0;
         LogicalLineCounter logicalLineCounter = new LogicalLineCounter();
+        int totalPhysicalLines = 0;
         int totalLogicalLines = 0;
 
         for (String filePath : filePaths) {
