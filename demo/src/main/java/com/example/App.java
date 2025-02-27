@@ -56,6 +56,6 @@ public class App {
         }
 
         String directoryName = fileManager.getDirectoryName();
-        ResultPrinter.printResults(directoryName, totalLogicalLines, totalPhysicalLines);
+        ResultPrinter.printResults(directoryName, totalPhysicalLines, totalLogicalLines);
     }
 }
