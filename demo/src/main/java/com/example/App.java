@@ -51,7 +51,6 @@ public class App {
                 totalLogicalLines += logicalLineCounter.count(lines);
             } catch (FileFormatException e) {
                 System.out.println(e.getMessage());
-                return;
             }
         }
 
