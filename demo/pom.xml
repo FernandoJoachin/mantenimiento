@@ -13,8 +13,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>19</maven.compiler.source> <!-- Cambiado a Java 11 para mayor compatibilidad -->
-    <maven.compiler.target>19</maven.compiler.target> <!-- Cambiado a Java 11 para mayor compatibilidad -->
+    <maven.compiler.source>11</maven.compiler.source> <!-- Cambiado a Java 11 para mayor compatibilidad -->
+    <maven.compiler.target>11</maven.compiler.target> <!-- Cambiado a Java 11 para mayor compatibilidad -->
   </properties>
 
   <dependencies>
