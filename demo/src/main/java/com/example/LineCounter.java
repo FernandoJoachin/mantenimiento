@@ -13,8 +13,8 @@ public interface LineCounter {
      * This method must be implemented by classes that implement this interface
      * to define specific counting logic.
      *
-     * @param lines List of code lines.
+     * @param javaFile The javaFile to count.
      * @return Total number of counted lines.
      */
-    public int count(List<String> lines);
+    public int count(JavaFile javaFile);
 }

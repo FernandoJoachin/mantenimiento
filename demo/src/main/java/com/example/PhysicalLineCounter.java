@@ -13,11 +13,12 @@ public class PhysicalLineCounter implements LineCounter {
      * Counts the physical lines in a list of code lines.
      * It first removes comments and then counts only non-empty lines as physical lines.
      *
-     * @param lines List of code lines to be processed.
+     * @param javaFile The javaFile to count.
      * @return The total number of physical lines.
      */
     @Override
-    public int count(List<String> lines) {
+    public int count(JavaFile javaFile) {
+        List<String> lines = javaFile.getLines();
         int count = 0;
 
         // Iterate through each line and count non-empty lines
