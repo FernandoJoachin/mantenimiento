@@ -13,7 +13,14 @@ import com.example.exceptions.FileFormatException;
  * to count physical and logical lines.
  */
 public class DirectoryManager {
+    /**
+     * A list to store the paths of all files found in the directory and its subdirectories.
+     */
     private List<String> filePaths;
+
+    /**
+     * The directory to be managed, represented as a File object.
+     */
     private File directory;
 
     /**
