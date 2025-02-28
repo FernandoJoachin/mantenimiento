@@ -31,7 +31,7 @@ public class FileFormatValidator {
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i).trim();
 
-            if (line.isEmpty()) {
+            if (line.isEmpty() || isComment(line)) {
                 continue;
             }
 
@@ -98,7 +98,7 @@ public class FileFormatValidator {
             return true;
         }
 
-        String stringWithoutQuotes = line.replaceAll("\"[^\"]*\"", "");
+        String stringWithoutQuotes = line.replaceAll("\"[^\"]*\"|'[^']*'", "");
         long semicolonCount = stringWithoutQuotes.chars().filter(c -> c == ';').count();
 
         return semicolonCount <= 1;
@@ -124,6 +124,15 @@ public class FileFormatValidator {
         }
 
         return isValidDeclarationOrMethod(line);
+    }
+
+    /*
+     * @param line The line of code to be checked.
+     * @return {@code true} if the line is a comment, {@code false} otherwise.
+     */
+    private static boolean isComment(String line) {
+        line = line.trim();
+        return line.startsWith("//") || line.startsWith("*") || line.matches("/\\*.*\\*/");
     }
 
     /**
@@ -171,7 +180,7 @@ public class FileFormatValidator {
      */
     private static boolean isValidDeclarationOrMethod(String line) {
         return line.trim().matches(
-            ".*\\s*(public|private|protected|class|interface|enum|if|else|for|while|switch|do)\\s+.*\\{.*|.*\\)\\s*\\{.*"
+            ".*\\s*(public|private|protected|class|interface|enum|if|else|for|while|switch|do|try)\\s+.*\\{.*|.*\\)\\s*\\{.*"
         );
     }
 
@@ -208,16 +217,11 @@ public class FileFormatValidator {
      * The annotation must be on a separate line before the method, class, or field declaration.
      *
      * @param currentLine The current line being evaluated.
-     * @param previousLine The previous line in the file.
      * @return {@code true} if the annotation is correctly formatted, {@code false} otherwise.
      */
     private static boolean isValidAnnotationFormat(String currentLine, String previousLine) {
         if (currentLine.startsWith("@")) {
-            if (!previousLine.isEmpty()) {
-                return false;
-            }
 
-            // Check if the annotation is on the same line as a declaration (public, private, etc.)
             if (currentLine.matches(".*\\s+(public|private|protected|class|interface|enum|void|int|String|boolean).*")) {
                 return false;
             }
