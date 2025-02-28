@@ -8,7 +8,7 @@ import java.util.List;
  * empty lines, and certain structural elements like class/interface declarations,
  * method declarations, and control structures.
  */
-public class LogicalLineCounter extends LineCounter {
+public class LogicalLineCounter implements LineCounter {
 
     /**
      * Counts the number of logical lines in the provided list of code lines.
@@ -19,14 +19,11 @@ public class LogicalLineCounter extends LineCounter {
      * @return The total number of logical lines.
      */
     @Override
-    int count(List<String> lines) {
+    public int count(List<String> lines) {
         int numLines = 0;
 
-        // Remove comments from the lines
-        List<String> cleanLines = removeComments(lines);
-
         // Iterate through each line and count logical lines
-        for (String line : cleanLines) {
+        for (String line : lines) {
             if (isLogicalLine(line)) {
                 if (isForStatement(line)) {
                     numLines += 3; // Count `for` statements as three logical lines

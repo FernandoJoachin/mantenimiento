@@ -7,7 +7,7 @@ import java.util.List;
  * to count physical lines of code in a Java source file. It removes comments and
  * counts only non-empty lines as physical lines.
  */
-public class PhysicalLineCounter extends LineCounter {
+public class PhysicalLineCounter implements LineCounter {
 
     /**
      * Counts the physical lines in a list of code lines.
@@ -17,14 +17,11 @@ public class PhysicalLineCounter extends LineCounter {
      * @return The total number of physical lines.
      */
     @Override
-    int count(List<String> lines) {
-        // Remove comments from the lines
-        List<String> linesWithoutComments = removeComments(lines);
-
+    public int count(List<String> lines) {
         int count = 0;
 
         // Iterate through each line and count non-empty lines
-        for (String line : linesWithoutComments) {
+        for (String line : lines) {
             if (!line.trim().isEmpty()) {
                 count++;
             }
