@@ -126,6 +126,10 @@ public class FileFormatValidator {
         return isValidDeclarationOrMethod(line);
     }
 
+    /*
+     * @param line The line of code to be checked.
+     * @return {@code true} if the line is a comment, {@code false} otherwise.
+     */
     private static boolean isComment(String line) {
         line = line.trim();
         return line.startsWith("//") || line.startsWith("*") || line.matches("/\\*.*\\*/");
