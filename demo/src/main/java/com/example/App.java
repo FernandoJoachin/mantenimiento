@@ -1,14 +1,12 @@
 package com.example;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
-import com.example.exceptions.FileFormatException;
+import java.io.IOException;
+import com.example.exceptions.FileException;
 
 public class App {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws FileException, IOException {
         Scanner scanner = new Scanner(System.in);
         boolean tryAgain = true;
 
@@ -19,7 +17,12 @@ public class App {
                 continue;
             }
 
-            processDirectory(directoryPath);
+            try {
+                DirectoryManager directoryManager = new DirectoryManager(directoryPath);
+                directoryManager.processDirectory();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
 
             System.out.print("Do you want to try analyzing another project? (y/another entry for no): ");
             String userResponse = scanner.nextLine().trim().toLowerCase();
@@ -27,34 +30,5 @@ public class App {
         }
 
         scanner.close();
-    }
-
-    public static void processDirectory(String directoryPath) throws IOException {
-        FileManager fileManager = new FileManager(directoryPath);
-        if (!fileManager.isValidDirectory()) {
-            System.out.println("Error: The directory does not exist.");
-            return;
-        }
-
-        List<String> filePaths = fileManager.getAllFilePaths();
-        List<String> lines = new ArrayList<>();
-        PhysicalLineCounter physicalLineCounter = new PhysicalLineCounter();
-        LogicalLineCounter logicalLineCounter = new LogicalLineCounter();
-        int totalPhysicalLines = 0;
-        int totalLogicalLines = 0;
-
-        for (String filePath : filePaths) {
-            try {
-                lines = fileManager.readLines(filePath);
-                FileFormatValidator.isValidFileFormat(filePath, lines);
-                totalPhysicalLines += physicalLineCounter.count(lines);
-                totalLogicalLines += logicalLineCounter.count(lines);
-            } catch (FileFormatException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-
-        String directoryName = fileManager.getDirectoryName();
-        ResultPrinter.printResults(directoryName, totalPhysicalLines, totalLogicalLines);
     }
 }

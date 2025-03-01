@@ -1,114 +1,79 @@
 package com.example;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
+import com.example.exceptions.FileException;
+
 /**
- * Class that handles file reading operations and listing file names in a directory.
+ * The FileManager class handles file reading operations and provides functionality
+ * to list file names in a directory. It also includes utility methods to remove
+ * comments from code lines.
  */
 class FileManager {
-    private List<String> fileNames;
-    private String directory;
-
-    /**
-     * Constructor for the FileManager class.
-     *
-     * @param directory Directory where the files are located.
-     */
-    public FileManager(String directory) {
-        this.directory = directory;
-        this.fileNames = new ArrayList<>();
-    }
 
     /**
      * Reads all lines from a specified file.
      *
-     *  @param filePath The full path of the file to read.
-     * @return A list containing the file's lines. If the file does not exist, 
-     * returns an empty list.
+     * @param filePath The full path of the file to read.
+     * @return A list containing the file's lines. If the file does not exist,
+     *         an exception is thrown.
      * @throws IOException If an error occurs while reading the file.
+     * @throws FileException If the file does not exist or is not valid.
      */
-    public List<String> readLines(String filePath) throws IOException {
+    public static List<String> readLines(String filePath) throws IOException, FileException {
         File file = new File(filePath);
-        List<String> lines = new ArrayList<>();
-        
-        if (!file.exists() || !file.isFile()) {
-            System.out.println("The file does not exist: " + file.getName());
-            return lines;
+        if (!isValidFile(file)) {
+            throw new FileException("The file does not exist: " + file.getName());
         }
 
+        List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
             }
         }
-        return lines;
+        return removeComments(lines);
     }
 
     /**
-     * Retrieves a list of all file paths in the directory and its subdirectories.
+     * Checks if the specified file is valid.
+     * A file is considered valid if it exists and is indeed a file.
      *
-     * @return A list of file paths. If the directory is invalid or does not exist,
-     *         an empty list is returned.
-     */
-    public List<String> getAllFilePaths() {
-        File folder = new File(this.directory);
-        if (!isValidDirectory()) {
-            return Collections.emptyList();
-        }
-
-        listFilesRecursively(folder);
-        return this.fileNames;
-    }
-
-    /**
-     * Checks if the specified directory is valid.
-     * A directory is considered valid if it exists and is indeed a directory.
-     *
-     * @return {@code true} if the directory exists and is a valid directory; 
+     * @param file The file to validate.
+     * @return {@code true} if the file exists and is a valid file;
      *         {@code false} otherwise.
      */
-    public boolean isValidDirectory() {
-        File folder = new File(this.directory);
-        if (!folder.exists() || !folder.isDirectory()) {
+    private static boolean isValidFile(File file) {
+        if (!file.exists() || !file.isFile()) {
             return false;
         }
         return true;
     }
 
-
     /**
-     * Recursively lists all files in the specified folder and its subdirectories.
+     * Removes comments from a list of code lines.
+     * This method handles both block comments (e.g., /* ... * /)
+     * and line comments (e.g., // ...).
      *
-     * @param folder The folder to search for files.
+     * @param lines List of original code lines.
+     * @return List of lines without comments.
      */
-    private void listFilesRecursively(File folder) {
-        File[] allFiles = folder.listFiles();
-        if (allFiles != null) {
-            for (File file : allFiles) {
-                if (file.isFile()) {
-                    this.fileNames.add(file.getAbsolutePath());
-                } else if (file.isDirectory()) {
-                    listFilesRecursively(file);
-                }
-            }
-        }
-    }
+    private static List<String> removeComments(List<String> lines) {
+        String joinedLines = String.join("\n", lines);
 
-    /**
-     * Retrieves the name of the directory.
-     *
-     * @return The name of the directory.
-     */
-    public String getDirectoryName() {        
-        Path path = Paths.get(this.directory);
-        return path.getFileName().toString();
+        // Remove block comments
+        joinedLines = joinedLines.replaceAll("(?s)/\\*.*?\\*/", "");
+
+        // Remove line comments
+        joinedLines = joinedLines.replaceAll("//.*(?=\n|$)", "");
+
+        return Arrays.asList(joinedLines.split("\n"));
     }
 }
