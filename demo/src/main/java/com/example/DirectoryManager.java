@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
 import com.example.exceptions.FileException;
-import com.example.exceptions.FileFormatException;
 
 /**
  * The DirectoryManager class is responsible for managing and processing files within a specified directory.
@@ -14,9 +13,9 @@ import com.example.exceptions.FileFormatException;
  */
 public class DirectoryManager {
     /**
-     * A list to store the paths of all files found in the directory and its subdirectories.
+     * A list to store all java files found in the directory and its subdirectories.
      */
-    private List<String> filePaths;
+    private List<JavaFile> javaFiles;
 
     /**
      * The directory to be managed, represented as a File object.
@@ -30,7 +29,7 @@ public class DirectoryManager {
      */
     public DirectoryManager(String directoryPath) {
         this.directory = new File(directoryPath);
-        this.filePaths = new ArrayList<>();
+        this.javaFiles = new ArrayList<>();
     }
 
     /**
@@ -45,20 +44,20 @@ public class DirectoryManager {
             throw new FileException("Error: The directory does not exist.");
         }
 
-        this.filePaths = this.getAllFilePaths();
-        List<String> lines = new ArrayList<>();
+        this.getAllJavaFiles();
         PhysicalLineCounter physicalLineCounter = new PhysicalLineCounter();
         LogicalLineCounter logicalLineCounter = new LogicalLineCounter();
         int totalPhysicalLines = 0;
         int totalLogicalLines = 0;
 
-        for (String filePath : filePaths) {
+        for (JavaFile javaFile : this.javaFiles) {
             try {
-                lines = FileManager.readLines(filePath);
-                FileFormatValidator.isValidFileFormat(filePath, lines);
-                totalPhysicalLines += physicalLineCounter.count(lines);
-                totalLogicalLines += logicalLineCounter.count(lines);
-            } catch (FileFormatException e) {
+                FileFormatValidator.isValidFileFormat(javaFile);
+                javaFile.setPhysicalLines(physicalLineCounter.count(javaFile));
+                javaFile.setLogicalLines(logicalLineCounter.count(javaFile));
+                totalPhysicalLines += javaFile.getPhysicalLines();
+                totalLogicalLines += javaFile.getLogicalLines();
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -91,26 +90,34 @@ public class DirectoryManager {
     }
 
     /**
-     * Retrieves all file paths within the directory and its subdirectories.
+     * Retrieves all Java files within the specified directory and its subdirectories.
+     * This method initiates a recursive search starting from the root directory 
+     * and collects all files with a `.java` extension.
      *
-     * @return A list of file paths.
+     * @return A list of {@link JavaFile} objects representing the Java files found.
+     * @throws FileException If an error occurs related to file handling (e.g., invalid directory).
+     * @throws IOException If an I/O error occurs during the file search process.
      */
-    public List<String> getAllFilePaths() {
+    public List<JavaFile> getAllJavaFiles() throws FileException, IOException {
         listFilesRecursively(this.directory);
-        return this.filePaths;
+        return this.javaFiles;
     }
 
     /**
      * Recursively lists all files in the specified directory and its subdirectories.
+     * If a file has a `.java` extension, it is added to the list of Java files.
      *
-     * @param directory The directory to search for files.
+     * @param directory The directory to search for files. Must not be null.
+     * @throws FileException If the directory is invalid or inaccessible.
+     * @throws IOException If an I/O error occurs while accessing the directory or its files.
      */
-    private void listFilesRecursively(File directory) {
+    private void listFilesRecursively(File directory) throws FileException, IOException {
         File[] allFiles = directory.listFiles();
         if (allFiles != null) {
             for (File file : allFiles) {
-                if (file.isFile()) {
-                    this.filePaths.add(file.getAbsolutePath());
+                if (file.isFile() && file.getName().endsWith(".java")) {
+                    JavaFile javaFile = new JavaFile(file.getAbsolutePath(), file.getName());
+                    this.javaFiles.add(javaFile);
                 } else if (file.isDirectory()) {
                     listFilesRecursively(file);
                 }

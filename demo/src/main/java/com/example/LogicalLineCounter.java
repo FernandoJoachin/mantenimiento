@@ -15,11 +15,12 @@ public class LogicalLineCounter implements LineCounter {
      * It removes comments and then evaluates each line to determine if it is a logical line.
      * Special handling is provided for `for` statements, which are counted as three logical lines.
      *
-     * @param lines List of code lines to be processed.
+     * @param javaFile The javaFile to count.
      * @return The total number of logical lines.
      */
     @Override
-    public int count(List<String> lines) {
+    public int count(JavaFile javaFile) {
+        List<String> lines = javaFile.getLines();
         int numLines = 0;
 
         // Iterate through each line and count logical lines
