@@ -18,16 +18,17 @@ public class FileFormatValidator {
      * - No multiple executable statements in a single line.
      * - Correct usage of brace style.
      *
-     * @param fileName The name of the file to validate.
-     * @param lines    The content of the file, represented as a list of lines.
+     * @param javaFile The java file to validate.
      * @return {@code true} if the file follows the formatting rules, {@code false} otherwise.
      * @throws FileFormatException If a formatting error is detected.
      */
-    public static boolean isValidFileFormat(String fileName, List<String> lines) throws FileFormatException {
+    public static boolean isValidFileFormat(JavaFile javaFile) throws FileFormatException {
+        String fileName = javaFile.getName();
         if (!isValidFileType(fileName)) {
             return false;
         }
 
+        List<String> lines = javaFile.getLines();
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i).trim();
 
