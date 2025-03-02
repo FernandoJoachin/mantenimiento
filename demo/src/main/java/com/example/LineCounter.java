@@ -1,7 +1,5 @@
 package com.example;
 
-import java.util.List;
-
 /**
  * This interface defines the contract for counting lines of code.
  * It includes a method to count lines based on specific implementation logic.
