@@ -14,5 +14,7 @@ public class FileFormatConstants {
     public final static String SEMICOLON = ";";
 
     public static final String QUOTED_STRING_REGEX = "\"[^\"]*\"|'[^']*'";
+    public static final String IMPLICIT_IMPORT_REGEX = "^\\s*import\\s+[a-zA-Z0-9_.]+\\.\\*\\s*;$";
+
 
 }

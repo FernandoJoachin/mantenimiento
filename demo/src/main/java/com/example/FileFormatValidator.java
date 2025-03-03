@@ -2,14 +2,17 @@ package com.example;
 
 import java.util.List;
 
+import com.example.constants.FileFormatConstants;
+import com.example.constants.JavaRegexConstants;
 import com.example.exceptions.FileFormatException;
+import com.example.validators.CommentValidator;
 
 /**
  * This class provides methods to validate the format of a Java source file.
  * It checks various formatting rules such as line length, brace style, and multiple executable statements.
  */
 public class FileFormatValidator {
-    private static final int MAX_LINE_LENGTH = 120;
+    public static final int ONE = 1;
 
     /**
      * Validates the format of a given Java source file.
@@ -32,33 +35,65 @@ public class FileFormatValidator {
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i).trim();
 
-            if (line.isEmpty() || isComment(line)) {
+            if (line.isEmpty() || CommentValidator.isComment(line)) {
                 continue;
             }
 
+            line = deleteStringInsideCode(line);
+
             if (!isValidLineLength(line)) {
-                throw new FileFormatException("Warning: Line " + (i + 1) + " in file " + fileName
-                        + " exceeds 120 characters.");
+                throw new FileFormatException(
+                    "Error: Line " +
+                    (i + 1) +
+                    " " +
+                    fileName +
+                    " " +
+                    FileFormatConstants.INVALID_LINE_LENGHT_MESSAGE
+                );
             }
 
             if (!isValidBracesStyle(line)) {
-                throw new FileFormatException("Error: Line " + (i + 1) + " in file " + fileName
-                        + " has incorrect brace style.");
+                throw new FileFormatException(
+                    "Error: Line " +
+                    (i + 1) + 
+                    " " +
+                    fileName + 
+                    " " +
+                    FileFormatConstants.INVALID_BRACES_STYLE_MESSAGE
+                );
             }
 
             if (!isValidMultipleStatements(line)) {
-                throw new FileFormatException("Error: Line " + (i + 1) + " in file " + fileName
-                        + " contains multiple executable statements.");
+                throw new FileFormatException(
+                    "Error: Line " + 
+                    (i + 1) + 
+                    " " +
+                    fileName + 
+                    " " +
+                    FileFormatConstants.INVALID_MULTIPLE_STATEMENTS_MESSAGE
+                );
             }
 
             if (!isValidImportStatement(line)) {
-                throw new FileFormatException("Error: Line " + (i + 1) + " in file " + fileName
-                        + " contains a wildcard import.");
+                throw new FileFormatException(
+                    "Error: Line " +
+                    (i + 1) + 
+                    " " +
+                    fileName +
+                    " " +
+                    FileFormatConstants.INVALID_IMPORT_STATEMENTS_MESSAGE
+                );
             }
 
             if (!isValidAnnotationFormat(line, i > 0 ? lines.get(i - 1).trim() : "")) {
-                throw new FileFormatException("Error: Line " + (i + 1) + " in file " + fileName
-                        + " has incorrect annotation formatting.");
+                throw new FileFormatException(
+                    "Error: Line " +
+                    (i + 1) + 
+                    " " + 
+                    fileName + 
+                    " " +
+                    FileFormatConstants.INVALID_ANOTATION_FORMAT_MESSAGE
+                );
             }
         }
 
@@ -72,7 +107,7 @@ public class FileFormatValidator {
      * @return {@code true} if the file is a Java file, {@code false} otherwise.
      */
     private static boolean isValidFileType(String fileName) {
-        return fileName.endsWith(".java");
+        return fileName.endsWith(FileFormatConstants.JAVA_FILE_TYPE);
     }
 
     /**
@@ -82,7 +117,7 @@ public class FileFormatValidator {
      * @return {@code true} if the line length is within the allowed limit, {@code false} otherwise.
      */
     private static boolean isValidLineLength(String line) {
-        return line.length() <= MAX_LINE_LENGTH;
+        return line.length() <= FileFormatConstants.MAX_LINE_LENGTH;
     }
 
     /**
@@ -99,10 +134,9 @@ public class FileFormatValidator {
             return true;
         }
 
-        String stringWithoutQuotes = line.replaceAll("\"[^\"]*\"|'[^']*'", "");
-        long semicolonCount = stringWithoutQuotes.chars().filter(c -> c == ';').count();
+        long semicolonCount = line.chars().filter(c -> c == FileFormatConstants.SEMICOLON.hashCode()).count();
 
-        return semicolonCount <= 1;
+        return semicolonCount <= ONE;
     }
 
     /**
@@ -127,14 +161,10 @@ public class FileFormatValidator {
         return isValidDeclarationOrMethod(line);
     }
 
-    /*
-     * @param line The line of code to be checked.
-     * @return {@code true} if the line is a comment, {@code false} otherwise.
-     */
-    private static boolean isComment(String line) {
-        line = line.trim();
-        return line.startsWith("//") || line.startsWith("*") || line.matches("/\\*.*\\*/");
+    private static String deleteStringInsideCode(String line) {
+        return line.replaceAll(FileFormatConstants.QUOTED_STRING_REGEX, "");
     }
+
 
     /**
      * Checks if a given line ends with an opening brace "{".
@@ -143,7 +173,7 @@ public class FileFormatValidator {
      * @return true if the line ends with "{", false otherwise
      */
     private static boolean endsWithOpeningBrace(String line) { 
-        return line.endsWith("{");
+        return line.endsWith(FileFormatConstants.OPENING_BRACE);
     }
 
     /**
@@ -153,7 +183,7 @@ public class FileFormatValidator {
      * @return true if the line ends with "{}", false otherwise
      */
     private static boolean endsWithOpeningAndClosingBrace(String line) {
-        return line.endsWith("{}");
+        return line.endsWith(FileFormatConstants.OPENING_AND_CLOSING_BRACE);
     }
 
     /**
@@ -167,7 +197,7 @@ public class FileFormatValidator {
      */
     private static boolean isControlStructureWithSemicolon(String line) {
         return line.trim().matches(
-            "\\s*(for|while|do|switch|if)\\s*\\(.*\\)\\s*;\\s*"
+            JavaRegexConstants.FLOW_CONTROL_REGEX + FileFormatConstants.SEMICOLON
         );
     }
 
@@ -181,7 +211,15 @@ public class FileFormatValidator {
      */
     private static boolean isValidDeclarationOrMethod(String line) {
         return line.trim().matches(
-            ".*\\s*(public|private|protected|class|interface|enum|if|else|for|while|switch|do|try)\\s+.*\\{.*|.*\\)\\s*\\{.*"
+            "(" +
+            JavaRegexConstants.STRUCTURE_DECLARATION_REGEX + 
+            "|" +
+            JavaRegexConstants.METHOD_DECLARATION_REGEX +
+            "|" +
+            JavaRegexConstants.FLOW_CONTROL_REGEX +
+            ")" +
+            "\\" +
+            FileFormatConstants.OPENING_BRACE
         );
     }
 
@@ -194,7 +232,9 @@ public class FileFormatValidator {
      */
     private static boolean isValidForLoopStructure(String line) {
         return line.matches(
-            "\\s*for\\s*\\(.*;.*;.*\\)\\s*\\{?\\s*"
+            JavaRegexConstants.FLOW_CONTROL_REGEX + 
+            "\\" +
+            FileFormatConstants.OPENING_BRACE
         );
     }
 
@@ -207,10 +247,7 @@ public class FileFormatValidator {
      * {@code false} otherwise.
      */
     private static boolean isValidImportStatement(String line) {
-        if (line.startsWith("import")) {
-            return !line.contains(".*;");
-        }
-        return true;
+        return !line.matches(FileFormatConstants.IMPLICIT_IMPORT_REGEX);
     }
 
     /**
@@ -221,11 +258,8 @@ public class FileFormatValidator {
      * @return {@code true} if the annotation is correctly formatted, {@code false} otherwise.
      */
     private static boolean isValidAnnotationFormat(String currentLine, String previousLine) {
-        if (currentLine.startsWith("@")) {
-
-            if (currentLine.matches(".*\\s+(public|private|protected|class|interface|enum|void|int|String|boolean).*")) {
-                return false;
-            }
+        if (currentLine.startsWith("@") && currentLine.matches(JavaRegexConstants.ACCESS_MODIFIERS_REGEX)) {
+            return false;
         }
         return true;
     }

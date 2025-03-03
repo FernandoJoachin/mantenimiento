@@ -10,6 +10,5 @@ public class ResultPrinterConstants {
     public static final String PLUS_SIGN = "+";    
     public static final String MINUS_SIGN = "-";    
 
-    public static final int ONE = 1;
     public static final int TWO = 2;
 }
