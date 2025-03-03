@@ -21,13 +21,12 @@ public class PhysicalLineCounter implements LineCounter {
         List<String> lines = javaFile.getLines();
         int count = 0;
 
-        // Iterate through each line and count non-empty lines
         for (String line : lines) {
             if (!line.trim().isEmpty()) {
                 count++;
             }
         }
-
+        
         return count;
     }
 }
