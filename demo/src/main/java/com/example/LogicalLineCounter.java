@@ -13,7 +13,13 @@ import com.example.constants.JavaRegexConstants;
  * method declarations, flow control structures, and try blocks.
  */
 public class LogicalLineCounter implements LineCounter {
+    /**
+     * Regular expression pattern used to match logical line constructs.
+     */
     private Pattern pattern;
+    /**
+     * Matcher for evaluating patterns against each line.
+     */
     private Matcher matcher;
 
     /**
