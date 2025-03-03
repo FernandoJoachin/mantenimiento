@@ -18,8 +18,18 @@ public class FileFormatValidator {
      * Constant representing a single allowed statement per line.
      */
     public static final int NUMBER_OF_STATEMENT_PER_LINE = 1;
-    public final static String JAVA_FILE_TYPE = ".java";   
-    public final static int MAX_LINE_LENGTH = 120;
+    /**
+     * Represents the file extension for Java source files.
+     */
+    public static final String JAVA_FILE_TYPE = ".java";
+
+    /**
+     * Defines the maximum allowed length for a single line of code.
+     * This value helps enforce readability and maintainability
+     * in Java source files.
+     */
+    public static final int MAX_LINE_LENGTH = 120;
+
 
     /**
      * Validates the format of a given Java source file.
