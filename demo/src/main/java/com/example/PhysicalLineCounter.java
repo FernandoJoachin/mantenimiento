@@ -23,7 +23,6 @@ public class PhysicalLineCounter implements LineCounter {
         List<String> lines = javaFile.getLines();
         int count = 0;
 
-        // Iterate through each line and count non-empty lines
         for (String line : lines) {
 
             if (CommentValidator.isComment(line)) {
@@ -32,7 +31,7 @@ public class PhysicalLineCounter implements LineCounter {
                 count++;
             }
         }
-
+        
         return count;
     }
 }
