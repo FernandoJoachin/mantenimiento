@@ -56,8 +56,6 @@ public class FileFormatValidator {
                 continue;
             }
 
-            line = deleteStringInsideCode(line);
-
             if (!isValidLineLength(line)) {
                 throw new FileFormatException(
                     "Error: Line " +
@@ -68,6 +66,8 @@ public class FileFormatValidator {
                     FileFormatConstants.INVALID_LINE_LENGHT_MESSAGE
                 );
             }
+
+            line = deleteStringInsideCode(line);
 
             if (!isValidAnnotationFormat(line, i > 0 ? lines.get(i - 1).trim() : "")) {
                 throw new FileFormatException(
