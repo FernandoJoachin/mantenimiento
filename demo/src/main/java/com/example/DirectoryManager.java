@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
 import com.example.exceptions.FileException;
+import com.example.validators.FileFormatValidator;
 
 /**
  * The DirectoryManager class is responsible for managing and processing files within a specified directory.

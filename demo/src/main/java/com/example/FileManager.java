@@ -5,15 +5,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.example.exceptions.FileException;
 
 /**
  * The FileManager class handles file reading operations and provides functionality
- * to list file names in a directory. It also includes utility methods to remove
- * comments from code lines.
+ * to list file names in a directory.
  */
 class FileManager {
 
@@ -39,7 +37,7 @@ class FileManager {
                 lines.add(line);
             }
         }
-        return removeComments(lines);
+        return lines;
     }
 
     /**
@@ -55,25 +53,5 @@ class FileManager {
             return false;
         }
         return true;
-    }
-
-    /**
-     * Removes comments from a list of code lines.
-     * This method handles both block comments (e.g., /* ... * /)
-     * and line comments (e.g., // ...).
-     *
-     * @param lines List of original code lines.
-     * @return List of lines without comments.
-     */
-    private static List<String> removeComments(List<String> lines) {
-        String joinedLines = String.join("\n", lines);
-
-        // Remove block comments
-        joinedLines = joinedLines.replaceAll("(?s)/\\*.*?\\*/", "");
-
-        // Remove line comments
-        joinedLines = joinedLines.replaceAll("//.*(?=\n|$)", "");
-
-        return Arrays.asList(joinedLines.split("\n"));
     }
 }

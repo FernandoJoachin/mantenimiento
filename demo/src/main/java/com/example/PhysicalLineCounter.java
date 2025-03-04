@@ -2,6 +2,8 @@ package com.example;
 
 import java.util.List;
 
+import com.example.validators.CommentValidator;
+
 /**
  * This class extends the `LineCounter` abstract class and provides functionality
  * to count physical lines of code in a Java source file. It removes comments and
@@ -22,7 +24,10 @@ public class PhysicalLineCounter implements LineCounter {
         int count = 0;
 
         for (String line : lines) {
-            if (!line.trim().isEmpty()) {
+
+            if (CommentValidator.isComment(line)) {
+                continue;
+            } else if(!line.trim().isEmpty()) {
                 count++;
             }
         }
