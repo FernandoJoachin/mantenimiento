@@ -230,15 +230,7 @@ public class FileFormatValidator {
      */
     private static boolean isValidDeclaration(String line) {
         return line.trim().matches(
-            "(" +
-            JavaRegexConstants.STRUCTURE_DECLARATION_REGEX + 
-            "|" +
-            JavaRegexConstants.METHOD_DECLARATION_REGEX +
-            "|" +
-            JavaRegexConstants.FLOW_CONTROL_REGEX +
-            ")" +
-            "\\" +
-            SymbolsConstants.OPENING_BRACE
+            JavaRegexConstants.VALID_DECLARATION
         );
     }
 

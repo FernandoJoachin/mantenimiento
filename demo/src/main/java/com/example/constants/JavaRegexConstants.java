@@ -21,10 +21,5 @@ public class JavaRegexConstants {
         IDENTIFIER_DECLARATION_REGEX +     
         PARAMETERS_DECLARATION_REGEX +     
         THROWS_DECLARATION_REGEX;   
-    public static final String STRUCTURE_DECLARATION_REGEX =
-        ACCESS_MODIFIERS_REGEX +  
-        STRUCT_DECLARATION_REGEX + 
-        IDENTIFIER_DECLARATION_REGEX +  
-        GENERIC_PARAMETERS_REGEX + 
-        THROWS_DECLARATION_REGEX;
+    public static final String VALID_DECLARATION = ".*\\s*(public|private|protected|class|interface|enum|if|else|for|while|switch|do|try)\\s+.*\\{.*|.*\\)\\s*\\{.*";
 }
