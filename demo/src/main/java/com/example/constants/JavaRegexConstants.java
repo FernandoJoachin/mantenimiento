@@ -12,6 +12,8 @@ public class JavaRegexConstants {
     public final static String WILDCARD_IMPORT_REGEX = "^\\s*import\\s+[a-zA-Z0-9_.]+\\.\\*\\s*;$";
     public final static String FINAL_OR_STATIC_REGEX = "(?:(?:static\\s+)?(?:final\\s+)?|(?:final\\s+)?(?:static\\s+)?)?";
     public final static String TRY_DECLARATION_REGEX = "(try\\s+" + PARAMETERS_DECLARATION_REGEX + "?.*)";
+    public static final String QUOTED_STRING_REGEX = "\"[^\"]*\"|'[^']*'";
+    public static final String ANNOTATION_REGEX = "^\\s*@\\w+(\\(.*\\))?\\s*$";
     public static final String METHOD_DECLARATION_REGEX = 
         ACCESS_MODIFIERS_REGEX + 
         FINAL_OR_STATIC_REGEX +          

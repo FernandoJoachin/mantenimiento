@@ -12,10 +12,27 @@ import com.example.constants.SymbolsConstants;
  */
 public class ResultPrinter {
 
-    public static final String TITTLE_PROGRAM = "Programa";    
-    public static final String TITTLE_PHYSICAL_LOC = "LOC Físicas";    
-    public static final String TITTLE_LOGICAL_LOC = "LOC Lógicas"; 
-    public static final String COLUMN_FORMAT_TEMPLATE = "| %%-%ds | %%-%ds | %%-%ds |\n";   
+    /**
+     * Represents the title for the program column.
+     */
+    public static final String TITLE_PROGRAM = "Programa";
+
+    /**
+     * Represents the title for the physical lines of code (LOC) column.
+     */
+    public static final String TITLE_PHYSICAL_LOC = "LOC Físicas";
+
+    /**
+     * Represents the title for the logical lines of code (LOC) column.
+     */
+    public static final String TITLE_LOGICAL_LOC = "LOC Lógicas";
+
+    /**
+     * Defines the format template for a table column.
+     * This format ensures that each column has a fixed width, aligning text properly.
+     * The placeholders `%d` are used to specify column width dynamically.
+     */
+    public static final String COLUMN_FORMAT_TEMPLATE = "| %%-%ds | %%-%ds | %%-%ds |\n";
 
     /**
      * Defines the horizontal padding used in table formatting.
@@ -46,16 +63,16 @@ public class ResultPrinter {
      */
     private static String buildTable(String programName, int physicalLOC, int logicalLOC) {
 
-        int maxProgramLength = getMaxColumnWidth(TITTLE_PROGRAM, programName);
-        int maxPhysicalLength = getMaxColumnWidth(TITTLE_PHYSICAL_LOC, String.valueOf(physicalLOC));
-        int maxLogicalLength = getMaxColumnWidth(TITTLE_LOGICAL_LOC, String.valueOf(logicalLOC));
+        int maxProgramLength = getMaxColumnWidth(TITLE_PROGRAM, programName);
+        int maxPhysicalLength = getMaxColumnWidth(TITLE_PHYSICAL_LOC, String.valueOf(physicalLOC));
+        int maxLogicalLength = getMaxColumnWidth(TITLE_LOGICAL_LOC, String.valueOf(logicalLOC));
 
         String headerFormat = createHeaderFormat(maxProgramLength, maxPhysicalLength, maxLogicalLength);
         String separator = createSeparator(maxProgramLength, maxPhysicalLength, maxLogicalLength);
 
         StringBuilder table = new StringBuilder();
         table.append(separator);
-        table.append(String.format(headerFormat, TITTLE_PROGRAM, TITTLE_PHYSICAL_LOC, TITTLE_LOGICAL_LOC));
+        table.append(String.format(headerFormat, TITLE_PROGRAM, TITLE_PHYSICAL_LOC, TITLE_LOGICAL_LOC));
         table.append(separator);
         table.append(String.format(headerFormat, programName, physicalLOC, logicalLOC));
         table.append(separator);

@@ -69,6 +69,17 @@ public class FileFormatValidator {
                 );
             }
 
+            if (!isValidAnnotationFormat(line, i > 0 ? lines.get(i - 1).trim() : "")) {
+                throw new FileFormatException(
+                    "Error: Line " +
+                    (i + 1) + 
+                    " " + 
+                    fileName + 
+                    " " +
+                    FileFormatConstants.INVALID_ANOTATION_FORMAT_MESSAGE
+                );
+            }
+
             if (!isValidBracesStyle(line)) {
                 throw new FileFormatException(
                     "Error: Line " +
@@ -99,17 +110,6 @@ public class FileFormatValidator {
                     fileName +
                     " " +
                     FileFormatConstants.INVALID_IMPORT_STATEMENTS_MESSAGE
-                );
-            }
-
-            if (!isValidAnnotationFormat(line, i > 0 ? lines.get(i - 1).trim() : "")) {
-                throw new FileFormatException(
-                    "Error: Line " +
-                    (i + 1) + 
-                    " " + 
-                    fileName + 
-                    " " +
-                    FileFormatConstants.INVALID_ANOTATION_FORMAT_MESSAGE
                 );
             }
         }
@@ -180,7 +180,7 @@ public class FileFormatValidator {
      * @return The modified line without string literals.
      */
     private static String deleteStringInsideCode(String line) {
-        return line.replaceAll(FileFormatConstants.QUOTED_STRING_REGEX, "");
+        return line.replaceAll(JavaRegexConstants.QUOTED_STRING_REGEX, "");
     }
 
 
@@ -261,9 +261,10 @@ public class FileFormatValidator {
      * @return {@code true} if the annotation is correctly formatted, {@code false} otherwise.
      */
     private static boolean isValidAnnotationFormat(String currentLine, String previousLine) {
-        return !(
-            currentLine.startsWith("@") && 
-            currentLine.matches(JavaRegexConstants.ACCESS_MODIFIERS_REGEX
-        ));
+        if(!currentLine.startsWith("@")) {
+            return true;
+        }
+
+        return currentLine.matches(JavaRegexConstants.ANNOTATION_REGEX);
     }
 }
