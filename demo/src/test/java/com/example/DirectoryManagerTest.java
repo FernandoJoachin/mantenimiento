@@ -43,6 +43,8 @@ class DirectoryManagerTest {
         Files.write(javaFile1, List.of("public class File1 {}"));
         Path javaFile2 = tempDirectoryPath.resolve("File2.java");
         Files.write(javaFile2, List.of("public class File2 {}"));
+        Path txtFile = tempDirectoryPath.resolve("File3.txt");
+        Files.write(txtFile, List.of("public class File2 {}"));
 
         DirectoryManager directoryManager = new DirectoryManager(tempDirectoryPath.toString());
 
