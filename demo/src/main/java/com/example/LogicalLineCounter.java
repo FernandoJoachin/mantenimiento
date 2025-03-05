@@ -57,7 +57,10 @@ public class LogicalLineCounter implements LineCounter {
     private boolean isLogicalLine(String line) {
         line = line.trim();
 
-        if (Pattern.compile(JavaRegexConstants.CLASS_INSTANTIATION_REGEX).matcher(line).find()) {
+        this.pattern = Pattern.compile(
+            JavaRegexConstants.CLASS_INSTANTIATION_REGEX);
+            
+        if (this.pattern.matcher(line).find()) {
             return false;
         }
 
