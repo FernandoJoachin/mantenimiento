@@ -116,9 +116,15 @@ public class DirectoryManager {
         File[] allFiles = directory.listFiles();
         if (allFiles != null) {
             for (File file : allFiles) {
-                if (file.isFile() && file.getName().endsWith(".java")) {
-                    JavaFile javaFile = new JavaFile(file.getAbsolutePath(), file.getName());
-                    this.javaFiles.add(javaFile);
+                if (file.isFile()) {
+                    try {
+                        if(JavaFile.isValidFileType(file.getName())){
+                            JavaFile javaFile = new JavaFile(file.getAbsolutePath(), file.getName());
+                            this.javaFiles.add(javaFile);
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                 } else if (file.isDirectory()) {
                     listFilesRecursively(file);
                 }
