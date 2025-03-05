@@ -22,4 +22,5 @@ public class JavaRegexConstants {
         PARAMETERS_DECLARATION_REGEX +     
         THROWS_DECLARATION_REGEX;   
     public static final String VALID_DECLARATION = ".*\\s*(public|private|protected|class|interface|enum|if|else|for|while|switch|do|try)\\s+.*\\{.*|.*\\)\\s*\\{.*";
+    public static final String CLASS_INSTANTIATION_REGEX = ".*\\bnew\\s+(([a-zA-Z0-9_]+\\.)*[a-zA-Z0-9_]+(<[^>]+>)?\\s*\\([^)]*\\)).*";
 }

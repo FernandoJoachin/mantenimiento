@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.example.constants.JavaRegexConstants;
+import com.example.validators.CommentValidator;
 
 /**
  * The {@code LogicalLineCounter} class implements the {@code LineCounter} interface
@@ -33,9 +34,11 @@ public class LogicalLineCounter implements LineCounter {
     public int count(JavaFile javaFile) {
         List<String> lines = javaFile.getLines();
         int logicalLOC = 0;
-
+        CommentValidator validator = new CommentValidator();
         for (String line : lines) {
-            if (isLogicalLine(line)) {
+            if (validator.isComment(line)) {
+                continue;
+            } else if (isLogicalLine(line)) {
                 logicalLOC++;
             }
         }
@@ -53,6 +56,10 @@ public class LogicalLineCounter implements LineCounter {
      */
     private boolean isLogicalLine(String line) {
         line = line.trim();
+
+        if (Pattern.compile(JavaRegexConstants.CLASS_INSTANTIATION_REGEX).matcher(line).find()) {
+            return false;
+        }
 
         this.pattern = Pattern.compile(
             JavaRegexConstants.STRUCT_DECLARATION_REGEX + 

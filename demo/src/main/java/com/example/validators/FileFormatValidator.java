@@ -51,8 +51,8 @@ public class FileFormatValidator {
         List<String> lines = javaFile.getLines();
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i).trim();
-
-            if (line.isEmpty() || CommentValidator.isComment(line)) {
+            CommentValidator validator = new CommentValidator();
+            if (line.isEmpty() || validator.isComment(line)) {
                 continue;
             }
 
