@@ -18,10 +18,6 @@ public class FileFormatValidator {
      * Constant representing a single allowed statement per line.
      */
     public static final int NUMBER_OF_STATEMENT_PER_LINE = 1;
-    /**
-     * Represents the file extension for Java source files.
-     */
-    public static final String JAVA_FILE_TYPE = ".java";
 
     /**
      * Defines the maximum allowed length for a single line of code.
@@ -44,10 +40,6 @@ public class FileFormatValidator {
      */
     public static boolean isValidFileFormat(JavaFile javaFile) throws FileFormatException {
         String fileName = javaFile.getName();
-        if (!isValidFileType(fileName)) {
-            return false;
-        }
-
         List<String> lines = javaFile.getLines();
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i).trim();
@@ -55,8 +47,6 @@ public class FileFormatValidator {
             if (line.isEmpty() || CommentValidator.isComment(line)) {
                 continue;
             }
-
-            line = deleteStringInsideCode(line);
 
             if (!isValidLineLength(line)) {
                 throw new FileFormatException(
@@ -68,6 +58,8 @@ public class FileFormatValidator {
                     FileFormatConstants.INVALID_LINE_LENGHT_MESSAGE
                 );
             }
+
+            line = deleteStringInsideCode(line);
 
             if (!isValidAnnotationFormat(line, i > 0 ? lines.get(i - 1).trim() : "")) {
                 throw new FileFormatException(
@@ -115,16 +107,6 @@ public class FileFormatValidator {
         }
 
         return true;
-    }
-
-    /**
-     * Checks if the file has a valid Java file extension.
-     *
-     * @param fileName The name of the file to check.
-     * @return {@code true} if the file is a Java file, {@code false} otherwise.
-     */
-    private static boolean isValidFileType(String fileName) {
-        return fileName.endsWith(JAVA_FILE_TYPE);
     }
 
     /**

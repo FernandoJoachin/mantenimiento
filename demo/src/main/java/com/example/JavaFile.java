@@ -3,6 +3,7 @@ package com.example;
 import java.io.IOException;
 import java.util.List;
 
+import com.example.constants.FileFormatConstants;
 import com.example.exceptions.FileException;
 
 /**
@@ -47,7 +48,7 @@ public class JavaFile {
      * @throws FileException If an error occurs related to file handling (e.g., invalid file).
      * @throws IOException If an I/O error occurs during the file search process.
      */
-    public JavaFile(String filePath, String name) throws FileException, IOException {
+    public JavaFile(String filePath, String name) throws FileException, IOException {        
         this.filePath = filePath;
         this.name = name;
         this.lines = FileManager.readLines(this.filePath);
@@ -143,5 +144,15 @@ public class JavaFile {
      */
     public void setLogicalLines(int logicalLines) {
         this.logicalLines = logicalLines;
+    }
+
+    /**
+     * Checks if the file has a valid Java file extension.
+     *
+     * @param fileName The name of the file to check.
+     * @return {@code true} if the file is a Java file, {@code false} otherwise.
+     */
+    public static boolean isValidFileType(String name) {
+        return name.endsWith(FileFormatConstants.JAVA_FILE_TYPE);
     }
 }
