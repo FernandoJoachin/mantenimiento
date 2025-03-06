@@ -7,8 +7,8 @@ public class Example2 {
     public int methodTwo(int a, int b) {
         if(a > b){
             System.out.println("a is greater than b");
-        }else if (true) {
-            System.out.println('s');
+        }else if (a < b) {
+            System.out.println("a is less than b");
         }
         return a + b;
     }
