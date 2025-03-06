@@ -11,7 +11,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test class for DirectoryManager.
@@ -83,24 +85,52 @@ class DirectoryManagerTest {
             Path tempDirectoryPath = tempDir.resolve("testDirTemp");
             tempDirectoryPath.toFile().mkdir();
 
-            Path javaFile1 = tempDirectoryPath.resolve("File1.java");
+            Path javaFile1 = tempDirectoryPath.resolve("Example.java");
             Files.write(
                 javaFile1, 
                 List.of(
-                    "public class File1 {", 
-                    "    // Comment", 
-                    "    int x = 0;", "}"
+                    "package com.example.files;",
+                    "",
+                    "public class Example {",
+                    "    // Single-line comment",
+                    "",
+                    "    /* ",
+                    "     * Multi-line comment",
+                    "     * This should not be counted as a logical line",
+                    "     */",
+                    "",
+                    "    public static void main(String[] args) {",
+                    "        System.out.println(\\\"Hello, world!\\\");",
+                    "    }",
+                    "",
+                    "    public void methodOne() {",
+                    "        int x = 10;",
+                    "        int y = 20;",
+                    "        System.out.println(x + y);",
+                    "    }",
+                    "",
+                    "    public int methodTwo(int a, int b) {",
+                    "        return a + b;",
+                    "    }",
+                    "}"
                 )
             );
-            Path javaFile2 = tempDirectoryPath.resolve("File2.java");
+            Path javaFile2 = tempDirectoryPath.resolve("Example2.java");
             Files.write(
                 javaFile2, 
                 List.of(
-                    "public class File2 {", 
-                    "    /* Block comment */", 
-                    "    void method() {", 
-                    "       System.out.println(\\\"Hello, World!\\\");",
-                    "    }", 
+                    "package com.example.files;",
+                    "",
+                    "public class Example2 {",
+                    "    public void methodOne() {",
+                    "        int x = 10;",
+                    "        int y = 20;",
+                    "        System.out.println(x + y);",
+                    "    }",
+                    "",
+                    "    public int methodTwo(int a, int b) {",
+                    "        return a + b;",
+                    "    }",
                     "}"
                 )
             );
@@ -115,7 +145,7 @@ class DirectoryManagerTest {
             System.setOut(originalOut);
 
             String output = outputStream.toString();
-            assertTrue(output.contains("| testDirTemp | 8           | 3           |"));
+            assertTrue(output.contains("| testDirTemp | 25          | 7           |"));
 
             Files.delete(javaFile1);
             Files.delete(javaFile2);
