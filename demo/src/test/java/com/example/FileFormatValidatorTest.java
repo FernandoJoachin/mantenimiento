@@ -17,10 +17,25 @@ import com.example.exceptions.FileException;
 import com.example.exceptions.FileFormatException;
 import com.example.validators.FileFormatValidator;
 
+/**
+ * Test class for FileFormatValidator.
+ * This class contains unit tests to validate the functionality of the FileFormatValidator class,
+ * ensuring that Java files adhere to specific formatting rules.
+ */
 public class FileFormatValidatorTest {
+    /**
+     * Temporary directory used for testing. This directory is automatically created before each test
+     * and deleted after the test completes. It provides a clean environment for file operations.
+     */
     @TempDir
     Path tempDir;
 
+    /**
+     * Test to verify that a file with lines shorter than the maximum allowed length is valid.
+     *
+     * @throws IOException if an I/O error occurs.
+     * @throws FileException if a file-related exception occurs.
+     */
     @Test
     public void testIsValidLineLength_Correct() throws IOException, FileException {
         File javaFile = new File(tempDir.toFile(), "ValidFile.java");
@@ -41,6 +56,13 @@ public class FileFormatValidatorTest {
         );
     }
 
+    /**
+     * Test to verify that a file with lines longer than the maximum allowed length is invalid.
+     *
+     * @throws IOException if an I/O error occurs.
+     * @throws FileException if a file-related exception occurs.
+     * @throws FileFormatException if the file format is invalid.
+     */
     @Test
     public void testIsValidLineLength_Incorrect() throws IOException, FileException, FileFormatException {
         File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
@@ -62,6 +84,13 @@ public class FileFormatValidatorTest {
         );
     }
 
+    /**
+     * Test to verify that a file with only one executable statement per line is valid.
+     *
+     * @throws IOException if an I/O error occurs.
+     * @throws FileException if a file-related exception occurs.
+     * @throws FileFormatException if the file format is invalid.
+     */
     @Test
     public void testIsValidMultipleStatements_Correct() throws IOException, FileException, FileFormatException {
         File javaFile = new File(tempDir.toFile(), "ValidFile.java");
@@ -85,6 +114,13 @@ public class FileFormatValidatorTest {
         );
     }
 
+    /**
+     * Test to verify that a file with multiple executable statements per line is invalid.
+     *
+     * @throws IOException if an I/O error occurs.
+     * @throws FileException if a file-related exception occurs.
+     * @throws FileFormatException if the file format is invalid.
+     */
     @Test
     public void testIsValidMultipleStatements_Incorrect() throws IOException, FileException, FileFormatException {
         File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
@@ -108,6 +144,13 @@ public class FileFormatValidatorTest {
         );
     }
 
+    /**
+     * Test to verify that a file with K&R style braces is valid.
+     *
+     * @throws IOException if an I/O error occurs.
+     * @throws FileException if a file-related exception occurs.
+     * @throws FileFormatException if the file format is invalid.
+     */
     @Test
     public void testIsValidBracesStyle_Correct() throws IOException, FileException, FileFormatException {
         File javaFile = new File(tempDir.toFile(), "ValidFile.java");
@@ -128,6 +171,13 @@ public class FileFormatValidatorTest {
         );
     }
 
+    /**
+     * Test to verify that a file with Allman style braces is invalid.
+     *
+     * @throws IOException if an I/O error occurs.
+     * @throws FileException if a file-related exception occurs.
+     * @throws FileFormatException if the file format is invalid.
+     */
     @Test
     public void testIsValidBracesStyle_Incorrect() throws IOException, FileException, FileFormatException {
         File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
@@ -149,6 +199,13 @@ public class FileFormatValidatorTest {
         );
     }
 
+    /**
+     * Test to verify that a file with explicit imports is valid.
+     *
+     * @throws IOException if an I/O error occurs.
+     * @throws FileException if a file-related exception occurs.
+     * @throws FileFormatException if the file format is invalid.
+     */
     @Test
     public void testIsValidImportStatement_Correct() throws IOException, FileException, FileFormatException {
         File javaFile = new File(tempDir.toFile(), "ValidFile.java");
@@ -170,6 +227,13 @@ public class FileFormatValidatorTest {
         );
     }
 
+    /**
+     * Test to verify that a file with wildcard imports is invalid.
+     *
+     * @throws IOException if an I/O error occurs.
+     * @throws FileException if a file-related exception occurs.
+     * @throws FileFormatException if the file format is invalid.
+     */
     @Test
     public void testIsValidImportStatement_Incorrect() throws IOException, FileException, FileFormatException {
         File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
@@ -191,6 +255,13 @@ public class FileFormatValidatorTest {
         );
     }
 
+    /**
+     * Test to verify that a file with annotations on separate lines is valid.
+     *
+     * @throws IOException if an I/O error occurs.
+     * @throws FileException if a file-related exception occurs.
+     * @throws FileFormatException if the file format is invalid.
+     */
     @Test
     public void testIsValidAnnotationFormat_Correct() throws IOException, FileException, FileFormatException {
         File javaFile = new File(tempDir.toFile(), "ValidFile.java");
@@ -210,6 +281,13 @@ public class FileFormatValidatorTest {
         );
     }
 
+    /**
+     * Test to verify that a file with annotations on the same line as declarations is invalid.
+     *
+     * @throws IOException if an I/O error occurs.
+     * @throws FileException if a file-related exception occurs.
+     * @throws FileFormatException if the file format is invalid.
+     */
     @Test
     public void testIsValidAnnotationFormat_Incorrect() throws IOException, FileException, FileFormatException {
         File javaFile = new File(tempDir.toFile(), "InvalidFile.java");

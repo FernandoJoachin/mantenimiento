@@ -15,10 +15,25 @@ import org.junit.jupiter.api.io.TempDir;
 
 import com.example.exceptions.FileException;
 
+/**
+ * Test class for FileManager.
+ * This class contains unit tests to validate the functionality of the FileManager class,
+ * specifically focusing on reading lines from a file.
+ */
 public class FileManagerTest {
+    /**
+     * Temporary directory used for testing. This directory is automatically created before each test
+     * and deleted after the test completes. It provides a clean environment for file operations.
+     */
     @TempDir
     Path tempDir;
 
+    /**
+     * Test to verify that lines are correctly read from a valid file.
+     *
+     * @throws IOException if an I/O error occurs while writing to or reading from the file.
+     * @throws FileException if a file-related exception occurs.
+     */
     @Test
     public void testReadLines_validFile() throws IOException, FileException {
         File tempFile = tempDir.resolve("TestFile.java").toFile();
@@ -61,6 +76,12 @@ public class FileManagerTest {
         );
     }
 
+    /**
+     * Test to verify that an exception is thrown when attempting to read from an invalid file.
+     *
+     * @throws IOException if an I/O error occurs while creating the file path.
+     * @throws FileException if a file-related exception occurs.
+     */
     @Test
     public void testReadLines_invalidFile() throws IOException, FileException {
         String invalidFilePath = tempDir.resolve("NonExistentFile.java").toString();

@@ -6,11 +6,27 @@ package com.example.validators;
  * whether the validator is inside a block comment.
  */
 public class CommentValidator {
-
+    /**
+     * Regular expression to match line comments. A line comment starts with {@code //} and
+     * can be preceded by whitespace characters.
+     */
     private final String LINE_COMMENT_REGEX = "^\\s*//.*";
+
+    /**
+     * Regular expression to match the start of a block comment. A block comment starts with
+     * {@code /*} and can be preceded by whitespace characters.
+     */
     private final String START_BLOCK_COMMENT_REGEX = "^\\s*/\\*.*";
+
+    /**
+     * Regular expression to match the end of a block comment. A block comment ends with
+     * {@code * /} and can be followed by whitespace characters.
+     */
     private final String END_BLOCK_COMMENT_REGEX = ".*\\*/\\s*$";
-    
+
+    /**
+     * Indicates whether the validator is currently inside a block comment.
+     */
     private boolean isInsideBlockComment = false;
 
     /**

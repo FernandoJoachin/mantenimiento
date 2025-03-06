@@ -13,10 +13,21 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for DirectoryManager.
+ * This class contains unit and integration tests for the methods in DirectoryManager.
+ */
 class DirectoryManagerTest {
+    /**
+     * Temporary directory used for testing. This directory is automatically created before each test
+     * and deleted after the test completes. It provides a clean environment for file operations.
+     */
     @TempDir
     Path tempDir;
 
+    /**
+     * Test to verify that a valid directory is recognized as such.
+     */
     @Test
     void testIsValidDirectory_validDirectory() {
         Path tempDirectoryPath = tempDir.resolve("testDir");
@@ -27,6 +38,9 @@ class DirectoryManagerTest {
         assertTrue(directoryManager.isValidDirectory());
     }
 
+    /**
+     * Test to verify that an invalid directory is recognized as such.
+     */
     @Test
     void testIsValidDirectory_invalidDirectory() {
         DirectoryManager directoryManager = new DirectoryManager("nonexistentDir");
@@ -34,6 +48,12 @@ class DirectoryManagerTest {
         assertFalse(directoryManager.isValidDirectory());
     }
 
+    /**
+     * Test to verify that all Java files in a valid directory are retrieved correctly.
+     *
+     * @throws IOException if an I/O error occurs.
+     * @throws FileException if a file-related exception occurs.
+     */
     @Test
     void testGetAllJavaFiles_validDirectory() throws IOException, FileException {
         Path tempDirectoryPath = tempDir.resolve("testDir");
@@ -55,6 +75,16 @@ class DirectoryManagerTest {
         assertTrue(javaFiles.stream().anyMatch(file -> file.getName().equals("File2.java")));
     }
 
+    /**
+     * Integration test to verify the processing of a directory, including file analysis and output.
+     *
+     * @throws IOException if an I/O error occurs.
+     * @throws FileException if a file-related exception occurs.
+     * @throws NoSuchFieldException if a field is not found.
+     * @throws SecurityException if a security violation occurs.
+     * @throws IllegalArgumentException if an illegal argument is provided.
+     * @throws IllegalAccessException if access to a field is denied.
+     */
     @Test
     void testProcessDirectory_IntegrationTest() throws IOException, FileException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         Path tempDirectoryPath = tempDir.resolve("testDirTemp");
