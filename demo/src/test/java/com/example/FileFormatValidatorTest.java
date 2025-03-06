@@ -23,286 +23,291 @@ import com.example.validators.FileFormatValidator;
  * ensuring that Java files adhere to specific formatting rules.
  */
 public class FileFormatValidatorTest {
-    /**
-     * Temporary directory used for testing. This directory is automatically created before each test
-     * and deleted after the test completes. It provides a clean environment for file operations.
-     */
-    @TempDir
-    Path tempDir;
 
     /**
      * Test to verify that a file with lines shorter than the maximum allowed length is valid.
-     *
-     * @throws IOException if an I/O error occurs.
-     * @throws FileException if a file-related exception occurs.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testIsValidLineLength_Correct() throws IOException, FileException {
-        File javaFile = new File(tempDir.toFile(), "ValidFile.java");
-        List<String> shortLineFile = Arrays.asList(
-            "public class Test {",
-            "    public static void main(String[] args) {",
-            "        System.out.println(\"Hello, World!\");",
-            "    }",
-            "}"
-        );
+    public void testIsValidLineLength_Correct(@TempDir Path tempDir) {
+        try {
+            File javaFile = new File(tempDir.toFile(), "ValidFile.java");
+            List<String> shortLineFile = Arrays.asList(
+                "public class Test {",
+                "    public static void main(String[] args) {",
+                "        System.out.println(\"Hello, World!\");",
+                "    }",
+                "}"
+            );
 
-        Files.write(javaFile.toPath(), shortLineFile);
-        JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
+            Files.write(javaFile.toPath(), shortLineFile);
+            JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
 
-        assertDoesNotThrow(() ->
-            FileFormatValidator.isValidFileFormat(javaFileObject),
-            "The file with lines with less than 120 characters must be valid."
-        );
+            assertDoesNotThrow(() ->
+                FileFormatValidator.isValidFileFormat(javaFileObject),
+                "The file with lines with less than 120 characters must be valid."
+            );
+        } catch (IOException | FileException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Test to verify that a file with lines longer than the maximum allowed length is invalid.
-     *
-     * @throws IOException if an I/O error occurs.
-     * @throws FileException if a file-related exception occurs.
-     * @throws FileFormatException if the file format is invalid.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testIsValidLineLength_Incorrect() throws IOException, FileException, FileFormatException {
-        File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
-        List<String> longLineFile = Arrays.asList(
-            "public class Test {",
-            "    public static void main(String[] args) {",
-            "  String mensaje = \"El sistema ha procesado la solicitud exitosamente y ha generado un identificador único para su referencia: 1234567890. Por favor, guarde este identificador para futuras consultas.\";",
-            "        System.out.println(mensaje);",
-            "    }",
-            "}"
-        );
+    public void testIsValidLineLength_Incorrect(@TempDir Path tempDir) {
+        try {
+            File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
+            List<String> longLineFile = Arrays.asList(
+                "public class Test {",
+                "    public static void main(String[] args) {",
+                "  String mensaje = \"El sistema ha procesado la solicitud exitosamente y ha generado un identificador único para su referencia: 1234567890. Por favor, guarde este identificador para futuras consultas.\";",
+                "        System.out.println(mensaje);",
+                "    }",
+                "}"
+            );
 
-        Files.write(javaFile.toPath(), longLineFile);
-        JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
+            Files.write(javaFile.toPath(), longLineFile);
+            JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
 
-        assertThrows(FileFormatException.class, () ->
-            FileFormatValidator.isValidFileFormat(javaFileObject),
-            "The file with lines with more than 120 characters must be invalid."
-        );
+            assertThrows(FileFormatException.class, () ->
+                FileFormatValidator.isValidFileFormat(javaFileObject),
+                "The file with lines with more than 120 characters must be invalid."
+            );
+        } catch (IOException | FileException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Test to verify that a file with only one executable statement per line is valid.
-     *
-     * @throws IOException if an I/O error occurs.
-     * @throws FileException if a file-related exception occurs.
-     * @throws FileFormatException if the file format is invalid.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testIsValidMultipleStatements_Correct() throws IOException, FileException, FileFormatException {
-        File javaFile = new File(tempDir.toFile(), "ValidFile.java");
-        List<String> singleStatementFile = Arrays.asList(
-            "public class Test {",
-            "    public static void main(String[] args) {",
-            "       int a = 0;",
-            "       for (int i = 0; i < 10; i++) {",
-            "           System.out.println(a+i);",
-            "       }",
-            "    }",
-            "}"
-        );
+    public void testIsValidMultipleStatements_Correct(@TempDir Path tempDir) {
+        try {
+            File javaFile = new File(tempDir.toFile(), "ValidFile.java");
+            List<String> singleStatementFile = Arrays.asList(
+                "public class Test {",
+                "    public static void main(String[] args) {",
+                "       int a = 0;",
+                "       for (int i = 0; i < 10; i++) {",
+                "           System.out.println(a+i);",
+                "       }",
+                "    }",
+                "}"
+            );
 
-        Files.write(javaFile.toPath(), singleStatementFile);
-        JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
+            Files.write(javaFile.toPath(), singleStatementFile);
+            JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
 
-        assertDoesNotThrow(() ->
-            FileFormatValidator.isValidFileFormat(javaFileObject),
-            "The file with lines with only one executable statement must be valid."
-        );
+            assertDoesNotThrow(() ->
+                FileFormatValidator.isValidFileFormat(javaFileObject),
+                "The file with lines with only one executable statement must be valid."
+            );
+        } catch (IOException | FileException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Test to verify that a file with multiple executable statements per line is invalid.
-     *
-     * @throws IOException if an I/O error occurs.
-     * @throws FileException if a file-related exception occurs.
-     * @throws FileFormatException if the file format is invalid.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testIsValidMultipleStatements_Incorrect() throws IOException, FileException, FileFormatException {
-        File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
-        List<String> multipleStatementsFile = Arrays.asList(
-            "public class Test {",
-            "    public static void main(String[] args) {",
-            "       int a = 5; int b = 10;",
-            "       for (int i = 0; i < 10; i++) {",
-            "           System.out.println(a+b+i);",
-            "       }",
-            "    }",
-            "}"
-        );
+    public void testIsValidMultipleStatements_Incorrect(@TempDir Path tempDir) {
+        try {
+            File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
+            List<String> multipleStatementsFile = Arrays.asList(
+                "public class Test {",
+                "    public static void main(String[] args) {",
+                "       int a = 5; int b = 10;",
+                "       for (int i = 0; i < 10; i++) {",
+                "           System.out.println(a+b+i);",
+                "       }",
+                "    }",
+                "}"
+            );
 
-        Files.write(javaFile.toPath(), multipleStatementsFile);
-        JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
+            Files.write(javaFile.toPath(), multipleStatementsFile);
+            JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
 
-        assertThrows(FileFormatException.class, () ->
-            FileFormatValidator.isValidFileFormat(javaFileObject),
-            "File with lines with multiple executable statements must be invalid."
-        );
+            assertThrows(FileFormatException.class, () ->
+                FileFormatValidator.isValidFileFormat(javaFileObject),
+                "File with lines with multiple executable statements must be invalid."
+            );
+        } catch (IOException | FileException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Test to verify that a file with K&R style braces is valid.
-     *
-     * @throws IOException if an I/O error occurs.
-     * @throws FileException if a file-related exception occurs.
-     * @throws FileFormatException if the file format is invalid.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testIsValidBracesStyle_Correct() throws IOException, FileException, FileFormatException {
-        File javaFile = new File(tempDir.toFile(), "ValidFile.java");
-        List<String> validBraceFile = Arrays.asList(
-            "public class Test {",
-            "    public static void main(String[] args) {",
-            "        System.out.println(\"Hello, World!\");",
-            "    }",
-            "}"
-        );
+    public void testIsValidBracesStyle_Correct(@TempDir Path tempDir) {
+        try {
+            File javaFile = new File(tempDir.toFile(), "ValidFile.java");
+            List<String> validBraceFile = Arrays.asList(
+                "public class Test {",
+                "    public static void main(String[] args) {",
+                "        System.out.println(\"Hello, World!\");",
+                "    }",
+                "}"
+            );
 
-        Files.write(javaFile.toPath(), validBraceFile);
-        JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
+            Files.write(javaFile.toPath(), validBraceFile);
+            JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
 
-        assertDoesNotThrow(() ->
-            FileFormatValidator.isValidFileFormat(javaFileObject),
-            "File for lines with K&R style braces must be valid."
-        );
+            assertDoesNotThrow(() ->
+                FileFormatValidator.isValidFileFormat(javaFileObject),
+                "File for lines with K&R style braces must be valid."
+            );
+        } catch (IOException | FileException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Test to verify that a file with Allman style braces is invalid.
-     *
-     * @throws IOException if an I/O error occurs.
-     * @throws FileException if a file-related exception occurs.
-     * @throws FileFormatException if the file format is invalid.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testIsValidBracesStyle_Incorrect() throws IOException, FileException, FileFormatException {
-        File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
-        List<String> invalidBraceFile = Arrays.asList(
-            "public class Test {",
-            "    public static void main(String[] args)",
-            "{",
-            "        System.out.println(\"Hello, World!\");",
-            "    }",
-            "}"
-        );
+    public void testIsValidBracesStyle_Incorrect(@TempDir Path tempDir) {
+        try {
+            File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
+            List<String> invalidBraceFile = Arrays.asList(
+                "public class Test {",
+                "    public static void main(String[] args)",
+                "{",
+                "        System.out.println(\"Hello, World!\");",
+                "    }",
+                "}"
+            );
 
-        Files.write(javaFile.toPath(), invalidBraceFile);
-        JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
+            Files.write(javaFile.toPath(), invalidBraceFile);
+            JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
 
-        assertThrows(FileFormatException.class, () ->
-            FileFormatValidator.isValidFileFormat(javaFileObject),
-            "File for lines with Allman style braces must be invalid."
-        );
+            assertThrows(FileFormatException.class, () ->
+                FileFormatValidator.isValidFileFormat(javaFileObject),
+                "File for lines with Allman style braces must be invalid."
+            );
+        } catch (IOException | FileException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Test to verify that a file with explicit imports is valid.
-     *
-     * @throws IOException if an I/O error occurs.
-     * @throws FileException if a file-related exception occurs.
-     * @throws FileFormatException if the file format is invalid.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testIsValidImportStatement_Correct() throws IOException, FileException, FileFormatException {
-        File javaFile = new File(tempDir.toFile(), "ValidFile.java");
-        List<String> explicitImportFile = Arrays.asList(
-            "import java.util.List;",
-            "public class Test {",
-            "    public static void main(String[] args) {",
-            "        System.out.println(\"Hello, World!\");",
-            "    }",
-            "}"
-        );
+    public void testIsValidImportStatement_Correct(@TempDir Path tempDir) {
+        try {
+            File javaFile = new File(tempDir.toFile(), "ValidFile.java");
+            List<String> explicitImportFile = Arrays.asList(
+                "import java.util.List;",
+                "public class Test {",
+                "    public static void main(String[] args) {",
+                "        System.out.println(\"Hello, World!\");",
+                "    }",
+                "}"
+            );
 
-        Files.write(javaFile.toPath(), explicitImportFile);
-        JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
+            Files.write(javaFile.toPath(), explicitImportFile);
+            JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
 
-        assertDoesNotThrow(() ->
-            FileFormatValidator.isValidFileFormat(javaFileObject),
-            "File with explicit import must be valid."
-        );
+            assertDoesNotThrow(() ->
+                FileFormatValidator.isValidFileFormat(javaFileObject),
+                "File with explicit import must be valid."
+            );
+        } catch (IOException | FileException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Test to verify that a file with wildcard imports is invalid.
-     *
-     * @throws IOException if an I/O error occurs.
-     * @throws FileException if a file-related exception occurs.
-     * @throws FileFormatException if the file format is invalid.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testIsValidImportStatement_Incorrect() throws IOException, FileException, FileFormatException {
-        File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
-        List<String> wildcardImportFile = Arrays.asList(
-            "import java.util.*;",
-            "public class Test {",
-            "    public static void main(String[] args) {",
-            "        System.out.println(\"Hello, World!\");",
-            "    }",
-            "}"
-        );
+    public void testIsValidImportStatement_Incorrect(@TempDir Path tempDir) {
+        try {
+            File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
+            List<String> wildcardImportFile = Arrays.asList(
+                "import java.util.*;",
+                "public class Test {",
+                "    public static void main(String[] args) {",
+                "        System.out.println(\"Hello, World!\");",
+                "    }",
+                "}"
+            );
 
-        Files.write(javaFile.toPath(), wildcardImportFile);
-        JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
+            Files.write(javaFile.toPath(), wildcardImportFile);
+            JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
 
-        assertThrows(FileFormatException.class, () ->
-            FileFormatValidator.isValidFileFormat(javaFileObject),
-            "File with wildcard import must be invalid."
-        );
+            assertThrows(FileFormatException.class, () ->
+                FileFormatValidator.isValidFileFormat(javaFileObject),
+                "File with wildcard import must be invalid."
+            );
+        } catch (IOException | FileException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Test to verify that a file with annotations on separate lines is valid.
-     *
-     * @throws IOException if an I/O error occurs.
-     * @throws FileException if a file-related exception occurs.
-     * @throws FileFormatException if the file format is invalid.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testIsValidAnnotationFormat_Correct() throws IOException, FileException, FileFormatException {
-        File javaFile = new File(tempDir.toFile(), "ValidFile.java");
-        List<String> correctAnnotationFile = Arrays.asList(
-            "@Override",
-            "public void method() {",
-            "    System.out.println(\"Hello, World!\");",
-            "}"
-        );
+    public void testIsValidAnnotationFormat_Correct(@TempDir Path tempDir) {
+        try {
+            File javaFile = new File(tempDir.toFile(), "ValidFile.java");
+            List<String> correctAnnotationFile = Arrays.asList(
+                "@Override",
+                "public void method() {",
+                "    System.out.println(\"Hello, World!\");",
+                "}"
+            );
 
-        Files.write(javaFile.toPath(), correctAnnotationFile);
-        JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
+            Files.write(javaFile.toPath(), correctAnnotationFile);
+            JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
 
-        assertDoesNotThrow(() ->
-            FileFormatValidator.isValidFileFormat(javaFileObject),
-            "File with annotation on a separate line must be valid."
-        );
+            assertDoesNotThrow(() ->
+                FileFormatValidator.isValidFileFormat(javaFileObject),
+                "File with annotation on a separate line must be valid."
+            );
+        } catch (IOException | FileException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Test to verify that a file with annotations on the same line as declarations is invalid.
-     *
-     * @throws IOException if an I/O error occurs.
-     * @throws FileException if a file-related exception occurs.
-     * @throws FileFormatException if the file format is invalid.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testIsValidAnnotationFormat_Incorrect() throws IOException, FileException, FileFormatException {
-        File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
-        List<String> annotationWithDeclarationFile = Arrays.asList(
-            "@Override public void method() {",
-            "    System.out.println(\"Hello, World!\");",
-            "}"
-        );
+    public void testIsValidAnnotationFormat_Incorrect(@TempDir Path tempDir) {
+        try {
+            File javaFile = new File(tempDir.toFile(), "InvalidFile.java");
+            List<String> annotationWithDeclarationFile = Arrays.asList(
+                "@Override public void method() {",
+                "    System.out.println(\"Hello, World!\");",
+                "}"
+            );
 
-        Files.write(javaFile.toPath(), annotationWithDeclarationFile);
-        JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
+            Files.write(javaFile.toPath(), annotationWithDeclarationFile);
+            JavaFile javaFileObject = new JavaFile(javaFile.getAbsolutePath(), javaFile.getName());
 
-        assertThrows(FileFormatException.class, () ->
-            FileFormatValidator.isValidFileFormat(javaFileObject),
-            "File with annotation on the same line as a declaration must be invalid."
-        );
+            assertThrows(FileFormatException.class, () ->
+                FileFormatValidator.isValidFileFormat(javaFileObject),
+                "File with annotation on the same line as a declaration must be invalid."
+            );
+        } catch (IOException | FileException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

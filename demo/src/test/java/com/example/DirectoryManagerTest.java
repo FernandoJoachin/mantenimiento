@@ -18,18 +18,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * This class contains unit and integration tests for the methods in DirectoryManager.
  */
 class DirectoryManagerTest {
-    /**
-     * Temporary directory used for testing. This directory is automatically created before each test
-     * and deleted after the test completes. It provides a clean environment for file operations.
-     */
-    @TempDir
-    Path tempDir;
 
     /**
      * Test to verify that a valid directory is recognized as such.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testIsValidDirectory_validDirectory() {
+    public void testIsValidDirectory_validDirectory(@TempDir Path tempDir) {
         Path tempDirectoryPath = tempDir.resolve("testDir");
         tempDirectoryPath.toFile().mkdir();
 
@@ -40,9 +35,10 @@ class DirectoryManagerTest {
 
     /**
      * Test to verify that an invalid directory is recognized as such.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testIsValidDirectory_invalidDirectory() {
+    public void testIsValidDirectory_invalidDirectory(@TempDir Path tempDir) {
         DirectoryManager directoryManager = new DirectoryManager("nonexistentDir");
 
         assertFalse(directoryManager.isValidDirectory());
@@ -50,43 +46,39 @@ class DirectoryManagerTest {
 
     /**
      * Test to verify that all Java files in a valid directory are retrieved correctly.
-     *
-     * @throws IOException if an I/O error occurs.
-     * @throws FileException if a file-related exception occurs.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testGetAllJavaFiles_validDirectory() throws IOException, FileException {
-        Path tempDirectoryPath = tempDir.resolve("testDir");
-        tempDirectoryPath.toFile().mkdir();
+    public void testGetAllJavaFiles_validDirectory(@TempDir Path tempDir) throws IOException, FileException {
+        try {
+            Path tempDirectoryPath = tempDir.resolve("testDir");
+            tempDirectoryPath.toFile().mkdir();
 
-        Path javaFile1 = tempDirectoryPath.resolve("File1.java");
-        Files.write(javaFile1, List.of("public class File1 {}"));
-        Path javaFile2 = tempDirectoryPath.resolve("File2.java");
-        Files.write(javaFile2, List.of("public class File2 {}"));
-        Path txtFile = tempDirectoryPath.resolve("File3.txt");
-        Files.write(txtFile, List.of("public class File2 {}"));
+            Path javaFile1 = tempDirectoryPath.resolve("File1.java");
+            Files.write(javaFile1, List.of("public class File1 {}"));
+            Path javaFile2 = tempDirectoryPath.resolve("File2.java");
+            Files.write(javaFile2, List.of("public class File2 {}"));
+            Path txtFile = tempDirectoryPath.resolve("File3.txt");
+            Files.write(txtFile, List.of("public class File2 {}"));
 
-        DirectoryManager directoryManager = new DirectoryManager(tempDirectoryPath.toString());
+            DirectoryManager directoryManager = new DirectoryManager(tempDirectoryPath.toString());
 
-        List<JavaFile> javaFiles = directoryManager.getAllJavaFiles();
+            List<JavaFile> javaFiles = directoryManager.getAllJavaFiles();
 
-        assertEquals(2, javaFiles.size());
-        assertTrue(javaFiles.stream().anyMatch(file -> file.getName().equals("File1.java")));
-        assertTrue(javaFiles.stream().anyMatch(file -> file.getName().equals("File2.java")));
+            assertEquals(2, javaFiles.size());
+            assertTrue(javaFiles.stream().anyMatch(file -> file.getName().equals("File1.java")));
+            assertTrue(javaFiles.stream().anyMatch(file -> file.getName().equals("File2.java")));
+        } catch (IOException | FileException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Integration test to verify the processing of a directory, including file analysis and output.
-     *
-     * @throws IOException if an I/O error occurs.
-     * @throws FileException if a file-related exception occurs.
-     * @throws NoSuchFieldException if a field is not found.
-     * @throws SecurityException if a security violation occurs.
-     * @throws IllegalArgumentException if an illegal argument is provided.
-     * @throws IllegalAccessException if access to a field is denied.
+     * @param tempDir a temporary directory provided by JUnit for storing test files.
      */
     @Test
-    public void testProcessDirectory_IntegrationTest() {
+    public void testProcessDirectory_IntegrationTest(@TempDir Path tempDir) {
         try {
             Path tempDirectoryPath = tempDir.resolve("testDirTemp");
             tempDirectoryPath.toFile().mkdir();
@@ -129,7 +121,7 @@ class DirectoryManagerTest {
             Files.delete(javaFile2);
             Files.delete(tempDirectoryPath);
         } catch (Exception e) {
-            System.out.println(e);
+            throw new RuntimeException(e);
         }
     }
 }
