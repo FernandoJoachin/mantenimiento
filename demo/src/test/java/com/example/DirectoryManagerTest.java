@@ -29,7 +29,7 @@ class DirectoryManagerTest {
      * Test to verify that a valid directory is recognized as such.
      */
     @Test
-    void testIsValidDirectory_validDirectory() {
+    public void testIsValidDirectory_validDirectory() {
         Path tempDirectoryPath = tempDir.resolve("testDir");
         tempDirectoryPath.toFile().mkdir();
 
@@ -42,7 +42,7 @@ class DirectoryManagerTest {
      * Test to verify that an invalid directory is recognized as such.
      */
     @Test
-    void testIsValidDirectory_invalidDirectory() {
+    public void testIsValidDirectory_invalidDirectory() {
         DirectoryManager directoryManager = new DirectoryManager("nonexistentDir");
 
         assertFalse(directoryManager.isValidDirectory());
@@ -55,7 +55,7 @@ class DirectoryManagerTest {
      * @throws FileException if a file-related exception occurs.
      */
     @Test
-    void testGetAllJavaFiles_validDirectory() throws IOException, FileException {
+    public void testGetAllJavaFiles_validDirectory() throws IOException, FileException {
         Path tempDirectoryPath = tempDir.resolve("testDir");
         tempDirectoryPath.toFile().mkdir();
 
@@ -86,7 +86,7 @@ class DirectoryManagerTest {
      * @throws IllegalAccessException if access to a field is denied.
      */
     @Test
-    void testProcessDirectory_IntegrationTest() throws IOException, FileException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+    public void testProcessDirectory_IntegrationTest() throws IOException, FileException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         Path tempDirectoryPath = tempDir.resolve("testDirTemp");
         tempDirectoryPath.toFile().mkdir();
 
