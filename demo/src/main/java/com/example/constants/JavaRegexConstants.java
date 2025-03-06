@@ -110,11 +110,14 @@ public class JavaRegexConstants {
      * methods, control flow statements, and more.
      * Example: "public class MyClass { ... }", "if (condition) { ... }".
      */
-    public static final String VALID_DECLARATION = ".*\\s*(public|private|protected|class|interface|enum|if|else|for|while|switch|do|try)\\s+.*\\{.*|.*\\)\\s*\\{.*";
+    public static final String VALID_DECLARATION = ".*\\s*" +
+        "(public|private|protected|class|interface|enum|if|else|for|while|switch|do|try)" +
+        "\\s+.*\\{.*|.*\\)\\s*\\{.*";
 
     /**
      * Regular expression to match class instantiation with the "new" keyword.
      * Example: "new MyClass()", "new ArrayList<String>()".
      */
-    public static final String CLASS_INSTANTIATION_REGEX = ".*\\bnew\\s+(([a-zA-Z0-9_]+\\.)*[a-zA-Z0-9_]+(<[^>]+>)?\\s*\\([^)]*\\)).*";
+    public static final String CLASS_INSTANTIATION_REGEX = ".*\\bnew\\s+(([a-zA-Z0-9_]+\\.)" +
+        "*[a-zA-Z0-9_]+(<[^>]+>)?\\s*\\([^)]*\\)).*";
 }
