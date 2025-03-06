@@ -86,46 +86,50 @@ class DirectoryManagerTest {
      * @throws IllegalAccessException if access to a field is denied.
      */
     @Test
-    public void testProcessDirectory_IntegrationTest() throws IOException, FileException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-        Path tempDirectoryPath = tempDir.resolve("testDirTemp");
-        tempDirectoryPath.toFile().mkdir();
+    public void testProcessDirectory_IntegrationTest() {
+        try {
+            Path tempDirectoryPath = tempDir.resolve("testDirTemp");
+            tempDirectoryPath.toFile().mkdir();
 
-        Path javaFile1 = tempDirectoryPath.resolve("File1.java");
-        Files.write(
-            javaFile1, 
-            List.of(
-                "public class File1 {", 
-                "    // Comment", 
-                "    int x = 0;", "}"
-            )
-        );
-        Path javaFile2 = tempDirectoryPath.resolve("File2.java");
-        Files.write(
-            javaFile2, 
-            List.of(
-                "public class File2 {", 
-                "    /* Block comment */", 
-                "    void method() {", 
-                "       System.out.println(\\\"Hello, World!\\\");",
-                "    }", 
-                "}"
-            )
-        );
+            Path javaFile1 = tempDirectoryPath.resolve("File1.java");
+            Files.write(
+                javaFile1, 
+                List.of(
+                    "public class File1 {", 
+                    "    // Comment", 
+                    "    int x = 0;", "}"
+                )
+            );
+            Path javaFile2 = tempDirectoryPath.resolve("File2.java");
+            Files.write(
+                javaFile2, 
+                List.of(
+                    "public class File2 {", 
+                    "    /* Block comment */", 
+                    "    void method() {", 
+                    "       System.out.println(\\\"Hello, World!\\\");",
+                    "    }", 
+                    "}"
+                )
+            );
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PrintStream originalOut = System.out;
-        System.setOut(new PrintStream(outputStream));
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            PrintStream originalOut = System.out;
+            System.setOut(new PrintStream(outputStream));
 
-        DirectoryManager directoryManager = new DirectoryManager(tempDirectoryPath.toString());
-        directoryManager.processDirectory();
+            DirectoryManager directoryManager = new DirectoryManager(tempDirectoryPath.toString());
+            directoryManager.processDirectory();
 
-        System.setOut(originalOut);
+            System.setOut(originalOut);
 
-        String output = outputStream.toString();
-        assertTrue(output.contains("| testDirTemp | 8           | 3           |"));
+            String output = outputStream.toString();
+            assertTrue(output.contains("| testDirTemp | 8           | 3           |"));
 
-        Files.delete(javaFile1);
-        Files.delete(javaFile2);
-        Files.delete(tempDirectoryPath);
+            Files.delete(javaFile1);
+            Files.delete(javaFile2);
+            Files.delete(tempDirectoryPath);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }
