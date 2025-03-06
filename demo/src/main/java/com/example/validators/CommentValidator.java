@@ -19,6 +19,12 @@ public class CommentValidator {
     private final String START_BLOCK_COMMENT_REGEX = "^\\s*/\\*.*";
 
     /**
+     * Regular expression to match the start of a documentation comment. A documentation comment
+     * starts with {@code /**} and can be preceded by whitespace characters.
+     */
+    private final String START_DOC_COMMENT_REGEX = "^\\s*/\\*\\*.*";
+
+    /**
      * Regular expression to match the end of a block comment. A block comment ends with
      * {@code * /} and can be followed by whitespace characters.
      */
