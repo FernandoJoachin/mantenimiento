@@ -51,6 +51,12 @@ public class JavaRegexConstants {
     public final static String GENERIC_PARAMETERS_REGEX = "(<[^>]+>)?";
 
     /**
+     * Regular expression to match "else if" statements.
+     * Example: "else if (condition)".
+     */
+    public static final String ELSE_IF_REGEX = "\\belse\\s+if\\b";
+
+    /**
      * Regular expression to match flow control statements (if, for, while, switch).
      * Example: "if (condition)", "for (int i = 0; i < 10; i++)".
      */

@@ -64,6 +64,11 @@ public class LogicalLineCounter implements LineCounter {
             return false;
         }
 
+        this.pattern = Pattern.compile(JavaRegexConstants.ELSE_IF_REGEX);
+        if (this.pattern.matcher(line).find()) {
+            return false;
+        }
+
         this.pattern = Pattern.compile(
             JavaRegexConstants.STRUCT_DECLARATION_REGEX + 
             "|" +

@@ -130,6 +130,10 @@ public class LogicalLineCounterTest {
         List<String> lines = Arrays.asList(
             "if (x > 0) {",
             "    // do something",
+            "} else if (x < 0) {",
+            "    // do something else",
+            "} else {",
+            "    // default case",
             "}"
         );
         JavaFile javaFile = createTempJavaFile(lines);
