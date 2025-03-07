@@ -22,10 +22,9 @@ public class PhysicalLineCounter implements LineCounter {
     public int count(JavaFile javaFile) {
         List<String> lines = javaFile.getLines();
         int count = 0;
-
+        CommentValidator validator = new CommentValidator();
         for (String line : lines) {
-
-            if (CommentValidator.isComment(line)) {
+            if (validator.isComment(line)) {
                 continue;
             } else if(!line.trim().isEmpty()) {
                 count++;

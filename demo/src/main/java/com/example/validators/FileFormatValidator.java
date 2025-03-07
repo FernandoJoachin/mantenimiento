@@ -40,11 +40,11 @@ public class FileFormatValidator {
      */
     public static boolean isValidFileFormat(JavaFile javaFile) throws FileFormatException {
         String fileName = javaFile.getName();
+        CommentValidator validator = new CommentValidator();
         List<String> lines = javaFile.getLines();
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i).trim();
-
-            if (line.isEmpty() || CommentValidator.isComment(line)) {
+            if (line.isEmpty() || validator.isComment(line)) {
                 continue;
             }
 
@@ -140,7 +140,8 @@ public class FileFormatValidator {
 
     /**
      * Verifies if the line of code has a valid style for opening braces.
-     * This means that if the line ends with an opening brace `{`, it must be preceded by * a valid declaration of a class, method, or a control structure.
+     * This means that if the line ends with an opening brace `{`, 
+     * it must be preceded by * a valid declaration of a class, method, or a control structure.
      *
      * @param line The current line of code being evaluated.
      * @return {@code true} if the line is valid or does not end with an opening brace,

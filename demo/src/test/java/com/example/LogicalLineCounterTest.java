@@ -1,183 +1,250 @@
 package com.example;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.example.exceptions.FileException;
 
+/**
+ * Unit tests for the LogicalLineCounter class.
+ * This class verifies the correct counting of logical lines in Java files.
+ */
 public class LogicalLineCounterTest {
+
     private LogicalLineCounter counter = new LogicalLineCounter();
-    
-    @Test
-    public void count() {
-        List<String> lines = new ArrayList<>();
 
-        //lines to not count
-        lines.add("@Override");
-        lines.add("package com.example;");
-        lines.add("import java.util.List;");
-        lines.add("public class Test {");
-
-        //lines to count
-        lines.add("int x = 5;");
-        lines.add("if (x > 0) {");
-        lines.add("for(int i=0; i<10; i++){");
-        lines.add("else {");
-        lines.add("break;");
-        lines.add("}");
-        
-        int expected = 7;
-        int numLogicalLines = counter.count(lines);
-        assertEquals(expected, numLogicalLines);
-    }
-
-    @Test
-    public void verifyAnnotationsAreNotCounted() {
-        List<String> lines = new ArrayList<>();
-        lines.add("@Override");
-        lines.add("@interface TypeAnnoDemo{}");
-        lines.add("@TestAnnotation(\"testing\")");
-        int numLogicalLines = counter.count(lines);
-        assertEquals(0, numLogicalLines);
+    /**
+     * Creates a temporary Java file with the given lines.
+     *
+     * @param lines List of lines to write to the temporary file.
+     * @return A JavaFile object representing the created file.
+     * @throws FileException If an error occurs in file processing.
+     * @throws IOException If an I/O error occurs.
+     */
+    private JavaFile createTempJavaFile(List<String> lines) throws FileException, IOException {
+        Path tempFile = Files.createTempFile("TestLogicalLineCounter", ".java");
+        Files.write(tempFile, lines);
+        return new JavaFile(tempFile.toString(), tempFile.getFileName().toString());
     }
     
+    /**
+     * Tests counting logical lines when no logical lines are present.
+     */
     @Test
-    public void isLogicalLine() {
-        assertEquals(1, counter.count(List.of("int x = 5;")));
-        assertEquals(0, counter.count(List.of("public void metodo() {")));
-        assertEquals(0, counter.count(List.of("{")));
-        assertEquals(1, counter.count(List.of("if (x > 0) {")));
+    public void testNoLogicalLines() throws FileException, IOException {
+        List<String> lines = Arrays.asList(
+            "package com.example;",
+            "import java.util.List;",
+            "",
+            "// This is a comment",
+            "@Deprecated",
+            "int x = 0"
+        );
+        JavaFile javaFile = createTempJavaFile(lines);
+        int logicalCount = counter.count(javaFile);
+        assertEquals(0, logicalCount, "Expected 0 logical lines.");
     }
     
+    /**
+     * Tests counting logical lines for a class declaration.
+     */
     @Test
-    public void verifyEmptyLine() {
-        List<String> lines = new ArrayList<>();
-        lines.add("");
-        lines.add("for (");
-        lines.add("         ");
-        int numLogicalLines = counter.count(lines);
-        assertEquals(0, numLogicalLines);
+    public void testClassDeclarationLogicalLine() throws FileException, IOException {
+        List<String> lines = Arrays.asList(
+            "package com.example;",
+            "",
+            "public class TestClass {",
+            "    // class body",
+            "}"
+        );
+        JavaFile javaFile = createTempJavaFile(lines);
+        int logicalCount = counter.count(javaFile);
+        assertEquals(1, logicalCount, "Expected 1 logical line for the class declaration.");
     }
     
+    /**
+     * Tests counting logical lines for an interface declaration.
+     */
     @Test
-    public void verifyBracketLine() {
-        List<String> lines = new ArrayList<>();
-        lines.add("for(int i=0; i<5; i++){");
-        lines.add("{");
-        lines.add("                {");
-        int numLogicalLines = counter.count(lines);
-        assertEquals(3, numLogicalLines);
+    public void testInterfaceDeclarationLogicalLine() throws FileException, IOException {
+        List<String> lines = Arrays.asList(
+            "package com.example;",
+            "",
+            "public interface TestInterface {",
+            "    // interface body",
+            "}"
+        );
+        JavaFile javaFile = createTempJavaFile(lines);
+        int logicalCount = counter.count(javaFile);
+        assertEquals(1, logicalCount, "Expected 1 logical line for the interface declaration.");
     }
     
+    /**
+     * Tests counting logical lines for an enum declaration.
+     */
     @Test
-    public void verifyClassOrInterfaceStatement() {
-        List<String> lines = new ArrayList<>();
-        lines.add("class Prueba{");
-        lines.add("interface Prueba");
-        lines.add("String i = ‘interface’;");
-    
-        int numLogicalLines = counter.count(lines);
-        assertEquals(1, numLogicalLines);
+    public void testEnumDeclarationLogicalLine() throws FileException, IOException {
+        List<String> lines = Arrays.asList(
+            "package com.example;",
+            "",
+            "public enum TestEnum {",
+            "    VALUE1, VALUE2;",
+            "    // enum body",
+            "}"
+        );
+        JavaFile javaFile = createTempJavaFile(lines);
+        int logicalCount = counter.count(javaFile);
+        assertEquals(1, logicalCount, "Expected 1 logical line for the enum declaration.");
     }
     
+    /**
+     * Tests counting logical lines for a method declaration.
+     */
     @Test
-    public void verifyMethodStatement() {
-        List<String> lines = new ArrayList<>();
-        lines.add("public void metodo (){");
-        lines.add("abstract int prueba();");
-        lines.add("protected List<String> metodo(String cadena)  {");
-        lines.add("private boolean prueba ()");
-        lines.add("for(int i=0; i<5; i++){");
-        lines.add("for ()");
-    
-        int numLogicalLines = counter.count(lines);
-        assertEquals(3, numLogicalLines);
+    public void testMethodDeclarationLogicalLine() throws FileException, IOException {
+        List<String> lines = Arrays.asList(
+            "public static int dividir(int a, int b) throws ArithmeticException {",
+            "    return a / b;",
+            "}"
+        );
+        JavaFile javaFile = createTempJavaFile(lines);
+        int logicalCount = counter.count(javaFile);
+        assertEquals(1, logicalCount, "Expected 1 logical line for the method declaration.");
     }
     
+    /**
+     * Tests if an 'if' control structure is counted as one logical line.
+     *
+     * @throws FileException if there's an issue processing the file
+     * @throws IOException   if an IO error occurs
+     */
     @Test
-    public void isStatement() {
-        assertEquals(1, counter.count(List.of("int x = 5;")));
-        assertEquals(0, counter.count(List.of("int x = 5")));
-    }
-    
-    @Test
-    public void statementIncomplete() {
-        List<String> lines = new ArrayList<>();
-        lines.add("int x =");
-        lines.add("5;");
-        int numLogicalLines = counter.count(lines);
-        assertEquals(1, numLogicalLines);
-    }
-    
-    @Test
-    public void verifyTryStatement() {
-        List<String> lines = new ArrayList<>();
-        lines.add("try {");
-        lines.add("for (");
-        lines.add("{try{");
-        int numLogicalLines = counter.count(lines);
-        assertEquals(0, numLogicalLines);
-    }
-    
-    @Test
-    public void isControlStructureWithCondition() {
-        assertEquals(1, counter.count(List.of("if (x > 0) {")));
-        assertEquals(1, counter.count(List.of("switch (x) {")));
-        assertEquals(1, counter.count(List.of("catch (Exception e) {")));
-    }
-    
-    @Test
-    public void isControlStructureWithoutCondition() {
-        assertEquals(1, counter.count(List.of("else {")));
-        assertEquals(1, counter.count(List.of("do {")));
-        assertEquals(1, counter.count(List.of("finally {")));
-    }
-    
-    @Test
-    public void verifyWhileStatement() {
-        List<String> lines = new ArrayList<>();
-        lines.add("while (i<5){");
-        lines.add("while (");
-        lines.add("}while(true);");
-        int numLogicalLines = counter.count(lines);
-        assertEquals(3, numLogicalLines);
-    }
-    
-    @Test
-    public void isSwitchCase() {
-        assertEquals(1, counter.count(List.of("case 1:")));
-        assertEquals(1, counter.count(List.of("default:")));
-        assertEquals(1, counter.count(List.of("switch (x) {")));
-    }
-    
-    @Test
-    public void isBreakStatement() {
-        assertEquals(1, counter.count(List.of("break;")));
-        assertEquals(0, counter.count(List.of("break")));
-    }
-    
-    @Test
-    public void verifyImportStatement() {
-        List<String> lines = new ArrayList<>();
-        lines.add("import libreria.carpeta;");
-        lines.add("String i = “import”;");
-        lines.add("int i=0;");
-        int numLogicalLines = counter.count(lines);
-        assertEquals(2, numLogicalLines);
-    }
-    
-    @Test
-    public void verifyPackageStatement() {
-        List<String> lines = new ArrayList<>();
-        lines.add("package carpeta.carpetita;");
-        lines.add("String i = “package”;");
-        lines.add("import libreria.carpeta;");
-        int numLogicalLines = counter.count(lines);
-        assertEquals(1, numLogicalLines);
+    public void testIfLogicalLine() throws FileException, IOException {
+        List<String> lines = Arrays.asList(
+            "if (x > 0) {",
+            "    // do something",
+            "} else if (x < 0) {",
+            "    // do something else",
+            "} else {",
+            "    // default case",
+            "}"
+        );
+        JavaFile javaFile = createTempJavaFile(lines);
+        int logicalCount = counter.count(javaFile);
+        assertEquals(1, logicalCount, "Expected 1 logical line for the if control structure.");
     }
 
+    /**
+     * Tests if a 'for' loop is counted as one logical line.
+     *
+     * @throws FileException if there's an issue processing the file
+     * @throws IOException   if an IO error occurs
+     */
+    @Test
+    public void testForLogicalLine() throws FileException, IOException {
+        List<String> lines = Arrays.asList(
+            "for (int i = 0; i < 10; i++) {",
+            "    // loop body",
+            "}"
+        );
+        JavaFile javaFile = createTempJavaFile(lines);
+        int logicalCount = counter.count(javaFile);
+        assertEquals(1, logicalCount, "Expected 1 logical line for the for control structure.");
+    }
+
+    /**
+     * Tests if a 'while' loop is counted as one logical line.
+     *
+     * @throws FileException if there's an issue processing the file
+     * @throws IOException   if an IO error occurs
+     */
+    @Test
+    public void testWhileLogicalLine() throws FileException, IOException {
+        List<String> lines = Arrays.asList(
+            "while (x < 10) {",
+            "    // loop body",
+            "}"
+        );
+        JavaFile javaFile = createTempJavaFile(lines);
+        int logicalCount = counter.count(javaFile);
+        assertEquals(1, logicalCount, "Expected 1 logical line for the while control structure.");
+    }
+
+    /**
+     * Tests if a 'switch' statement is counted as one logical line.
+     *
+     * @throws FileException if there's an issue processing the file
+     * @throws IOException   if an IO error occurs
+     */
+    @Test
+    public void testSwitchLogicalLine() throws FileException, IOException {
+        List<String> lines = Arrays.asList(
+            "switch (x) {",
+            "    case 1:",
+            "        break;",
+            "    default:",
+            "        break;",
+            "}"
+        );
+        JavaFile javaFile = createTempJavaFile(lines);
+        int logicalCount = counter.count(javaFile);
+        assertEquals(1, logicalCount, "Expected 1 logical line for the switch control structure.");
+    }
+
+    /**
+     * Tests if a 'try-catch' block is counted as one logical line.
+     *
+     * @throws FileException if there's an issue processing the file
+     * @throws IOException   if an IO error occurs
+     */
+    @Test
+    public void testTryLogicalLine() throws FileException, IOException {
+        List<String> lines = Arrays.asList(
+            "try {",
+            "    // try block",
+            "} catch(Exception e) {",
+            "    // handle exception",
+            "}"
+        );
+        JavaFile javaFile = createTempJavaFile(lines);
+        int logicalCount = counter.count(javaFile);
+        assertEquals(1, logicalCount, "Expected 1 logical line for the try control structure.");
+    }
+
+    /**
+     * Tests counting logical lines in a mixed Java class example.
+     *
+     * @throws FileException if there's an issue processing the file
+     * @throws IOException   if an IO error occurs
+     */
+    @Test
+    public void testMixedLogicalLines() throws FileException, IOException {
+        List<String> lines = Arrays.asList(
+            "package com.example;",
+            "import java.util.List;",
+            "",
+            "public class MixedExample {",              
+            "    Example example = new Example()",
+            "    public MixedExample() {",               
+            "        // constructor body",
+            "    }",
+            "",
+            "    public void exampleMethod() {",          
+            "        if (x > 0) {",                      
+            "            System.out.println(\"Positive\");",
+            "        }",
+            "    }",
+            "}"
+        );
+        JavaFile javaFile = createTempJavaFile(lines);
+        int logicalCount = counter.count(javaFile);
+        assertEquals(4, logicalCount, "Expected 4 logical lines in the mixed example.");
+    }
 }
